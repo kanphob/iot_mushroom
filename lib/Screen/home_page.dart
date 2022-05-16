@@ -11,6 +11,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
   List<Widget> listWidget = [];
   List<ModelMenuItem> listMenuItem = [
     ModelMenuItem(sImageUrl: 'assets/images/production.png',sMenuName: "จัดการรอบการผลิต",index: 0),
@@ -20,13 +21,14 @@ class _HomePageState extends State<HomePage> {
     ModelMenuItem(sImageUrl: 'assets/images/crisis.png',sMenuName:  "คำนวณค่าใช้จ่าย",index: 4),
     ModelMenuItem(sImageUrl: 'assets/images/settings.png',sMenuName:  "ตั้งค่า",index: 5),
   ];
+
   @override
   void initState() {
     setListMenu();
     super.initState();
   }
 
-  checkOnTapMenu(int index){
+  checkOnTapMenu(int index) {
     switch (index){
       case 0: null;
       break;
@@ -43,10 +45,10 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  setListMenu(){
+  setListMenu() {
   listWidget.clear();
 
-  for(int i = 0; i < 6;i++){
+  for(int i = 0; i < 6;i++) {
     listWidget.add(  GestureDetector(
       onTap: () async {
         checkOnTapMenu(i);
@@ -70,9 +72,8 @@ class _HomePageState extends State<HomePage> {
                   textAlign: TextAlign.center,
                 ),
               ))),
-    ));
-  }
-
+      ));
+    }
   }
 
   @override
@@ -96,6 +97,7 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
 }
 
 class ModelMenuItem {

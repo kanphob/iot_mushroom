@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "418603167804",
+    "project_id": "mushroomproduce-d2eee",
+    "storage_bucket": "mushroomproduce-d2eee.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:418603167804:android:8ae9fd9237acb781a15339",
+        "android_client_info": {
+          "package_name": "com.iotapp.mushroom"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "418603167804-iks3akof04e8u7dgvf4fg44kh8c5b6ub.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.iotapp.mushroom",
+            "certificate_hash": "c05c1ca3a586b9ac94f78dbc447d57b9d3156086"
+          }
+        },
+        {
+          "client_id": "418603167804-s2qihcqdc2amoo3211jq9d1bupmnf061.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJiytX9xa5pADd4HxvZH3d3hN7ayAfxOo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "418603167804-s2qihcqdc2amoo3211jq9d1bupmnf061.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
