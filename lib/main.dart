@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:siwat_mushroom/splash_screen.dart';
-
+import 'package:siwat_mushroom/login_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:siwat_mushroom/provider/login_screen_provider.dart';
 void main() {
 
   runApp(const MyApp());
@@ -27,9 +28,13 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home:  SplashScreen(),
+      home: MultiProvider(providers: [
+          ChangeNotifierProvider(create: (_) =>  LoginScreenProvider(),
+          ),
+      ],child: LoginScreen(),),
     );
   }
+
 }
 
 class MyHomePage extends StatefulWidget {

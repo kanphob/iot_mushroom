@@ -13,6 +13,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 
   List<Widget> listWidget = [];
+
   List<ModelMenuItem> listMenuItem = [
     ModelMenuItem(sImageUrl: 'assets/images/production.png',sMenuName: "จัดการรอบการผลิต",index: 0),
     ModelMenuItem(sImageUrl: 'assets/images/packaging.png',sMenuName:  "บริหารจัดการต้นทุน",index: 1),
@@ -88,6 +89,7 @@ class _HomePageState extends State<HomePage> {
           SizedBox(height: 10,),
           GridView.builder(gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
             shrinkWrap: true,
+            physics: const BouncingScrollPhysics(),
             itemCount: listWidget.length,
             itemBuilder: (context, index){
             return listWidget[index];
@@ -97,7 +99,6 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
 }
 
 class ModelMenuItem {

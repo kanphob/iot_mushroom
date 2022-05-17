@@ -46,6 +46,7 @@ class _CostCalculateCreateState extends State<CostCalculateCreate> {
   TextEditingController dateStartController = TextEditingController();
   DateTime dtStartDate = DateTime.now().toUtc();
   bool bDeleteMode = false;
+
   @override
   void initState() {
     setData();
