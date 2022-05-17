@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:siwat_mushroom/Screen/cost_calculate_create.dart';
 import 'package:siwat_mushroom/Screen/daily_condition_create.dart';
+import 'package:siwat_mushroom/Screen/product/daily_product_list_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -30,19 +31,32 @@ class _HomePageState extends State<HomePage> {
   }
 
   checkOnTapMenu(int index) {
-    switch (index){
-      case 0: null;
-      break;
-      case 1: Navigator.push(context, CupertinoPageRoute(builder: (context)=> CostCalculateCreate()));
-      break;
-      case 2: Navigator.push(context, CupertinoPageRoute(builder: (context)=> DailyConditionCreate()));
-      break;
-      case 3: null;
-      break;
-      case 4: null;
-      break;
-      case 5: null;
-      break;
+    switch (index) {
+      case 0:
+        null;
+        break;
+      case 1:
+        Navigator.push(context,
+            CupertinoPageRoute(builder: (context) => CostCalculateCreate()));
+        break;
+      case 2:
+        Navigator.push(context,
+            CupertinoPageRoute(builder: (context) => DailyConditionCreate()));
+        break;
+      case 3:
+        Navigator.push(
+          context,
+          CupertinoPageRoute(
+            builder: (context) => const DailyProdListScreen(),
+          ),
+        );
+        break;
+      case 4:
+        null;
+        break;
+      case 5:
+        null;
+        break;
     }
   }
 

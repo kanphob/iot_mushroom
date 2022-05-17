@@ -1,7 +1,7 @@
 
 import 'package:siwat_mushroom/Model/model_condition.dart';
 import 'package:siwat_mushroom/Model/model_cost_material.dart';
-import 'package:siwat_mushroom/Screen/daily_condition_create.dart';
+import 'package:intl/intl.dart';
 
 class Globals {
 
@@ -10,4 +10,5 @@ class Globals {
   static double dXPosition = 0;
   static double dYPosition = 0;
 
+  static final dateFormatUser = DateFormat('dd/MM/yyyy');
 }

@@ -8,25 +8,27 @@ import 'package:siwat_mushroom/passcode_screen.dart';
 class LoginScreenProvider with ChangeNotifier{
    LoginScreenProvider({Key? key}) : super();
 
-   final GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
 
-   bool isShowSignInID = false;
-   bool obscureText = false;
-   bool isInAsyncCall = false;
+  bool isShowSignInID = false;
+  bool obscureText = false;
+  bool isInAsyncCall = false;
 
-   TextEditingController userIDController = TextEditingController();
-   TextEditingController userPasswordController = TextEditingController();
+  TextEditingController userIDController =
+      TextEditingController(text: 'Mushroom');
+  TextEditingController userPasswordController =
+      TextEditingController(text: '1234');
 
-   FocusNode fnUserID = FocusNode();
-   FocusNode fnUserPassword = FocusNode();
+  FocusNode fnUserID = FocusNode();
+  FocusNode fnUserPassword = FocusNode();
 
-   setUpScreenInitState(BuildContext context) async{
-     SystemChrome.setPreferredOrientations([
-       DeviceOrientation.portraitUp,
-       DeviceOrientation.portraitDown,
-     ]);
-     Future.delayed(const Duration(seconds: 5, milliseconds: 0), () async {
-       if (userIDController.text.isNotEmpty) {
+  setUpScreenInitState(BuildContext context) async {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+    Future.delayed(const Duration(seconds: 5, milliseconds: 0), () async {
+      if (userIDController.text.isNotEmpty) {
          isShowSignInID = true;
          notifyListeners();
          if (userIDController.text.isNotEmpty) {

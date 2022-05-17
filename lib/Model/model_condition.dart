@@ -7,7 +7,12 @@ class ModelCondition {
   String sDateTime;
   int index;
 
-  ModelCondition({required this.sIconPath, required this.sConditionName,
-    required this.sAmount, required this.sUnitAmount,
-    required this.index, required this.sDateTime});
+  ModelCondition({
+    required this.sIconPath,
+    required this.sConditionName,
+    required this.sAmount,
+    required this.sUnitAmount,
+    required this.index,
+    required this.sDateTime,
+  });
 }
