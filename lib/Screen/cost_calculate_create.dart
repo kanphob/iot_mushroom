@@ -124,16 +124,35 @@ class _CostCalculateCreateState extends State<CostCalculateCreate> {
     listCostMaterialTemp = [];
     listCostMaterialTemp.addAll(listCostMaterial);
     listCostMaterial = [];
-    for(int i = 0; i < listCostMaterialTemp.length;i++){
+    for (int i = 0; i < listCostMaterialTemp.length; i++) {
       listCostMaterial.add(listCostMaterialTemp[i]);
       listCostMaterial[i].index = i;
       listCostMaterial[i].isItemSelected = false;
     }
 
-    if(listCostMaterial.length > 0){
-      setState(() {
+    if (listCostMaterial.length > 0) {
+      setState(() {});
+    }
+  }
 
-      });
+  onTapAddListItem() {
+    if (typeController.text.isNotEmpty) {
+      listCostMaterial.add(ModelCostMaterial(
+          index: listCostMaterial.length,
+          sMaterialName: sCurrentMaterialValue,
+          sAmount: "0",
+          sUnitAmount: "",
+          sCostValue: "0",
+          sDateTime: '',
+          isItemSelected: false));
+      listCostMaterialTemp = [];
+      listCostMaterialTemp.addAll(listCostMaterial);
+      if (listCostMaterial.isNotEmpty) {
+        _formKey.currentState!.validate();
+        setState(() {});
+      }
+    } else {
+      _formKey.currentState!.validate();
     }
   }
 
@@ -141,452 +160,435 @@ class _CostCalculateCreateState extends State<CostCalculateCreate> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.green,
-        leading: IconButton(
-            onPressed: () => Navigator.pop(context),
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              color: Colors.white,
-            )),
-        title:  GestureDetector(
-          onTap: (){
-            print(listCostMaterial.length);
-            print(listCostMaterialTemp.length);
-            setState(() {
-
-            });
-          },
-          child: const Text("ระบบการคำนวณต้นทุน"),
-        ),
-      ),
-      body: Container(
-        padding: const EdgeInsets.all(5),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              Container(
-                color: Colors.green.shade100,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+            appBar: AppBar(
+              backgroundColor: Colors.green,
+              leading: IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: const Icon(
+                    Icons.arrow_back_ios,
+                    color: Colors.white,
+                  )),
+              title: GestureDetector(
+                onTap: () {
+                  print(listCostMaterial.length);
+                  print(listCostMaterialTemp.length);
+                  setState(() {});
+                },
+                child: const Text("ระบบการคำนวณต้นทุน"),
+              ),
+            ),
+            body: Container(
+              padding: const EdgeInsets.all(5),
+              child: Form(
+                key: _formKey,
+                child: Column(
                   children: [
+                    buildInformationHeader(),
+                    const SizedBox(
+                      height: 5,
+                    ),
                     Expanded(
-                        child: Container(
-                            padding: const EdgeInsets.all(10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                      flex: 10,
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            side: BorderSide(
+                              color: Colors.green.shade300,
+                            )),
+                        elevation: 10,
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: Stack(
+                            children: [
+                              SingleChildScrollView(
+                                child: Column(
                                   children: [
-                                    Expanded(flex: 2, child: Container()),
-                                    Expanded(
-                                        flex: 5,
-                                        child: Row(
-                                          children: [
-                                            const Text(
-                                              "วันที่ : ",
-                                              textAlign: TextAlign.start,
-                                              style: TextStyle(fontSize: 18),
-                                            ),
-                                            Expanded(
-                                              child: DateTimeField(
-                                                readOnly: true,
-                                                resetIcon: null,
-                                                textAlign: TextAlign.center,
-                                                controller: dateStartController,
-                                                format: dateFormatUser,
-                                                style: TextStyle(
-                                                    color:
-                                                        Colors.blue.shade800),
-                                                onShowPicker: (context,
-                                                    currentValue) async {
-                                                  dtStartDate = DateTime(
-                                                      dtStartDate.year,
-                                                      dtStartDate.month,
-                                                      dtStartDate.day,
-                                                      dtStartDate.hour,
-                                                      dtStartDate.minute,
-                                                      dtStartDate.second);
-                                                  final date = await DatePicker
-                                                      .showDatePicker(
-                                                    context,
-                                                    //theme: ThemeData(primarySwatch: Colors.purple),
-                                                    currentTime: DateTime(
-                                                        dtStartDate.year,
-                                                        dtStartDate.month,
-                                                        dtStartDate.day),
-                                                    locale: LocaleType.th,
-                                                    minTime: DateTime(
-                                                        DateTime.now().year -
-                                                            5),
-                                                    maxTime: DateTime(
-                                                        DateTime.now().year +
-                                                            5),
-                                                  );
-                                                  if (date != null) {
-                                                    dtStartDate = date;
-                                                    // String sThaiMonth = dtStartDate.day.toString() +
-                                                    //     ' ' + getMonthName(dtStartDate.month) + ' ' +
-                                                    //     dtStartDate.year.toString();
-                                                    dateStartController =
-                                                        TextEditingController(
-                                                            text: dateFormatUser
-                                                                .format(
-                                                                    dtStartDate));
+                                    buildListViewHeaderTop(),
+                                    buildListViewBody(),
+                                  ],
+                                ),
+                              ),
+                              Positioned(
+                                bottom: 5,
+                                right: 5,
+                                child: FloatingActionButton(
+                                  backgroundColor: Colors.green,
+                                  onPressed: () {
+                                    onTapAddListItem();
+                                  },
+                                  child: Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            bottomNavigationBar: buildBottomNavigationBar()));
+  }
 
-                                                    return DateTime(
-                                                      date.year,
-                                                      date.month,
-                                                      date.day,
-                                                    );
-                                                  } else {
-                                                    // String sThaiMonth = dtStartDate.day.toString() +
-                                                    //     ' ' + getMonthName(dtStartDate.month) + ' ' +
-                                                    dtStartDate.year.toString();
-                                                    dateStartController =
-                                                        TextEditingController(
-                                                            text: dateFormatUser
-                                                                .format(
-                                                                    dtStartDate));
+  buildInformationHeader() {
+    return Container(
+      color: Colors.green.shade100,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+              child: Container(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(flex: 2, child: Container()),
+                          Expanded(
+                              flex: 5,
+                              child: Row(
+                                children: [
+                                  const Text(
+                                    "วันที่ : ",
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                                  Expanded(
+                                    child: DateTimeField(
+                                      readOnly: true,
+                                      resetIcon: null,
+                                      textAlign: TextAlign.center,
+                                      controller: dateStartController,
+                                      format: dateFormatUser,
+                                      style: TextStyle(
+                                          color: Colors.blue.shade800),
+                                      onShowPicker:
+                                          (context, currentValue) async {
+                                        dtStartDate = DateTime(
+                                            dtStartDate.year,
+                                            dtStartDate.month,
+                                            dtStartDate.day,
+                                            dtStartDate.hour,
+                                            dtStartDate.minute,
+                                            dtStartDate.second);
+                                        final date =
+                                            await DatePicker.showDatePicker(
+                                          context,
+                                          //theme: ThemeData(primarySwatch: Colors.purple),
+                                          currentTime: DateTime(
+                                              dtStartDate.year,
+                                              dtStartDate.month,
+                                              dtStartDate.day),
+                                          locale: LocaleType.th,
+                                          minTime:
+                                              DateTime(DateTime.now().year - 5),
+                                          maxTime:
+                                              DateTime(DateTime.now().year + 5),
+                                        );
+                                        if (date != null) {
+                                          dtStartDate = date;
+                                          // String sThaiMonth = dtStartDate.day.toString() +
+                                          //     ' ' + getMonthName(dtStartDate.month) + ' ' +
+                                          //     dtStartDate.year.toString();
+                                          dateStartController =
+                                              TextEditingController(
+                                                  text: dateFormatUser
+                                                      .format(dtStartDate));
+
+                                          return DateTime(
+                                            date.year,
+                                            date.month,
+                                            date.day,
+                                          );
+                                        } else {
+                                          // String sThaiMonth = dtStartDate.day.toString() +
+                                          //     ' ' + getMonthName(dtStartDate.month) + ' ' +
+                                          dtStartDate.year.toString();
+                                          dateStartController =
+                                              TextEditingController(
+                                                  text: dateFormatUser
+                                                      .format(dtStartDate));
 //                              return DateTime(
 //                                  dtStartDate.year,
 //                                  dtStartDate.month,
 //                                  dtStartDate.day,
 //                                  dtStartDate.hour,
 //                                  dtStartDate.minute);
-                                                    return null;
-                                                  }
-                                                },
-                                                decoration:
-                                                    const InputDecoration(
-                                                  border: InputBorder.none,
-                                                  suffixIcon: Icon(
-                                                    Icons.keyboard_arrow_down,
-                                                    color: Colors.grey,
-                                                    size: 15,
-                                                  ),
-                                                ),
-                                              ),
-                                            )
-                                          ],
-                                        ))
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Expanded(flex: 2, child: Container()),
-                                    Expanded(
-                                      flex: 5,
-                                      child: Text(
-                                        "รอบที่ : " +
-                                            iCurrentRoundSave.toString() +
-                                            " / " +
-                                            (DateTime.now().year + 543)
-                                                .toString(),
-                                        textAlign: TextAlign.start,
-                                        style: const TextStyle(fontSize: 18),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                buildDropDownMaterialType(),
-                              ],
-                            )))
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              Expanded(
-                flex: 10,
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      side: BorderSide(
-                        color: Colors.green.shade300,
-                      )),
-                  elevation: 10,
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(5),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: Colors.green.shade400,
-                              borderRadius: const BorderRadius.only(
-                                topRight: Radius.circular(15),
-                                topLeft: Radius.circular(15),
-                              ),
-                            ),
-                            height: 50,
-                            child: ListView(
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    if (typeController.text.isNotEmpty) {
-                                      listCostMaterial.add(ModelCostMaterial(
-                                          index: listCostMaterial.length,
-                                          sMaterialName: sCurrentMaterialValue,
-                                          sAmount: "0",
-                                          sUnitAmount: "",
-                                          sCostValue: "0",
-                                          sDateTime: '',
-                                          isItemSelected: false));
-                                      listCostMaterialTemp = [];
-                                      listCostMaterialTemp.addAll(listCostMaterial);
-                                      if (listCostMaterial.isNotEmpty) {
-                                        _formKey.currentState!.validate();
-                                        setState(() {});
-                                      }
-                                    } else {
-                                      _formKey.currentState!.validate();
-                                    }
-                                  },
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: const [
-                                      Icon(
-                                        Icons.add_circle_outline,
-                                        color: Colors.white,
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Align(
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          "เพิ่มรายการต้นทุน",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              height: 1.3,
-                                              color: Colors.white,
-                                              fontSize: 18),
+                                          return null;
+                                        }
+                                      },
+                                      decoration: const InputDecoration(
+                                        border: InputBorder.none,
+                                        suffixIcon: Icon(
+                                          Icons.keyboard_arrow_down,
+                                          color: Colors.grey,
+                                          size: 15,
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          Scrollbar(child: ListView.builder(
-                              shrinkWrap: true,
-                              physics: const BouncingScrollPhysics(),
-                              itemCount: listCostMaterial.length,
-                              itemBuilder: (context, index) {
-                                return Column(
-                                  children: [
-                                    index == 0
-                                        ? Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10),
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            padding:
-                                            const EdgeInsets.all(2),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                              MainAxisAlignment
-                                                  .center,
-                                              children: const [
-                                                Text("ลำดับ"),
-                                              ],
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
-                                          Expanded(
-                                            flex: 5,
-                                            child: Container(
-                                              padding:
-                                              const EdgeInsets.all(
-                                                  10),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                MainAxisAlignment
-                                                    .center,
-                                                children: const [
-                                                  Expanded(
-                                                    child: Text(
-                                                      "รายการ",
-                                                      overflow:
-                                                      TextOverflow
-                                                          .ellipsis,
-                                                      maxLines: 2,
-                                                      textAlign: TextAlign
-                                                          .center,
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
-                                          Expanded(
-                                            flex: 4,
-                                            child: Container(
-                                              child: Container(
-                                                padding:
-                                                const EdgeInsets.all(
-                                                    10),
-                                                child: Row(
-                                                  children: [
-                                                    Expanded(
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                          children: const [
-                                                            Text("จำนวน"),
-                                                          ],
-                                                        ))
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
-                                          Expanded(
-                                            flex: 4,
-                                            child: Container(
-                                              padding:
-                                              const EdgeInsets.all(
-                                                  10),
-                                              child: Row(
-                                                children: [
-                                                  Expanded(
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                        children: const [
-                                                          Text("ราคา"),
-                                                        ],
-                                                      ))
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                        : Container(),
-                                    buildItemCondition(
-                                        listCostMaterial[index], index),
-                                  ],
-                                );
-                              }))
+                                    ),
+                                  )
+                                ],
+                              ))
                         ],
                       ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(flex: 2, child: Container()),
+                          Expanded(
+                            flex: 5,
+                            child: Text(
+                              "รอบที่ : " +
+                                  iCurrentRoundSave.toString() +
+                                  " / " +
+                                  (DateTime.now().year + 543).toString(),
+                              textAlign: TextAlign.start,
+                              style: const TextStyle(fontSize: 18),
+                            ),
+                          ),
+                        ],
+                      ),
+                      buildDropDownMaterialType(),
+                    ],
+                  )))
+        ],
+      ),
+    );
+  }
+
+  buildListViewHeaderTop() {
+    return Container(
+      padding: const EdgeInsets.all(5),
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: Colors.green.shade400,
+        borderRadius: const BorderRadius.only(
+          topRight: Radius.circular(15),
+          topLeft: Radius.circular(15),
         ),
       ),
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-        child: Row(
-          children: [
-            Expanded(
-              child: CupertinoButton(
-                padding: const EdgeInsets.all(5),
-                onPressed: () async {
-                  if (bDeleteMode) {
-                    await showDialog(
-                      context: context,
-                      builder: (_) {
-                        return AlertDialog(
-                          title: const Text("ต้องการลบรายการหรือไม่?"),
-                          actions: [
-                            FlatButton.icon(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              icon: const Icon(Icons.close),
-                              label: const Text("ปิด"),
+      height: 50,
+      child: ListView(
+        children: [
+          GestureDetector(
+            onTap: () {},
+            child: Row(
+              children: const [
+                Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    "รายการต้นทุน",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        height: 1.3, color: Colors.white, fontSize: 18),
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  buildListViewBody() {
+    return Scrollbar(
+      child: ListView.builder(
+          shrinkWrap: true,
+          physics: const BouncingScrollPhysics(),
+          itemCount: listCostMaterial.length,
+          itemBuilder: (context, index) {
+            return Column(
+              children: [
+                index == 0
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Row(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(2),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Text("ลำดับ"),
+                                ],
+                              ),
                             ),
-                            FlatButton.icon(
-                              onPressed: () async{
-                                for (int i = 0; i < listCostMaterial.length; i++) {
-                                  if (listCostMaterial[i].isItemSelected) {
-                                    listCostMaterial.removeAt(i);
-                                  }
-                                }
-                                await resetData();
-                                Navigator.pop(context);
-                              },
-                              icon: const Icon(Icons.delete,color: Colors.red,),
-                              label: const Text("ลบ",style: TextStyle(color: Colors.red),),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                              flex: 5,
+                              child: Container(
+                                padding: const EdgeInsets.all(10),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Expanded(
+                                      child: Text(
+                                        "รายการ",
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                              flex: 4,
+                              child: Container(
+                                child: Container(
+                                  padding: const EdgeInsets.all(10),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                          child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: const [
+                                          Text("จำนวน"),
+                                        ],
+                                      ))
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                              flex: 4,
+                              child: Container(
+                                padding: const EdgeInsets.all(10),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                        child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: const [
+                                        Text("ราคา"),
+                                      ],
+                                    ))
+                                  ],
+                                ),
+                              ),
                             ),
                           ],
-                        );
-                      },
-                    );
-                    setState(() {
+                        ),
+                      )
+                    : Container(),
+                buildItemCondition(listCostMaterial[index], index),
+              ],
+            );
+          }),
+    );
+  }
 
-                    });
-                  }
-                },
-                child: const Text('ลบรายการ',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18)),
-                disabledColor: bDeleteMode ? Colors.red : Colors.grey,
-                color: bDeleteMode ? Colors.red : Colors.grey,
-              ),
-            ),
-            const SizedBox(
-              width: 20,
-            ),
-            Expanded(
-                child: CupertinoButton(
+  buildBottomNavigationBar() {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+      child: Row(
+        children: [
+          Expanded(
+            child: CupertinoButton(
               padding: const EdgeInsets.all(5),
-              onPressed: () {
-                String sDateTime = dateFormatSystem.format(dtStartDate);
-                for (int i = 0; i < listCostMaterial.length; i++) {
-                  listCostMaterial[i].sDateTime = sDateTime;
+              onPressed: () async {
+                if (bDeleteMode) {
+                  await showDialog(
+                    context: context,
+                    builder: (_) {
+                      return AlertDialog(
+                        title: const Text("ต้องการลบรายการหรือไม่?"),
+                        actions: [
+                          FlatButton.icon(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            icon: const Icon(Icons.close),
+                            label: const Text("ปิด"),
+                          ),
+                          FlatButton.icon(
+                            onPressed: () async {
+                              for (int i = 0;
+                                  i < listCostMaterial.length;
+                                  i++) {
+                                if (listCostMaterial[i].isItemSelected) {
+                                  listCostMaterial.removeAt(i);
+                                }
+                              }
+                              await resetData();
+                              Navigator.pop(context);
+                            },
+                            icon: const Icon(
+                              Icons.delete,
+                              color: Colors.red,
+                            ),
+                            label: const Text(
+                              "ลบ",
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                  setState(() {});
                 }
-                Globals.listCostMaterial.addAll(listCostMaterial);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => TableStatisticCost()));
               },
-              child: const Text('บันทึก',
+              child: const Text('ลบรายการ',
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: 18)),
-              disabledColor: Colors.green,
-              color: Colors.green,
-            )),
-          ],
-        ),
+              disabledColor: bDeleteMode ? Colors.red : Colors.grey,
+              color: bDeleteMode ? Colors.red : Colors.grey,
+            ),
+          ),
+          const SizedBox(
+            width: 20,
+          ),
+          Expanded(
+              child: CupertinoButton(
+            padding: const EdgeInsets.all(5),
+            onPressed: () {
+              String sDateTime = dateFormatSystem.format(dtStartDate);
+              for (int i = 0; i < listCostMaterial.length; i++) {
+                listCostMaterial[i].sDateTime = sDateTime;
+              }
+              Globals.listCostMaterial.addAll(listCostMaterial);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => TableStatisticCost()));
+            },
+            child: const Text('บันทึก',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18)),
+            disabledColor: Colors.green,
+            color: Colors.green,
+          )),
+        ],
       ),
-    ));
+    );
   }
 
   buildDropDownMaterialCostType() {

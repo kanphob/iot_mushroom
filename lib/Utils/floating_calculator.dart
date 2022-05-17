@@ -18,9 +18,10 @@ class FloatCalculator extends StatefulWidget {
 }
 
 class _FloatCalculatorState extends State<FloatCalculator> {
+
   String answer = "";
   String answerTemp = "";
-  String berforAnswer = "";
+  String beforeAnswer = "";
   String inputFull = "";
   String operator = "";
   bool calculateMode = false;
@@ -35,7 +36,6 @@ class _FloatCalculatorState extends State<FloatCalculator> {
       answer = valueInit;
       super.initState();
     }
-
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +57,6 @@ class _FloatCalculatorState extends State<FloatCalculator> {
       )
     ],);
   }
-
 
   _getContent() {
     return CupertinoAlertDialog(
@@ -96,8 +95,6 @@ class _FloatCalculatorState extends State<FloatCalculator> {
     );
   }
 
-
-
   Widget buildAnswerWidget() {
     return Container(
         padding: const EdgeInsets.all(5),
@@ -108,7 +105,7 @@ class _FloatCalculatorState extends State<FloatCalculator> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Text(berforAnswer,
+                  Text(beforeAnswer,
                       style:
                       const TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
                   Text(inputFull + " " + operator,
@@ -168,9 +165,6 @@ class _FloatCalculatorState extends State<FloatCalculator> {
               buildNumberButton("⌫", numberButton: false, onTap: () {
                 removeAnswerLast();
               }),
-//              buildNumberButton("=", numberButton: false, onTap: () {
-//                calculate();
-//              }),
             ]),
           ],
         ));
@@ -258,7 +252,7 @@ class _FloatCalculatorState extends State<FloatCalculator> {
         } else {
           operator = op;
           answerTemp = answer;
-          berforAnswer = answerTemp;
+          beforeAnswer = answerTemp;
           answer = "";
         }
       }
