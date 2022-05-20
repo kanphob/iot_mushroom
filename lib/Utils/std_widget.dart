@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:siwat_mushroom/Utils/font_thai.dart';
 
 class STDWidget {
   final SizedBox h10 = const SizedBox(
     height: 10,
+  );
+  final SizedBox w5 = const SizedBox(
+    width: 5,
   );
   final EdgeInsets edgeAll8 = const EdgeInsets.all(8.0);
   final Duration duration400m = const Duration(milliseconds: 400);
@@ -57,6 +61,67 @@ class STDWidget {
           color: Colors.blue.shade800,
         ),
         borderRadius: BorderRadius.circular(8),
+      ),
+    );
+  }
+
+  // Form
+  Widget rowCol2({
+    Widget? child,
+    double width1 = 100,
+    Widget? child2,
+  }) {
+    return Padding(
+      padding: edgeAll8,
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          SizedBox(
+            width: width1,
+            child: child,
+          ),
+          w5,
+          Expanded(child: child2!),
+        ],
+      ),
+    );
+  }
+
+  Widget rowCol3({
+    Widget? child,
+    double width1 = 150,
+    Widget? child2,
+    Widget? child3,
+  }) {
+    return Padding(
+      padding: edgeAll8,
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          SizedBox(
+            width: width1,
+            child: child,
+          ),
+          w5,
+          Expanded(child: child2!),
+        ],
+      ),
+    );
+  }
+
+  Widget txtBlack16({
+    String? sText,
+    TextAlign textAlign = TextAlign.end,
+  }) {
+    return Tooltip(
+      showDuration: duration400m,
+      message: sText,
+      child: Text(
+        sText!,
+        style: FontThai.text16BlackNormal,
+        textAlign: textAlign,
+        softWrap: true,
+        overflow: TextOverflow.ellipsis,
       ),
     );
   }

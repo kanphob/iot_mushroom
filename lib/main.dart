@@ -23,12 +23,19 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        inputDecorationTheme: const InputDecorationTheme(
+        scrollbarTheme: ScrollbarThemeData(
+          thickness: MaterialStateProperty.all(8.00),
+          thumbVisibility: MaterialStateProperty.all(true),
+          trackVisibility: MaterialStateProperty.all(true),
+        ),
+        inputDecorationTheme: InputDecorationTheme(
           isDense: true,
-          border: OutlineInputBorder(),
-          enabledBorder: OutlineInputBorder(),
-          focusedBorder: OutlineInputBorder(),
-          errorBorder: OutlineInputBorder(),
+          border: const OutlineInputBorder(),
+          enabledBorder: const OutlineInputBorder(),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.blue.shade800),
+          ),
+          errorBorder: const OutlineInputBorder(),
         ),
       ),
       home: MultiProvider(providers: [

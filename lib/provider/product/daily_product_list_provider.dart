@@ -2,21 +2,21 @@
 import 'package:flutter/material.dart';
 import 'package:siwat_mushroom/Constant/globals.dart';
 import 'package:siwat_mushroom/Model/model_product.dart';
-import 'package:siwat_mushroom/Utils/std_widget.dart';
+import 'package:siwat_mushroom/Screen/product/daily_product_form_screen.dart';
 import 'package:siwat_mushroom/provider/product/product_head_provider.dart';
 
 class DailyProdListProvider extends ProductHeadProvider {
   final BuildContext context;
+  final String sUserID;
 
   DailyProdListProvider({
     required this.context,
+    required this.sUserID,
   }) {
     initProvider();
   }
 
   bool bFirst = true;
-
-  STDWidget widget = STDWidget();
 
   // ListItem
   bool bLoadList = true;
@@ -39,6 +39,26 @@ class DailyProdListProvider extends ProductHeadProvider {
   }
 
   Future<void> loadDataFormServer() async {
-    await getAllData(sUIDUser: 'cccc');
+    listItem = await getAllData(sUIDUser: 'cccc');
+  }
+
+  onTapAdd() async {
+    var result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const DailyProdFormScreen(
+          sUserID: 'cccc',
+        ),
+      ),
+    );
+    if (result != null) {
+      listItem.clear();
+      await loadDataFormServer();
+      notifyListeners();
+    }
+  }
+
+  void removeSnackBar() {
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
   }
 }

@@ -1,18 +1,27 @@
 //17/05/2565 ByBird
 import 'package:flutter/material.dart';
+import 'package:siwat_mushroom/Model/model_product.dart';
 import 'package:siwat_mushroom/Utils/font_thai.dart';
 import 'package:siwat_mushroom/provider/product/daily_product_list_provider.dart';
 import 'package:provider/provider.dart';
 
 class DailyProdListScreen extends StatelessWidget {
-  const DailyProdListScreen({Key? key}) : super(key: key);
+  final String sUserID;
+
+  const DailyProdListScreen({
+    Key? key,
+    required this.sUserID,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => DailyProdListProvider(context: context),
+          create: (_) => DailyProdListProvider(
+            context: context,
+            sUserID: sUserID,
+          ),
         ),
       ],
       builder: (context, _) {
@@ -37,6 +46,10 @@ class DailyProdListScreen extends StatelessWidget {
                     _buildHead(prov),
                     _buildItem(prov),
                   ],
+                ),
+                floatingActionButton: FloatingActionButton(
+                  onPressed: () => prov.onTapAdd(),
+                  child: const Icon(Icons.add),
                 ),
               );
             }
@@ -114,20 +127,70 @@ class DailyProdListScreen extends StatelessWidget {
         child: prov.widget.waitCenter(),
       );
     } else {
-      if (prov.listItem.isEmpty) {
+      if (prov.listItem.isNotEmpty) {
         return prov.widget.outlineListItem(
-          child: Center(
-            child: Text(
-              'ยังไม่มีข้อมูลบน Server',
-              style: FontThai.text18BlackBold,
-            ),
+          child: ListView.separated(
+            separatorBuilder: (_, index) => const Divider(),
+            itemCount: prov.listItem.length,
+            shrinkWrap: true,
+            itemBuilder: (_, index) {
+              return _item(
+                prov: prov,
+                md: prov.listItem[index],
+                index: index,
+              );
+            },
           ),
         );
       } else {
         return prov.widget.outlineListItem(
-          child: prov.widget.waitCenter(),
+          child: prov.widget.txtBlack16(
+            sText: 'NoData',
+            textAlign: TextAlign.center,
+          ),
         );
       }
     }
+  }
+
+  Widget _item({
+    required DailyProdListProvider prov,
+    required int index,
+    required ModelProduct md,
+  }) {
+    return Row(
+      children: [
+        Expanded(
+          child: prov.widget.txtBlack16(
+            sText: md.sDateSave,
+            textAlign: TextAlign.center,
+          ),
+        ),
+        Expanded(
+          child: prov.widget.txtBlack16(
+            sText: md.sTemperature,
+            textAlign: TextAlign.center,
+          ),
+        ),
+        Expanded(
+          child: prov.widget.txtBlack16(
+            sText: md.sMoisture,
+            textAlign: TextAlign.center,
+          ),
+        ),
+        Expanded(
+          child: prov.widget.txtBlack16(
+            sText: md.sLight,
+            textAlign: TextAlign.center,
+          ),
+        ),
+        Expanded(
+          child: prov.widget.txtBlack16(
+            sText: md.sCO2,
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ],
+    );
   }
 }
