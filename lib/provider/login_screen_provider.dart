@@ -29,7 +29,6 @@ class LoginScreenProvider with ChangeNotifier {
       final FirebaseAuth auth = FirebaseAuth.instance;
       final User? user = auth.currentUser;
       final firebaseUID = user!.uid;
-
      prefs = await SharedPreferences.getInstance();
      String sSharePrefEmail = prefs.getString(FieldMaster.sharedPreferenceEmail)!;
      if(firebaseUID.isNotEmpty && sSharePrefEmail.isNotEmpty) {
@@ -54,8 +53,9 @@ class LoginScreenProvider with ChangeNotifier {
         String sToken = '';
         sToken = await userCredential.user!.getIdToken();
         if (sToken.isNotEmpty) {
-          String? sEmail = userCredential.user!.email?? "";
+          String? sEmail = userCredential.user!.email ?? "";
           // Map<String,dynamic>? mapUserProfile = userCredential.additionalUserInfo!.profile;
+          prefs = await SharedPreferences.getInstance();
           await prefs.setString(FieldMaster.sharedPreferenceEmail, sEmail);
           isInAsyncCall = false;
           notifyListeners();

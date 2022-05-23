@@ -4,6 +4,8 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:siwat_mushroom/API/api_call.dart';
+import 'package:siwat_mushroom/API/functions.dart';
 import 'package:siwat_mushroom/Constant/globals.dart';
 import 'package:siwat_mushroom/Model/model_product.dart';
 import 'package:siwat_mushroom/provider/product/product_head_provider.dart';
@@ -93,7 +95,14 @@ class DailyProdFormProvider extends ProductHeadProvider {
     }
   }
 
-  void syncDataIOT() async {}
+  void syncDataIOT() async {
+    bool bHave = await Functions.checkToken(context: context);
+    print('Have Token : $bHave');
+    if (bHave) {
+      print('Token : ${Globals.sTokenIOT}');
+      await APICall.httpGetForData();
+    }
+  }
 
   void onSave() async {
     Map<String, dynamic> data = await genDataFormInput();

@@ -17,157 +17,146 @@ class STDWidget {
     );
   }
 
-  Widget loginIotDialog({
-      bool obscureText = false,
-      VoidCallback? onTapObscureText,
-      required VoidCallback? onSubmitLogin,
-      }) {
-     TextEditingController userIDController = TextEditingController();
-     TextEditingController userPasswordController = TextEditingController();
-    GlobalKey<FormState> loginFormKey = GlobalKey();
+  static Widget loginIotDialog({
+    bool obscureText = false,
+    VoidCallback? onTapObscureText,
+    VoidCallback? onSubmitLogin,
+    required TextEditingController txtID,
+    required TextEditingController txtPW,
+  }) {
     return AlertDialog(
       contentPadding: const EdgeInsets.all(0),
       content: Padding(
           padding: const EdgeInsets.only(
             top: 60,
           ),
-          child: Form(
-            autovalidateMode: AutovalidateMode.disabled,
-            key: loginFormKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-                  child: TextFormField(
-                    controller: userIDController,
-                    autofocus: true,
-                    style: const TextStyle(
-                      fontSize: 18.0,
-                      color: Color(0xff3e4a59),
-                    ),
-                    decoration: InputDecoration(
-                        labelText: "ID ผู้ใช้งาน*",
-                        errorStyle: const TextStyle(fontSize: 10),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+                child: TextFormField(
+                  controller: txtID,
+                  autofocus: true,
+                  style: const TextStyle(
+                    fontSize: 18.0,
+                    color: Color(0xff3e4a59),
+                  ),
+                  decoration: InputDecoration(
+                      labelText: "ID ผู้ใช้งาน*",
+                      errorStyle: const TextStyle(fontSize: 10),
+                      hintStyle: const TextStyle(fontSize: 12),
+                      icon: Image.asset(
+                        "assets/images/user_icon3.png",
+                        height: 40.0,
+                        width: 40.0,
+                        fit: BoxFit.scaleDown,
+                      )),
+                  keyboardType: TextInputType.emailAddress,
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+                child: Column(
+                  children: <Widget>[
+                    TextFormField(
+                      controller: txtPW,
+                      readOnly: false,
+                      autofocus: true,
+                      style: const TextStyle(
+                        fontSize: 18.0,
+                        color: Color(0xff3e4a59),
+                      ),
+                      obscureText: obscureText,
+                      decoration: InputDecoration(
+                        labelText: "รหัสผ่าน*",
+                        errorStyle: const TextStyle(fontSize: 11),
                         hintStyle: const TextStyle(fontSize: 12),
                         icon: Image.asset(
-                          "assets/images/user_icon3.png",
+                          "assets/images/password_icon.png",
                           height: 40.0,
                           width: 40.0,
                           fit: BoxFit.scaleDown,
-                        )),
-                    keyboardType: TextInputType.emailAddress,
-                    // onSaved: (val) => this.sEmail = val,
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-                  child: Column(
-                    children: <Widget>[
-                      TextFormField(
-                        controller: userPasswordController,
-                        readOnly: false,
-                        onTap: () async {},
-                        autofocus: true,
-                        style: const TextStyle(
-                          fontSize: 18.0,
-                          color: Color(0xff3e4a59),
                         ),
-                        obscureText: obscureText,
-                        decoration: InputDecoration(
-                          labelText: "รหัสผ่าน*",
-                          errorStyle: const TextStyle(fontSize: 11),
-                          hintStyle: const TextStyle(fontSize: 12),
-                          icon: Image.asset(
-                            "assets/images/password_icon.png",
-                            height: 40.0,
-                            width: 40.0,
-                            fit: BoxFit.scaleDown,
-                          ),
-                          suffixIcon: GestureDetector(
-                            onTap: () {
-                              onTapObscureText!();
-                            },
-                            child: Icon(!obscureText
-                                ? Icons.visibility
-                                : Icons.visibility_off),
-                          ),
+                        suffixIcon: GestureDetector(
+                          onTap: onTapObscureText,
+                          child: Icon(!obscureText
+                              ? Icons.visibility
+                              : Icons.visibility_off),
                         ),
-                        keyboardType: TextInputType.emailAddress,
                       ),
-                    ],
-                  ),
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                  ],
                 ),
-                Container(
-                  padding: const EdgeInsets.only(top: 15),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Card(
-                        elevation: 8.0,
-                        color: const Color(0xffffffff),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
+              ),
+              Container(
+                padding: const EdgeInsets.only(top: 15),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Card(
+                      elevation: 8.0,
+                      color: const Color(0xffffffff),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      child: Container(
+                        height: 40,
+                        decoration: BoxDecoration(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(15.0)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0xffb2dfdb).withOpacity(0.3),
+                              blurRadius: 4,
+                              spreadRadius: 2,
+                            )
+                          ],
+                          gradient: LinearGradient(
+                              colors: [
+                                Colors.green.shade400,
+                                Colors.green.shade100
+                              ],
+                              begin: const FractionalOffset(0.3, 0.1),
+                              end: const FractionalOffset(1.0, 1.0),
+                              stops: const [0.0, 1.0],
+                              tileMode: TileMode.clamp),
                         ),
-                        child: Container(
-                          height: 40,
-                          decoration: BoxDecoration(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(15.0)),
-                            boxShadow: [
-                              BoxShadow(
-                                color: const Color(0xffb2dfdb).withOpacity(0.3),
-                                blurRadius: 4,
-                                spreadRadius: 2,
-                              )
-                            ],
-                            gradient: LinearGradient(
-                                colors: [
-                                  Colors.green.shade400,
-                                  Colors.green.shade100
-                                ],
-                                begin: const FractionalOffset(0.3, 0.1),
-                                end: const FractionalOffset(1.0, 1.0),
-                                stops: const [0.0, 1.0],
-                                tileMode: TileMode.clamp),
-                          ),
-                          child: MaterialButton(
-                            highlightColor: const Color(0x00000000),
-                            splashColor: const Color(0xFFB2EBF2),
-                            shape: const RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(15.0))),
-                            child: const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 35.0),
-                              child: Text(
-                                "เข้าสู่ระบบ",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xffffffff),
-                                  fontSize: 16.0,
-                                ),
+                        child: MaterialButton(
+                          highlightColor: const Color(0x00000000),
+                          splashColor: const Color(0xFFB2EBF2),
+                          shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15.0))),
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 35.0),
+                            child: Text(
+                              "เข้าสู่ระบบ",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xffffffff),
+                                fontSize: 16.0,
                               ),
                             ),
-                            onPressed: () async {
-                               onSubmitLogin!();
-                            },
                           ),
+                          onPressed: onSubmitLogin,
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
-                //End widget
-              ],
-            ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              //End widget
+            ],
           )),
     );
   }

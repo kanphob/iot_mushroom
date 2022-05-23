@@ -10,4 +10,6 @@ class Globals {
   static double dYPosition = 0;
 
   static final dateFormatUser = DateFormat('dd/MM/yyyy');
+
+  static String sTokenIOT = '';
 }

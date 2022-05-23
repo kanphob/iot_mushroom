@@ -15,6 +15,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   List<Widget> listWidget = [];
   String sUserEmail = '';
+  String sUserUid = '';
   List<ModelMenuItem> listMenuItem = [
     ModelMenuItem(
         sImageUrl: 'assets/images/production.png',
@@ -47,7 +48,8 @@ class _HomePageState extends State<HomePage> {
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
     final firebaseUID = user!.email;
-    sUserEmail = firebaseUID?? "";
+    sUserEmail = firebaseUID ?? "";
+    sUserUid = user.uid;
     setListMenu();
     super.initState();
   }
@@ -78,7 +80,7 @@ class _HomePageState extends State<HomePage> {
         Navigator.push(
           context,
           CupertinoPageRoute(
-            builder: (context) => const DailyProdListScreen(sUserID: 'cccc'),
+            builder: (context) => DailyProdListScreen(sUserID: sUserUid),
           ),
         );
         break;
