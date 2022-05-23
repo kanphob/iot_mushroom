@@ -272,7 +272,10 @@ class RegisterScreen extends StatelessWidget {
                                     String sResult =
                                         await data.createAccountFirebaseAuth();
                                     if (sResult == 'Success') {
-                                      Navigator.pop(context, 'Success');
+                                      String sEmail = data.userEmailController.text;
+                                      String sPassword = data.userPasswordController.text;
+                                      List<String> listUser = [sEmail,sPassword];
+                                      Navigator.pop(context, listUser);
                                     }
                                   }
                                 },

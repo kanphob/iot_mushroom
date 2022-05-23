@@ -245,14 +245,19 @@ class LoginScreen extends StatelessWidget {
                         children: <Widget>[
                           GestureDetector(
                             onTap: () async {
-                              String sResult = await Navigator.push(
+                              List<String> listUser = [];
+                              listUser = await Navigator.push(
                                   context,
                                   CupertinoPageRoute(
                                       builder: (context) =>
                                           const RegisterScreen()));
-                                if(sResult == 'Success'){
-
-                                  data.auth.currentUser!.uid;
+                                if(listUser.isNotEmpty){
+                                  data.userEmailController.text = listUser[0];
+                                  data.userPasswordController.text = listUser[1];
+                                  String sResult = await data.onSubmitLoginFirebase();
+                                  if(sResult == 'Success'){
+                                    Navigator.push(context, CupertinoPageRoute(builder: (context)=> const HomePage()));
+                                  }
                                 }
                             },
                             child: Container(
