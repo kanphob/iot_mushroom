@@ -134,6 +134,12 @@ class RegisterScreen extends StatelessWidget {
                                       return 'รหัสผ่านต้องมีอย่างน้อย 6 หลักขึ้นไป';
                                     }
                                   }
+                                } else if (data.userConfirmPasswordController
+                                        .text.isNotEmpty &&
+                                    value !=
+                                        data.userConfirmPasswordController
+                                            .text) {
+                                  return 'กรุณาระบุรหัสผ่านและยืนยันรหัสผ่านให้ตรงกัน';
                                 } else {
                                   String sText = data.sPasswordValidateText;
                                   data.sPasswordValidateText = '';
@@ -188,12 +194,17 @@ class RegisterScreen extends StatelessWidget {
                               ),
                               validator: (value) {
                                 if (value!.isEmpty) {
-                                  return 'กรุณาระบุรหัสผ่าน';
+                                  return 'กรุณาระบุยืนยันรหัสผ่าน';
                                 } else {
-                                  if (value.length < 6) {
-                                    return 'รหัสผ่านต้องมีอย่างน้อย 6 หลักขึ้นไป';
+                                  if (data.userPasswordController.text
+                                          .isNotEmpty &&
+                                      value !=
+                                          data.userPasswordController
+                                              .text) {
+                                    return 'กรุณาระบุรหัสผ่านและยืนยันรหัสผ่านให้ตรงกัน';
                                   }
                                 }
+
                                 return null;
                               },
                               keyboardType: TextInputType.emailAddress,
