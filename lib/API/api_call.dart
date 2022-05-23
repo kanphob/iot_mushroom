@@ -1,7 +1,10 @@
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
 class APICall {
+
+
 
   static Future<String> httpGetForSignIn(
       {required String sUsername,
@@ -19,10 +22,14 @@ class APICall {
       var jsonResponse =
           convert.jsonDecode(response.body) as Map<String, dynamic>;
 
-      print('response : ${response.body}.');
+      if (kDebugMode) {
+        print('response : ${response.body}.');
+      }
       sResult = jsonResponse['status']?? "";
     } else {
-      print('Request failed with status: ${response.statusCode}.');
+      if (kDebugMode) {
+        print('Request failed with status: ${response.statusCode}.');
+      }
     }
 
     return sResult;
@@ -45,10 +52,14 @@ class APICall {
       var jsonResponse =
       convert.jsonDecode(response.body) as Map<String, dynamic>;
 
-      print('response : ${response.body}.');
+      if (kDebugMode) {
+        print('response : ${response.body}.');
+      }
       sResult = jsonResponse['status']?? "";
     } else {
-      print('Request failed with status: ${response.statusCode}.');
+      if (kDebugMode) {
+        print('Request failed with status: ${response.statusCode}.');
+      }
     }
 
     return sResult;

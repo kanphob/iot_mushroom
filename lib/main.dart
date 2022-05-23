@@ -1,13 +1,14 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:siwat_mushroom/login_screen.dart';
-import 'package:provider/provider.dart';
-import 'package:siwat_mushroom/provider/login_screen_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp().then((value) {
-    print('Connect Success');
+    if (kDebugMode) {
+      print('Connect Success');
+    }
   });
   runApp(const MyApp());
 }
@@ -19,13 +20,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'IOT MUSHROOM',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
         scrollbarTheme: ScrollbarThemeData(
           thickness: MaterialStateProperty.all(8.00),
-          thumbVisibility: MaterialStateProperty.all(true),
           trackVisibility: MaterialStateProperty.all(true),
         ),
         inputDecorationTheme: InputDecorationTheme(
@@ -38,10 +38,7 @@ class MyApp extends StatelessWidget {
           errorBorder: const OutlineInputBorder(),
         ),
       ),
-      home: MultiProvider(providers: [
-          ChangeNotifierProvider(create: (_) =>  LoginScreenProvider(),
-          ),
-      ],child: LoginScreen(),),
+      home: const LoginScreen(),
     );
   }
 

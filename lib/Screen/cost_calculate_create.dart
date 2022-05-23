@@ -1,13 +1,11 @@
-import 'dart:async';
+
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:siwat_mushroom/Constant/globals.dart';
-import 'package:siwat_mushroom/Model/model_condition.dart';
 import 'package:siwat_mushroom/Model/model_cost_material.dart';
 import 'package:siwat_mushroom/Utils/floating_calculator.dart';
-import 'package:siwat_mushroom/Screen/table_statistic_condition.dart';
 import 'package:siwat_mushroom/Screen/table_statistic_cost.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
@@ -130,7 +128,7 @@ class _CostCalculateCreateState extends State<CostCalculateCreate> {
       listCostMaterial[i].isItemSelected = false;
     }
 
-    if (listCostMaterial.length > 0) {
+    if (listCostMaterial.isNotEmpty) {
       setState(() {});
     }
   }
@@ -170,9 +168,7 @@ class _CostCalculateCreateState extends State<CostCalculateCreate> {
                   )),
               title: GestureDetector(
                 onTap: () {
-                  print(listCostMaterial.length);
-                  print(listCostMaterialTemp.length);
-                  setState(() {});
+
                 },
                 child: const Text("ระบบการคำนวณต้นทุน"),
               ),
@@ -201,6 +197,7 @@ class _CostCalculateCreateState extends State<CostCalculateCreate> {
                           child: Stack(
                             children: [
                               SingleChildScrollView(
+                                physics: const BouncingScrollPhysics(),
                                 child: Column(
                                   children: [
                                     buildListViewHeaderTop(),
@@ -216,7 +213,7 @@ class _CostCalculateCreateState extends State<CostCalculateCreate> {
                                   onPressed: () {
                                     onTapAddListItem();
                                   },
-                                  child: Icon(
+                                  child: const Icon(
                                     Icons.add,
                                     color: Colors.white,
                                   ),
@@ -383,6 +380,8 @@ class _CostCalculateCreateState extends State<CostCalculateCreate> {
           GestureDetector(
             onTap: () {},
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: const [
                 Align(
                   alignment: Alignment.center,
@@ -452,20 +451,18 @@ class _CostCalculateCreateState extends State<CostCalculateCreate> {
                             Expanded(
                               flex: 4,
                               child: Container(
-                                child: Container(
-                                  padding: const EdgeInsets.all(10),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                          child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: const [
-                                          Text("จำนวน"),
-                                        ],
-                                      ))
-                                    ],
-                                  ),
+                                padding: const EdgeInsets.all(10),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                        child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: const [
+                                        Text("จำนวน"),
+                                      ],
+                                    ))
+                                  ],
                                 ),
                               ),
                             ),
@@ -576,7 +573,7 @@ class _CostCalculateCreateState extends State<CostCalculateCreate> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => TableStatisticCost()));
+                      builder: (context) => const TableStatisticCost()));
             },
             child: const Text('บันทึก',
                 style: TextStyle(
@@ -984,7 +981,7 @@ class _CostCalculateCreateState extends State<CostCalculateCreate> {
     );
   }
 }
-
+//ignore: must_be_immutable
 class DialogAddType extends StatefulWidget {
   DialogAddType({Key? key, required this.listType}) : super(key: key);
 

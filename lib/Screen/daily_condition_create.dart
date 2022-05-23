@@ -241,7 +241,7 @@ class _DailyConditionCreateState extends State<DailyConditionCreate> {
                       color: Colors.green.shade300,
                     )),
                 elevation: 10,
-                child: Container(
+                child: SizedBox(
                   width: MediaQuery.of(context).size.width,
                   child: SingleChildScrollView(
                     child: Column(
@@ -261,8 +261,8 @@ class _DailyConditionCreateState extends State<DailyConditionCreate> {
                               children: [
                                 GestureDetector(child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Text(
+                                  children: const [
+                                    Text(
                                       "บันทึกข้อมูลปัจจัย",
                                       style: TextStyle(
                                           color: Colors.white, fontSize: 18),
@@ -270,7 +270,7 @@ class _DailyConditionCreateState extends State<DailyConditionCreate> {
                                   ],
                                 ),
                                   onTap: (){
-                                  print(listCondition[2].sAmount);
+
                                   },
                                 ),
                               ],
@@ -389,7 +389,7 @@ class _DailyConditionCreateState extends State<DailyConditionCreate> {
                       padding: const EdgeInsets.all(3),
                       child: Row(
                         children: [
-                          Container(
+                          const SizedBox(
                             width: 1,
                             height: 50,
                           ),
@@ -445,44 +445,42 @@ class _DailyConditionCreateState extends State<DailyConditionCreate> {
               ),
               Expanded(
                 flex: 1,
-                child: Container(
-                  child: Column(
-                    children: [
-                      Listener(
-                        onPointerDown: (details) {
-                          _buttonPressed = true;
-                          checkAddRemoveAmount(index,
-                              isAddAmount: true, isLongPressed: false);
-                        },
-                        onPointerUp: (details) {
-                          _buttonPressed = false;
-                        },
-                        child: const Icon(
-                          Icons.add_circle,
-                          color: Colors.green,
-                          size: 35,
-                        ),
+                child: Column(
+                  children: [
+                    Listener(
+                      onPointerDown: (details) {
+                        _buttonPressed = true;
+                        checkAddRemoveAmount(index,
+                            isAddAmount: true, isLongPressed: false);
+                      },
+                      onPointerUp: (details) {
+                        _buttonPressed = false;
+                      },
+                      child: const Icon(
+                        Icons.add_circle,
+                        color: Colors.green,
+                        size: 35,
                       ),
-                      const SizedBox(
-                        height: 5,
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Listener(
+                      onPointerDown: (details) {
+                        _buttonPressed = true;
+                        checkAddRemoveAmount(index,
+                            isAddAmount: false, isLongPressed: false);
+                      },
+                      onPointerUp: (details) {
+                        _buttonPressed = false;
+                      },
+                      child: const Icon(
+                        Icons.remove_circle,
+                        color: Colors.red,
+                        size: 35,
                       ),
-                      Listener(
-                        onPointerDown: (details) {
-                          _buttonPressed = true;
-                          checkAddRemoveAmount(index,
-                              isAddAmount: false, isLongPressed: false);
-                        },
-                        onPointerUp: (details) {
-                          _buttonPressed = false;
-                        },
-                        child: const Icon(
-                          Icons.remove_circle,
-                          color: Colors.red,
-                          size: 35,
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               )
             ],

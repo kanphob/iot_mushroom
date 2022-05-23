@@ -30,7 +30,7 @@ class ModalProgressHUD extends StatelessWidget {
   final Widget child;
   final Alignment alignment;
 
-  ModalProgressHUD({
+  const ModalProgressHUD({
     Key? key,
     required this.inAsyncCall,
     this.opacity = 0.3,
@@ -60,15 +60,15 @@ class ModalProgressHUD extends StatelessWidget {
       //   );
       // }
       final modal = [
-        new Opacity(
-          child: new ModalBarrier(dismissible: dismissible, color: color),
+        Opacity(
+          child: ModalBarrier(dismissible: dismissible, color: color),
           opacity: opacity,
         ),
         layOutProgressIndicator
       ];
       widgetList += modal;
     }
-    return new Stack(
+    return Stack(
       alignment: alignment,
       children: widgetList,
     );

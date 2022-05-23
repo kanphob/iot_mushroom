@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:siwat_mushroom/Constant/globals.dart';
 import 'package:siwat_mushroom/Model/model_product.dart';
@@ -100,7 +101,9 @@ class DailyProdFormProvider extends ProductHeadProvider {
       int iSuccess = await saveData(sUIDDoc: sUIDDoc, data: data);
       if (iSuccess == 1) Navigator.pop(context, true);
     }
-    print(jsonEncode(data));
+    if (kDebugMode) {
+      print(jsonEncode(data));
+    }
   }
 
   Future<Map<String, dynamic>> genDataFormInput() async {

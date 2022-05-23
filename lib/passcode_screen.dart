@@ -1,17 +1,16 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:math';
-import 'package:flutter/animation.dart';
 import 'package:flutter/services.dart';
-import 'package:siwat_mushroom/Screen/home_page.dart';
 
 class PasscodeScreen extends StatefulWidget {
   final String sShopContactID;
   final bool isToCreatePin;
 
-  PasscodeScreen(
+  const PasscodeScreen(
       {Key? key, this.sShopContactID = '', this.isToCreatePin = false})
       : super(key: key);
 
@@ -48,37 +47,33 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PasscodeInput(
-        digits: [],
+        digits: const [],
         bottomWidget: Container(),
         isValidCallback: (){
 
         },
         title: Text(
           sDescription,
-          style: TextStyle(
+          style: const TextStyle(
               color: Colors.black, fontSize: 16, fontWeight: FontWeight.w600),
         ),
         backgroundColor: Colors.white,
         passwordEnteredCallback: _onPasscodeEntered,
         circleUIConfig:
-        CircleUIConfig(borderColor: Colors.black, fillColor: Colors.black),
-        keyboardUIConfig: KeyboardUIConfig(
+        const CircleUIConfig(borderColor: Colors.black, fillColor: Colors.black),
+        keyboardUIConfig: const KeyboardUIConfig(
           digitFillColor: Colors.white,
           digitTextStyle: TextStyle(color: Colors.black, fontSize: 16),
           primaryColor: Colors.black,
         ),
         passwordDigits: 6,
-        deleteButton: Container(
-          child: Icon(
-            Icons.backspace_outlined,
-            color: Colors.red,
-          ),
+        deleteButton: const Icon(
+          Icons.backspace_outlined,
+          color: Colors.red,
         ),
-        cancelButton: Container(
-          child: Text(
-            "ยกเลิก",
-            style: TextStyle(color: Colors.blue.shade800, fontSize: 16),
-          ),
+        cancelButton: Text(
+          "ยกเลิก",
+          style: TextStyle(color: Colors.blue.shade800, fontSize: 16),
         ),
         cancelCallback: () {
           Navigator.pop(context);
@@ -115,7 +110,7 @@ class PasscodeInput extends StatefulWidget {
   final KeyboardUIConfig keyboardUIConfig;
   final List<String> digits;
 
-  PasscodeInput({
+  const PasscodeInput({
     Key? key,
     required this.title,
     this.passwordDigits = 6,
@@ -133,7 +128,7 @@ class PasscodeInput extends StatefulWidget {
   })  : circleUIConfig =
   circleUIConfig == null ? const CircleUIConfig() : circleUIConfig,
         keyboardUIConfig = keyboardUIConfig == null
-            ?  KeyboardUIConfig()
+            ?  const KeyboardUIConfig()
             : keyboardUIConfig,
         super(key: key);
 
@@ -230,38 +225,36 @@ class _PasscodeInputState extends State<PasscodeInput>
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Container(
-                child: Stack(
-                  children: <Widget>[
-                    Positioned(
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            widget.title,
-                            Container(
-                              margin: const EdgeInsets.only(top: 20),
-                              height: 40,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: _buildCircles(),
-                              ),
+              Stack(
+                children: <Widget>[
+                  Positioned(
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          widget.title,
+                          Container(
+                            margin: const EdgeInsets.only(top: 20),
+                            height: 40,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: _buildCircles(),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
-                    widget.bottomWidget != null
-                        ? Positioned(
-                      child: Align(
-                          alignment: Alignment.topCenter,
-                          child: widget.bottomWidget),
-                    )
-                        : Container()
-                  ],
-                ),
+                  ),
+                  widget.bottomWidget != null
+                      ? Positioned(
+                    child: Align(
+                        alignment: Alignment.topCenter,
+                        child: widget.bottomWidget),
+                  )
+                      : Container()
+                ],
               ),
               _buildKeyboard(),
             ],
@@ -277,12 +270,10 @@ class _PasscodeInputState extends State<PasscodeInput>
     ],
   );
 
-  _buildKeyboard() => Container(
-    child: Keyboard(
-      onKeyboardTap: _onKeyboardButtonPressed,
-      keyboardUIConfig: widget.keyboardUIConfig,
-      digits: widget.digits,
-    ),
+  _buildKeyboard() => Keyboard(
+    onKeyboardTap: _onKeyboardButtonPressed,
+    keyboardUIConfig: widget.keyboardUIConfig,
+    digits: widget.digits,
   );
 
   List<Widget> _buildCircles() {
@@ -292,7 +283,7 @@ class _PasscodeInputState extends State<PasscodeInput>
     for (int i = 0; i < widget.passwordDigits; i++) {
       list.add(
         Container(
-          margin: EdgeInsets.all(8),
+          margin: const EdgeInsets.all(8),
           child: Circle(
             filled: i < enteredPasscode.length,
             circleUIConfig: config,
@@ -305,7 +296,7 @@ class _PasscodeInputState extends State<PasscodeInput>
   }
 
   _onDeleteCancelButtonPressed() {
-    if (enteredPasscode.length > 0) {
+    if (enteredPasscode.isNotEmpty) {
       setState(() {
         enteredPasscode =
             enteredPasscode.substring(0, enteredPasscode.length - 1);
@@ -358,21 +349,21 @@ class _PasscodeInputState extends State<PasscodeInput>
     if (widget.isValidCallback != null) {
       widget.isValidCallback();
     } else {
-      print(
+      if (kDebugMode) {
+        print(
           "You didn't implement validation callback. Please handle a state by yourself then.");
+      }
     }
   }
 
   Widget _buildDeleteButton() {
-    return Container(
-      child: CupertinoButton(
-        onPressed: _onDeleteCancelButtonPressed,
-        child: Container(
-          margin: widget.keyboardUIConfig.digitInnerMargin,
-          child: enteredPasscode.length == 0
-              ? widget.cancelButton
-              : widget.deleteButton,
-        ),
+    return CupertinoButton(
+      onPressed: _onDeleteCancelButtonPressed,
+      child: Container(
+        margin: widget.keyboardUIConfig.digitInnerMargin,
+        child: enteredPasscode.isEmpty
+            ? widget.cancelButton
+            : widget.deleteButton,
       ),
     );
   }
@@ -390,7 +381,7 @@ class CircleUIConfig {
         this.fillColor = Colors.white,
         this.circleSize = 20});
 }
-
+//ignore: must_be_immutable
 class Circle extends StatelessWidget {
   final bool filled;
   final CircleUIConfig circleUIConfig;
@@ -454,7 +445,7 @@ class Keyboard extends StatelessWidget {
   //should have a proper order [1...9, 0]
   final List<String> digits;
 
-  Keyboard({
+  const Keyboard({
     Key? key,
     required this.keyboardUIConfig,
     required this.onKeyboardTap,
@@ -476,13 +467,13 @@ class Keyboard extends StatelessWidget {
         ? screenSize.height / 2
         : screenSize.height - 80;
     final keyboardWidth = keyboardHeight * 3 / 4;
-    final keyboardSize = this.keyboardUIConfig.keyboardSize != null
-        ? this.keyboardUIConfig.keyboardSize
+    final keyboardSize = keyboardUIConfig.keyboardSize != null
+        ? keyboardUIConfig.keyboardSize
         : Size(keyboardWidth, keyboardHeight);
     return Container(
       width: keyboardSize.width,
       height: keyboardSize.height,
-      margin: EdgeInsets.only(top: 16),
+      margin: const EdgeInsets.only(top: 16),
       child: AlignedGrid(
         keyboardSize: keyboardSize,
         children: List.generate(10, (index) {
@@ -494,7 +485,7 @@ class Keyboard extends StatelessWidget {
 
   Widget _buildKeyboardDigit(String text) {
     return Container(
-      margin: EdgeInsets.all(4),
+      margin: const EdgeInsets.all(4),
       child: ClipOval(
         child: Material(
           color: Colors.transparent,
@@ -556,7 +547,7 @@ class AlignedGrid extends StatelessWidget {
       spacing: spacing,
       alignment: WrapAlignment.center,
       children: children
-          .map((item) => Container(
+          .map((item) => SizedBox(
         width: itemSize,
         height: itemSize,
         child: item,

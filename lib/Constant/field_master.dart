@@ -10,4 +10,7 @@ class FieldMaster {
   static const String sProdQuantityProduced = 'i_prod_quantity_produced';
   static const String sProdDateSave = 's_date_save';
   static const String sProdSaveTimeStamp = 's_save_time_stamp';
+
+  static const String sharedPreferenceUID = 'sp_uid';
+  static const String sharedPreferenceEmail = 'sp_email';
 }

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:siwat_mushroom/Constant/globals.dart';
 
-
+//ignore: must_be_immutable
 class FloatCalculator extends StatefulWidget {
   String valueInit = "";
   String sTextDescription = "";
@@ -313,7 +313,7 @@ class _FloatCalculatorState extends State<FloatCalculator> {
               child: InkWell(
                   onTap: onTap,
                   splashColor: Colors.blue,
-                  child: Container(
+                  child: SizedBox(
                       height: 50,
                       child: Center(
                           child: Text(str,
@@ -328,7 +328,7 @@ class _FloatCalculatorState extends State<FloatCalculator> {
               child: InkWell(
                   onTap: onTap,
                   splashColor: Colors.blue,
-                  child: Container(
+                  child: SizedBox(
                       height: 50,
                       child: Center(
                           child: Text(str, style: const TextStyle(fontSize: 20)))))));

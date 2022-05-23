@@ -1,4 +1,5 @@
 //17/05/2565 ByBird
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:siwat_mushroom/Constant/field_master.dart';
@@ -31,7 +32,9 @@ class ProductHeadProvider with ChangeNotifier {
         list.add(md);
       }
     }).catchError((error) {
-      print(error.toString());
+      if (kDebugMode) {
+        print(error.toString());
+      }
     }).timeout(
       const Duration(minutes: 1),
     );

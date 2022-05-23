@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:siwat_mushroom/Constant/globals.dart';
 import 'package:siwat_mushroom/Model/model_condition.dart';
-import 'package:siwat_mushroom/Screen/daily_condition_create.dart';
 
 class TableStatisticCondition extends StatefulWidget {
   const TableStatisticCondition({Key? key}) : super(key: key);
@@ -34,32 +33,32 @@ class _TableStatisticConditionState extends State<TableStatisticCondition> {
         child: Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: Text("ระบบบันทึกข้อมูลรายวัน",style: TextStyle(color: Colors.white),),
+        title: const Text("ระบบบันทึกข้อมูลรายวัน",style: TextStyle(color: Colors.white),),
         bottom: PreferredSize(
-          preferredSize: Size.fromHeight(60),
+          preferredSize: const Size.fromHeight(60),
           child: Row(
             children: [
               Expanded(
                   child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 10),
-                padding: EdgeInsets.all(5),
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
+                padding: const EdgeInsets.all(5),
                 child: TextFormField(
                   textAlignVertical: TextAlignVertical.center,
                   textAlign: TextAlign.center,
                   controller: myController,
-                  style: TextStyle(fontSize: 18),
+                  style: const TextStyle(fontSize: 18),
                   decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.search,color: Colors.black,size: 30,),
+                    prefixIcon: const Icon(Icons.search,color: Colors.black,size: 30,),
                     border: InputBorder.none,
                     filled: true,
                     fillColor: Colors.grey.shade700,
                     hintText: 'search',
-                    hintStyle: TextStyle(fontSize: 14,color: Colors.white),
+                    hintStyle: const TextStyle(fontSize: 14,color: Colors.white),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.red.shade600),
                       borderRadius: BorderRadius.circular(25.7),
                     ),
-                    enabledBorder: UnderlineInputBorder(
+                    enabledBorder: const UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.white),
                     ),
                   ),
@@ -81,35 +80,33 @@ class _TableStatisticConditionState extends State<TableStatisticCondition> {
   }
 
   buildListCondition(List<ModelCondition> listMd, int index) {
-    return Container(
-      child: Column(
-        children: [
-          Card(
-            color: Colors.green.shade900,
-            child: index == 0 ? buildHeaderTable(listMd) : Container(),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Card(
-            color: Colors.green.shade900,
-            child: buildBodyTable(listMd, index),
-          ),
-        ],
-      ),
+    return Column(
+      children: [
+        Card(
+          color: Colors.green.shade900,
+          child: index == 0 ? buildHeaderTable(listMd) : Container(),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Card(
+          color: Colors.green.shade900,
+          child: buildBodyTable(listMd, index),
+        ),
+      ],
     );
   }
 
   buildHeaderTable(List<ModelCondition> listMd) {
     return ListTile(
-      contentPadding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
       leading: Container(
           decoration: BoxDecoration(
             border: Border.all(color: Colors.white),
             borderRadius: BorderRadius.circular(25),
             color: Colors.green.shade600,
           ),
-          child: Padding(
+          child: const Padding(
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             child: Text(
               "วันที่",
@@ -117,7 +114,7 @@ class _TableStatisticConditionState extends State<TableStatisticCondition> {
             ),
           )),
       title: Align(
-        alignment: Alignment(-1.2, 0),
+        alignment: const Alignment(-1.2, 0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: buildHeaderRow(listMd),
@@ -132,13 +129,13 @@ class _TableStatisticConditionState extends State<TableStatisticCondition> {
       listWidget.add(
         Expanded(
           child: Container(
-            padding: EdgeInsets.all(5),
+            padding: const EdgeInsets.all(5),
             child: Column(
               children: [
                 Image.asset(listMd[i].sIconPath, height: 35, width: 35, filterQuality: FilterQuality.medium, fit: BoxFit.cover),
                 Text(
                   listMd[i].sConditionName,
-                  style: TextStyle(fontSize: 13, color: Colors.white),
+                  style: const TextStyle(fontSize: 13, color: Colors.white),
                 ),
               ],
             ),
@@ -151,7 +148,7 @@ class _TableStatisticConditionState extends State<TableStatisticCondition> {
 
   buildBodyTable(List<ModelCondition> listMd, int index) {
     return ListTile(
-        contentPadding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
         leading: Container(
             decoration: BoxDecoration(
               border: Border.all(color: Colors.white),
@@ -159,14 +156,14 @@ class _TableStatisticConditionState extends State<TableStatisticCondition> {
               color: Colors.green.shade600,
             ),
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               child: Text(
                 (index + 1).toString() + "/01",
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
               ),
             )),
         title: Align(
-          alignment: Alignment(-1.2, 0),
+          alignment: const Alignment(-1.2, 0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: buildBodyRow(listMd),
@@ -179,7 +176,7 @@ class _TableStatisticConditionState extends State<TableStatisticCondition> {
     for (int i = 0; i < 4; i++) {
       listWidget.add(Expanded(
         child: Container(
-          padding: EdgeInsets.all(5),
+          padding: const EdgeInsets.all(5),
           child: Container(
             decoration: BoxDecoration(
               border: Border.all(color: Colors.white),
@@ -187,11 +184,11 @@ class _TableStatisticConditionState extends State<TableStatisticCondition> {
               color: Colors.orange,
             ),
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               child: Text(
                 listMd[i].sAmount,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white, fontSize: 13),
+                style: const TextStyle(color: Colors.white, fontSize: 13),
               ),
             ),
           ),

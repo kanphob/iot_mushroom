@@ -4,7 +4,7 @@ import 'package:siwat_mushroom/Constant/globals.dart';
 import 'package:siwat_mushroom/Model/model_cost_material.dart';
 
 class TableStatisticCost extends StatefulWidget {
-  TableStatisticCost({Key? key}) : super(key: key);
+  const TableStatisticCost({Key? key}) : super(key: key);
   @override
   _TableStatisticCostState createState() => _TableStatisticCostState();
 }
@@ -55,7 +55,7 @@ class _TableStatisticCostState extends State<TableStatisticCost> {
       listDataModel = [];
     }
 
-    if (listCostByDate.length > 0) {
+    if (listCostByDate.isNotEmpty) {
       setState(() {});
     }
   }
@@ -130,7 +130,6 @@ class _TableStatisticCostState extends State<TableStatisticCost> {
     DateTime dateTime =
         DateTime.parse(listMdByDate.sDateTime.replaceAll('/', '-'));
     String sDateTime = dateFormatUser.format(dateTime);
-    print(dateTime);
     return ExpansionTile(
       iconColor: Colors.white,
       collapsedIconColor: Colors.white,
@@ -144,7 +143,7 @@ class _TableStatisticCostState extends State<TableStatisticCost> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "วันที่ ${sDateTime}",
+                "วันที่ $sDateTime",
                 style: const TextStyle(color: Colors.white),
               ),
               Text(
