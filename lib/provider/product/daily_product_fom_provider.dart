@@ -14,10 +14,12 @@ import 'package:uuid/uuid.dart';
 class DailyProdFormProvider extends ProductHeadProvider {
   final BuildContext context;
   final String sUserID;
+  final ModelProduct? model;
 
   DailyProdFormProvider({
     required this.context,
     required this.sUserID,
+    this.model,
   }) {
     initProvider();
   }
@@ -26,6 +28,7 @@ class DailyProdFormProvider extends ProductHeadProvider {
   late DateTime dtNow;
   int iRound = 0;
   String sUIDDoc = '';
+  bool bLoadData = false;
 
   // Form
   TextEditingController txtDateSave = TextEditingController(),
@@ -48,6 +51,7 @@ class DailyProdFormProvider extends ProductHeadProvider {
   initProvider() async {
     if (bFirst) {
       await setDefault();
+      await setData();
       bFirst = false;
       notifyListeners();
     }
@@ -68,6 +72,19 @@ class DailyProdFormProvider extends ProductHeadProvider {
     createFocusNode(fn: fnQP, ctrl: txtQP);
   }
 
+  Future<void> setData() async {
+    if (model != null) {
+      txtDateSave.text = model!.sDateSave;
+      txtTemp.text = model!.sTemperature;
+      txtMoi.text = model!.sMoisture;
+      txtLight.text = model!.sLight;
+      txtCO2.text = model!.sCO2;
+      txtFlower.text = model!.iNumFlower.toString();
+      txtQP.text = model!.iQuantityProduced.toString();
+      bLoadData = true;
+    }
+  }
+
   void createFocusNode({
     required FocusNode fn,
     required TextEditingController ctrl,
@@ -77,7 +94,9 @@ class DailyProdFormProvider extends ProductHeadProvider {
         ctrl.selection =
             TextSelection(baseOffset: 0, extentOffset: ctrl.text.length);
       } else {
-        ctrl.text = '0';
+        if (ctrl.text.isEmpty) {
+          ctrl.text = '0';
+        }
       }
     });
   }

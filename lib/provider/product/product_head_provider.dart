@@ -12,6 +12,7 @@ class ProductHeadProvider with ChangeNotifier {
   // List
   TextEditingController txtDateStart = TextEditingController();
   TextEditingController txtDateEnd = TextEditingController();
+  TextEditingController txtSearch = TextEditingController();
 
   STDWidget widget = STDWidget();
 

@@ -209,6 +209,20 @@ class STDWidget {
     );
   }
 
+  Widget selectItem({
+    VoidCallback? onTap,
+    required Widget child,
+  }) {
+    return Material(
+      type: MaterialType.transparency,
+      child: InkWell(
+        onTap: onTap,
+        splashColor: Colors.blue,
+        child: child,
+      ),
+    );
+  }
+
   // Form
   Widget rowCol2({
     Widget? child,

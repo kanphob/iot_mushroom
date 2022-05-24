@@ -3,15 +3,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:siwat_mushroom/Model/model_product.dart';
 import 'package:siwat_mushroom/Utils/font_thai.dart';
 import 'package:siwat_mushroom/provider/product/daily_product_fom_provider.dart';
 
 class DailyProdFormScreen extends StatelessWidget {
   final String sUserID;
+  final ModelProduct? model;
 
   const DailyProdFormScreen({
     Key? key,
     required this.sUserID,
+    this.model,
   }) : super(key: key);
 
   @override
@@ -22,6 +25,7 @@ class DailyProdFormScreen extends StatelessWidget {
           create: (_) => DailyProdFormProvider(
             context: context,
             sUserID: sUserID,
+            model: model,
           ),
         ),
       ],
@@ -50,8 +54,8 @@ class DailyProdFormScreen extends StatelessWidget {
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         _buildDateSave(prov),
-                        _buildRound(prov),
-                        _buildDataIOT(prov),
+                        if (!prov.bLoadData) _buildRound(prov),
+                        // _buildDataIOT(prov),
                         prov.widget.h10,
                         Divider(
                           color: Colors.blue.shade800,
@@ -70,10 +74,12 @@ class DailyProdFormScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                floatingActionButton: FloatingActionButton(
-                  onPressed: () => prov.onSave(),
-                  child: const Icon(Icons.save),
-                ),
+                floatingActionButton: !prov.bLoadData
+                    ? FloatingActionButton(
+                        onPressed: () => prov.onSave(),
+                        child: const Icon(Icons.save),
+                      )
+                    : null,
               );
             }
           },

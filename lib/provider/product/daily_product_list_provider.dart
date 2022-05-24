@@ -21,6 +21,8 @@ class DailyProdListProvider extends ProductHeadProvider {
   // ListItem
   bool bLoadList = true;
   List<ModelProduct> listItem = [];
+  List<ModelProduct> lmFilter = [];
+  List<ModelProduct> lmShow = [];
 
   initProvider() async {
     if (bFirst) {
@@ -39,15 +41,41 @@ class DailyProdListProvider extends ProductHeadProvider {
   }
 
   Future<void> loadDataFormServer() async {
-    listItem = await getAllData(sUIDUser: 'cccc');
+    if (listItem.isEmpty) {
+      listItem = await getAllData(sUIDUser: sUserID);
+      await filterData();
+    }
+  }
+
+  Future<void> filterData() async {
+    if (listItem.isNotEmpty) {
+      lmShow.clear();
+      for (var m in listItem) {
+        if (txtSearch.text.isNotEmpty) {
+          if (m.sDateSave
+              .toLowerCase()
+              .contains(txtSearch.text.toLowerCase())) {
+            lmFilter.add(m);
+          }
+        } else {
+          lmFilter.add(m);
+        }
+      }
+    }
+    lmShow = lmFilter;
+  }
+
+  onChangeSearch() async {
+    await filterData();
+    notifyListeners();
   }
 
   onTapAdd() async {
     var result = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const DailyProdFormScreen(
-          sUserID: 'cccc',
+        builder: (context) => DailyProdFormScreen(
+          sUserID: sUserID,
         ),
       ),
     );
@@ -56,6 +84,20 @@ class DailyProdListProvider extends ProductHeadProvider {
       await loadDataFormServer();
       notifyListeners();
     }
+  }
+
+  onTapEdit({
+    required ModelProduct md,
+  }) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => DailyProdFormScreen(
+          sUserID: sUserID,
+          model: md,
+        ),
+      ),
+    );
   }
 
   void removeSnackBar() {

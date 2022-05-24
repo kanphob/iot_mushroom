@@ -65,25 +65,12 @@ class DailyProdListScreen extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            flex: 2,
             child: TextField(
-              controller: prov.txtDateStart,
-              style: FontThai.text16BlackNormal,
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Text(
-              'ถึง',
-              style: FontThai.text16BlackNormal,
-              textAlign: TextAlign.center,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          Expanded(
-            flex: 2,
-            child: TextField(
-              controller: prov.txtDateEnd,
+              controller: prov.txtSearch,
+              decoration: const InputDecoration(
+                hintText: 'ค้นหา วว/ดด/ปป(คศ)',
+              ),
+              onChanged: (val) => prov.onChangeSearch(),
               style: FontThai.text16BlackNormal,
             ),
           ),
@@ -127,16 +114,16 @@ class DailyProdListScreen extends StatelessWidget {
         child: prov.widget.waitCenter(),
       );
     } else {
-      if (prov.listItem.isNotEmpty) {
+      if (prov.lmShow.isNotEmpty) {
         return prov.widget.outlineListItem(
           child: ListView.separated(
             separatorBuilder: (_, index) => const Divider(),
-            itemCount: prov.listItem.length,
+            itemCount: prov.lmShow.length,
             shrinkWrap: true,
             itemBuilder: (_, index) {
               return _item(
                 prov: prov,
-                md: prov.listItem[index],
+                md: prov.lmShow[index],
                 index: index,
               );
             },
@@ -158,39 +145,42 @@ class DailyProdListScreen extends StatelessWidget {
     required int index,
     required ModelProduct md,
   }) {
-    return Row(
-      children: [
-        Expanded(
-          child: prov.widget.txtBlack16(
-            sText: md.sDateSave,
-            textAlign: TextAlign.center,
+    return prov.widget.selectItem(
+      onTap: () => prov.onTapEdit(md: md),
+      child: Row(
+        children: [
+          Expanded(
+            child: prov.widget.txtBlack16(
+              sText: md.sDateSave,
+              textAlign: TextAlign.center,
+            ),
           ),
-        ),
-        Expanded(
-          child: prov.widget.txtBlack16(
-            sText: md.sTemperature,
-            textAlign: TextAlign.center,
+          Expanded(
+            child: prov.widget.txtBlack16(
+              sText: md.sTemperature,
+              textAlign: TextAlign.center,
+            ),
           ),
-        ),
-        Expanded(
-          child: prov.widget.txtBlack16(
-            sText: md.sMoisture,
-            textAlign: TextAlign.center,
+          Expanded(
+            child: prov.widget.txtBlack16(
+              sText: md.sMoisture,
+              textAlign: TextAlign.center,
+            ),
           ),
-        ),
-        Expanded(
-          child: prov.widget.txtBlack16(
-            sText: md.sLight,
-            textAlign: TextAlign.center,
+          Expanded(
+            child: prov.widget.txtBlack16(
+              sText: md.sLight,
+              textAlign: TextAlign.center,
+            ),
           ),
-        ),
-        Expanded(
-          child: prov.widget.txtBlack16(
-            sText: md.sCO2,
-            textAlign: TextAlign.center,
+          Expanded(
+            child: prov.widget.txtBlack16(
+              sText: md.sCO2,
+              textAlign: TextAlign.center,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
