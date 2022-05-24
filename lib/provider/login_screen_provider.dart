@@ -11,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class LoginScreenProvider with ChangeNotifier {
   final BuildContext context;
   LoginScreenProvider({required this.context}) {
-    checkLoggedIn();
+    // checkLoggedIn();
   }
 
   final GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();

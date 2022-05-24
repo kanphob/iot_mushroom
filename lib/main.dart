@@ -1,7 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:siwat_mushroom/Screen/home_page.dart';
 import 'package:siwat_mushroom/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,6 +27,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        useMaterial3: true,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.blue,
+        ),
         scrollbarTheme: ScrollbarThemeData(
           thickness: MaterialStateProperty.all(8.00),
           trackVisibility: MaterialStateProperty.all(true),
@@ -38,7 +45,16 @@ class MyApp extends StatelessWidget {
           errorBorder: const OutlineInputBorder(),
         ),
       ),
-      home: const LoginScreen(),
+      home: StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (_, snapshot) {
+          if (!snapshot.hasData) {
+            return const LoginScreen();
+          } else {
+            return const HomePage();
+          }
+        },
+      ),
     );
   }
 
