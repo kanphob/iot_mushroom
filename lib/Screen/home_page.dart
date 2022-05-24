@@ -74,17 +74,14 @@ class _HomePageState extends State<HomePage> {
         break;
       case 2:
         Navigator.push(
-            context,
-            CupertinoPageRoute(
-                builder: (context) => const DailyConditionCreate()));
-        break;
-      case 3:
-        Navigator.push(
           context,
           CupertinoPageRoute(
             builder: (context) => DailyProdListScreen(sUserID: sUserUid),
           ),
         );
+        break;
+      case 3:
+        null;
         break;
       case 4:
         null;
