@@ -26,13 +26,13 @@ class _TableStatisticCostState extends State<TableStatisticCost> {
     listMD = [];
     listMD.addAll(Globals.listCostMaterial);
     listMD.sort((a, b) {
-      return a.sDateTime.compareTo(b.sDateTime);
+      return a.sSaveDateTime.compareTo(b.sSaveDateTime);
     });
     String sDateTimeTemp = "";
     List<String> listCheckDate = [];
     List<ModelCostMaterial> listDataModel = [];
     for (var element in listMD) {
-      listCheckDate.add(element.sDateTime);
+      listCheckDate.add(element.sSaveDateTime);
     }
     listCheckDate = listCheckDate.toSet().toList();
 
@@ -41,9 +41,9 @@ class _TableStatisticCostState extends State<TableStatisticCost> {
       int iQty = 0;
       double dTotalCost = 0;
       for (int j = 0; j < listMD.length; j++) {
-        if (listMD[j].sDateTime == sDateTimeCheck) {
+        if (listMD[j].sSaveDateTime == sDateTimeCheck) {
           iQty += int.parse(listMD[j].sAmount);
-          dTotalCost += double.parse(listMD[j].sCostValue);
+          dTotalCost += double.parse(listMD[j].sMaterialPrice);
           listDataModel.add(listMD[j]);
         }
       }
@@ -271,7 +271,7 @@ class _TableStatisticCostState extends State<TableStatisticCost> {
                 children: [
                   buildBodyRow(md.sMaterialName, 4),
                   buildBodyRow(md.sAmount, 2),
-                  buildBodyRow(md.sCostValue, 3)
+                  buildBodyRow(md.sMaterialPrice, 3)
                 ],
               ),
             )),

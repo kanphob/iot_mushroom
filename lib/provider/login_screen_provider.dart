@@ -10,6 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class LoginScreenProvider with ChangeNotifier {
   final BuildContext context;
+
   LoginScreenProvider({required this.context}) {
     // checkLoggedIn();
   }

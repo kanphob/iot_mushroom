@@ -140,9 +140,9 @@ class _CostCalculateCreateState extends State<CostCalculateCreate> {
           sMaterialName: sCurrentMaterialValue,
           sAmount: "0",
           sUnitAmount: "",
-          sCostValue: "0",
-          sDateTime: '',
-          isItemSelected: false));
+          sMaterialPrice: "0",
+          sSaveDateTime: '',
+          isItemSelected: false, sSaveTimeStamp: '', sUserUID: '', sUID: ''));
       listCostMaterialTemp = [];
       listCostMaterialTemp.addAll(listCostMaterial);
       if (listCostMaterial.isNotEmpty) {
@@ -567,7 +567,7 @@ class _CostCalculateCreateState extends State<CostCalculateCreate> {
             onPressed: () {
               String sDateTime = dateFormatSystem.format(dtStartDate);
               for (int i = 0; i < listCostMaterial.length; i++) {
-                listCostMaterial[i].sDateTime = sDateTime;
+                listCostMaterial[i].sSaveDateTime = sDateTime;
               }
               Globals.listCostMaterial.addAll(listCostMaterial);
               Navigator.push(
@@ -947,7 +947,7 @@ class _CostCalculateCreateState extends State<CostCalculateCreate> {
                                 child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text(mdCostMaterial.sCostValue),
+                                Text(mdCostMaterial.sMaterialPrice),
                                 Text(mdCostMaterial.sUnitAmount),
                               ],
                             ))
@@ -962,12 +962,12 @@ class _CostCalculateCreateState extends State<CostCalculateCreate> {
                           builder: (context) {
                             return FloatCalculator(
                               valueInit:
-                                  mdCostMaterial.sCostValue.replaceAll(',', ''),
+                                  mdCostMaterial.sMaterialPrice.replaceAll(',', ''),
                             );
                           });
 
                       if (sAnswer != "") {
-                        listCostMaterial[index].sCostValue = sAnswer;
+                        listCostMaterial[index].sMaterialPrice = sAnswer;
                         setState(() {});
                       }
                     },

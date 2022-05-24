@@ -115,6 +115,7 @@ class DailyProdFormProvider extends ProductHeadProvider {
   }
 
   void syncDataIOT() async {
+    Globals.sTokenIOT = '';
     bool bHave = await Functions.checkToken(context: context);
     print('Have Token : $bHave');
     if (bHave) {

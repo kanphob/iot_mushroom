@@ -75,12 +75,15 @@ class APICall {
   static Future<String> httpGetForData() async {
     String sResult = "";
     DateTime dtNow = DateTime.now();
+    String sDevId = "466a9d20-832a-11ec-bbb0-65317744a1a2";
+    String sDevKey = "temp_1";
     var url = Uri(
         scheme: 'http',
         host: 'iot.farmdasia.com',
         path: '/apis/get_tm.aspx',
         queryParameters: {
-          'dev_id': Globals.sTokenIOT,
+          'dev_id': sDevId,
+          'dev_key': sDevKey,
           'startTs': dtNow.millisecondsSinceEpoch.toString(),
           'endTs': dtNow.millisecondsSinceEpoch.toString(),
         });
