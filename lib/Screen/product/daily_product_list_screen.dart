@@ -43,8 +43,11 @@ class DailyProdListScreen extends StatelessWidget {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     _buildSearch(prov),
-                    _buildHead(prov),
-                    _buildItem(prov),
+                    // _buildHead(prov),
+                    prov.widget.h10,
+                    prov.widget.divider,
+                    prov.widget.h10,
+                    Flexible(child: _buildItem(prov)),
                   ],
                 ),
                 floatingActionButton: FloatingActionButton(
@@ -80,7 +83,7 @@ class DailyProdListScreen extends StatelessWidget {
   }
 
   Widget _buildHead(DailyProdListProvider prov) {
-    return prov.widget.outlineListProd(
+    return prov.widget.outlineHeadProd(
       child: Row(
         children: [
           Expanded(
@@ -111,29 +114,39 @@ class DailyProdListScreen extends StatelessWidget {
   Widget _buildItem(DailyProdListProvider prov) {
     if (prov.bLoadList) {
       return prov.widget.outlineListItem(
+        width: MediaQuery.of(prov.context).size.width,
         child: prov.widget.waitCenter(),
       );
     } else {
       if (prov.lmShow.isNotEmpty) {
         return prov.widget.outlineListItem(
-          child: ListView.separated(
-            separatorBuilder: (_, index) => const Divider(),
-            itemCount: prov.lmShow.length,
-            shrinkWrap: true,
-            itemBuilder: (_, index) {
-              return _item(
-                prov: prov,
-                md: prov.lmShow[index],
-                index: index,
-              );
-            },
+          child: Scrollbar(
+            controller: prov.scrList,
+            child: ListView.separated(
+              controller: prov.scrList,
+              physics: const BouncingScrollPhysics(),
+              separatorBuilder: (_, index) => const Divider(),
+              itemCount: prov.lmShow.length,
+              shrinkWrap: true,
+              itemBuilder: (_, index) {
+                return _item(
+                  prov: prov,
+                  md: prov.lmShow[index],
+                  index: index,
+                );
+              },
+            ),
           ),
         );
       } else {
         return prov.widget.outlineListItem(
-          child: prov.widget.txtBlack16(
-            sText: 'NoData',
-            textAlign: TextAlign.center,
+          width: MediaQuery.of(prov.context).size.width,
+          height: 100,
+          child: Center(
+            child: prov.widget.txtBlack16(
+              sText: 'ยังไม่มีข้อมูลบน Server',
+              textAlign: TextAlign.center,
+            ),
           ),
         );
       }
@@ -145,38 +158,142 @@ class DailyProdListScreen extends StatelessWidget {
     required int index,
     required ModelProduct md,
   }) {
-    return prov.widget.selectItem(
-      onTap: () => prov.onTapEdit(md: md),
+    TextAlign align = TextAlign.center;
+    return ExpansionTile(
+      childrenPadding: EdgeInsets.zero,
+      title: prov.widget.richText(
+        text: prov.widget.spanBlack16(
+          sText: 'วันที่ : ',
+          list: [
+            prov.widget.spanBlack16(
+              sText: md.sDateSave,
+            ),
+          ],
+        ),
+      ),
+      subtitle: prov.widget.richText(
+        text: prov.widget.spanBlack16(
+          sText: 'เวลาที่บันทึก : ',
+          list: [
+            prov.widget.spanBlack16(
+              sText: md.sSaveTimeStamp,
+            ),
+          ],
+        ),
+      ),
+      children: [
+        prov.widget.outlineHeadProd(
+          child: Row(
+            children: [
+              Expanded(
+                child: prov.widget.imageIcon(
+                  'assets/images/temperature.png',
+                  small: true,
+                ),
+              ),
+              Expanded(
+                child: prov.widget.imageIcon(
+                  'assets/images/rainfall.png',
+                  small: true,
+                ),
+              ),
+              Expanded(
+                child: prov.widget.imageIcon(
+                  'assets/images/sunny.png',
+                  small: true,
+                ),
+              ),
+              Expanded(
+                child: prov.widget.imageIcon(
+                  'assets/images/co2.png',
+                  small: true,
+                ),
+              ),
+              const Expanded(
+                child: Icon(
+                  Icons.spa,
+                  color: Colors.white,
+                  size: 30,
+                ),
+              ),
+              const Expanded(
+                child: Icon(
+                  Icons.scale_rounded,
+                  color: Colors.white,
+                  size: 30,
+                ),
+              ),
+            ],
+          ),
+        ),
+        prov.widget.outlineInItem(
+          child: Row(
+            children: [
+              Expanded(
+                child: prov.widget.txtBlack16(
+                  sText: md.sTemperature,
+                  textAlign: align,
+                ),
+              ),
+              Expanded(
+                child: prov.widget.txtBlack16(
+                  sText: md.sMoisture,
+                  textAlign: align,
+                ),
+              ),
+              Expanded(
+                child: prov.widget.txtBlack16(
+                  sText: md.sLight,
+                  textAlign: align,
+                ),
+              ),
+              Expanded(
+                child: prov.widget.txtBlack16(
+                  sText: md.sCO2,
+                  textAlign: align,
+                ),
+              ),
+              Expanded(
+                child: prov.widget.txtBlack16(
+                  sText: '${md.iNumFlower}',
+                  textAlign: align,
+                ),
+              ),
+              Expanded(
+                child: prov.widget.txtBlack16(
+                  sText: '${md.iQuantityProduced}',
+                  textAlign: align,
+                ),
+              ),
+            ],
+          ),
+        ),
+        prov.widget.h10,
+        _rowBtnItem(
+          prov: prov,
+          md: md,
+        ),
+      ],
+    );
+  }
+
+  Widget _rowBtnItem({
+    required DailyProdListProvider prov,
+    required ModelProduct md,
+  }) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 8),
       child: Row(
         children: [
-          Expanded(
-            child: prov.widget.txtBlack16(
-              sText: md.sDateSave,
-              textAlign: TextAlign.center,
+          ElevatedButton.icon(
+            onPressed: () => prov.onTapEdit(md: md),
+            label: prov.widget.txtWhite16(
+              sText: 'ดูข้อมูล',
             ),
-          ),
-          Expanded(
-            child: prov.widget.txtBlack16(
-              sText: md.sTemperature,
-              textAlign: TextAlign.center,
-            ),
-          ),
-          Expanded(
-            child: prov.widget.txtBlack16(
-              sText: md.sMoisture,
-              textAlign: TextAlign.center,
-            ),
-          ),
-          Expanded(
-            child: prov.widget.txtBlack16(
-              sText: md.sLight,
-              textAlign: TextAlign.center,
-            ),
-          ),
-          Expanded(
-            child: prov.widget.txtBlack16(
-              sText: md.sCO2,
-              textAlign: TextAlign.center,
+            icon: const Icon(
+              Icons.description,
+              color: Colors.white,
+              size: 30,
             ),
           ),
         ],

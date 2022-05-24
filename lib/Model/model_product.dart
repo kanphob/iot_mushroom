@@ -1,4 +1,5 @@
 import 'package:siwat_mushroom/Constant/field_master.dart';
+import 'package:siwat_mushroom/Constant/globals.dart';
 
 class ModelProduct {
   String sUID = '';
@@ -24,7 +25,9 @@ class ModelProduct {
     iNumFlower = json[FieldMaster.sProdNumFlower] ?? 0;
     iQuantityProduced = json[FieldMaster.sProdQuantityProduced] ?? 0;
     sDateSave = json[FieldMaster.sProdDateSave] ?? '';
-    sSaveTimeStamp = json[FieldMaster.sProdSaveTimeStamp] ?? '';
+    String sSaveTime = json[FieldMaster.sProdSaveTimeStamp] ?? '';
+    DateTime dtSave = DateTime.parse(sSaveTime);
+    sSaveTimeStamp = Globals.dateFormatTime.format(dtSave);
   }
 
   Map<String, dynamic> toMap() {

@@ -11,6 +11,14 @@ class STDWidget {
   final EdgeInsets edgeAll8 = const EdgeInsets.all(8.0);
   final Duration duration400m = const Duration(milliseconds: 400);
 
+  final Divider divider = Divider(
+    color: Colors.blue.shade800,
+    thickness: 5.0,
+    height: 0,
+    endIndent: 8,
+    indent: 8,
+  );
+
   Widget waitCenter() {
     return const Center(
       child: CircularProgressIndicator(),
@@ -162,7 +170,7 @@ class STDWidget {
   }
 
   // OutlineList Product
-  Widget outlineListProd({
+  Widget outlineHeadProd({
     required Widget child,
   }) {
     return AnimatedContainer(
@@ -171,18 +179,39 @@ class STDWidget {
       padding: edgeAll8,
       child: child,
       decoration: BoxDecoration(
-        color: Colors.blue.shade800.withOpacity(0.8),
+        color: Colors.blue.shade900,
+        borderRadius: BorderRadius.circular(8),
+      ),
+    );
+  }
+
+  Widget outlineInItem({
+    required Widget child,
+  }) {
+    return AnimatedContainer(
+      duration: duration400m,
+      margin: const EdgeInsets.symmetric(horizontal: 8),
+      padding: edgeAll8,
+      child: child,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(
+          color: Colors.blue.shade800,
+        ),
         borderRadius: BorderRadius.circular(8),
       ),
     );
   }
 
   // Image Icon
-  Widget imageIcon(String path) {
+  Widget imageIcon(
+    String path, {
+    bool small = false,
+  }) {
     return Image.asset(
       path,
-      height: 50,
-      width: 50,
+      height: !small ? 50 : 30,
+      width: !small ? 50 : 30,
       filterQuality: FilterQuality.medium,
       fit: BoxFit.contain,
     );
@@ -190,13 +219,14 @@ class STDWidget {
 
   Widget outlineListItem({
     required Widget child,
+    double? width,
     double? height,
   }) {
     return AnimatedContainer(
       duration: duration400m,
       margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
       padding: edgeAll8,
-      width: double.infinity,
+      width: width,
       height: height,
       child: child,
       decoration: BoxDecoration(
@@ -217,6 +247,7 @@ class STDWidget {
       type: MaterialType.transparency,
       child: InkWell(
         onTap: onTap,
+        hoverColor: Colors.blue.shade300,
         splashColor: Colors.blue,
         child: child,
       ),
@@ -281,6 +312,45 @@ class STDWidget {
         softWrap: true,
         overflow: TextOverflow.ellipsis,
       ),
+    );
+  }
+
+  Widget txtWhite16({
+    String? sText,
+    TextAlign textAlign = TextAlign.center,
+  }) {
+    return Tooltip(
+      showDuration: duration400m,
+      message: sText,
+      child: Text(
+        sText!,
+        style: FontThai.text16WhiteNormal,
+        textAlign: textAlign,
+        softWrap: true,
+        overflow: TextOverflow.ellipsis,
+      ),
+    );
+  }
+
+  RichText richText({
+    required TextSpan text,
+  }) {
+    return RichText(
+      textAlign: TextAlign.start,
+      overflow: TextOverflow.ellipsis,
+      text: text,
+    );
+  }
+
+  TextSpan spanBlack16({
+    String? sText,
+    TextAlign textAlign = TextAlign.start,
+    List<TextSpan>? list,
+  }) {
+    return TextSpan(
+      text: sText!,
+      style: FontThai.text16BlackNormal,
+      children: list,
     );
   }
 }

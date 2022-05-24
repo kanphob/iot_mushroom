@@ -60,7 +60,7 @@ class DailyProdFormProvider extends ProductHeadProvider {
   Future<void> setDefault() async {
     scrollBody = ScrollController(initialScrollOffset: 0);
     dtNow = DateTime.now();
-    txtDateSave.text = Globals.dateFormatUser.format(dtNow);
+    txtDateSave.text = Globals.dateFormatSave.format(dtNow);
     iRound = await getRound(sUIDUser: sUserID);
     var uuid = const Uuid();
     sUIDDoc = uuid.v4();
@@ -110,7 +110,7 @@ class DailyProdFormProvider extends ProductHeadProvider {
       lastDate: DateTime(2030),
     );
     if (result != null) {
-      txtDateSave.text = Globals.dateFormatUser.format(result);
+      txtDateSave.text = Globals.dateFormatSave.format(result);
     }
   }
 

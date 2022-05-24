@@ -20,13 +20,15 @@ class DailyProdListProvider extends ProductHeadProvider {
 
   // ListItem
   bool bLoadList = true;
+  late ScrollController scrList;
   List<ModelProduct> listItem = [];
   List<ModelProduct> lmFilter = [];
   List<ModelProduct> lmShow = [];
 
   initProvider() async {
     if (bFirst) {
-      await setDefault();
+      scrList = ScrollController(initialScrollOffset: 0);
+      // await setDefault();
       bFirst = false;
       await loadDataFormServer();
       bLoadList = false;
@@ -36,8 +38,8 @@ class DailyProdListProvider extends ProductHeadProvider {
 
   Future<void> setDefault() async {
     DateTime dateTime = DateTime.now();
-    txtDateStart.text = Globals.dateFormatUser.format(dateTime);
-    txtDateEnd.text = Globals.dateFormatUser.format(dateTime);
+    txtDateStart.text = Globals.dateFormatSave.format(dateTime);
+    txtDateEnd.text = Globals.dateFormatSave.format(dateTime);
   }
 
   Future<void> loadDataFormServer() async {

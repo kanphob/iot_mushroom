@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:siwat_mushroom/Screen/cost_calculate_create.dart';
-import 'package:siwat_mushroom/Screen/daily_condition_create.dart';
+import 'package:siwat_mushroom/Screen/cost_material/cost_material_list_screen.dart';
 import 'package:siwat_mushroom/Screen/product/daily_product_list_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -64,21 +64,23 @@ class _HomePageState extends State<HomePage> {
   checkOnTapMenu(int index) {
     switch (index) {
       case 0:
-        null;
-        break;
-      case 1:
-        Navigator.push(
-            context,
-            CupertinoPageRoute(
-                builder: (context) => const CostCalculateCreate()));
-        break;
-      case 2:
         Navigator.push(
           context,
           CupertinoPageRoute(
             builder: (context) => DailyProdListScreen(sUserID: sUserUid),
           ),
         );
+        break;
+      case 1:
+        Navigator.push(
+            context,
+            CupertinoPageRoute(
+                builder: (context) => CostMatListScreen(
+                      sUserID: sUserUid,
+                    )));
+        break;
+      case 2:
+        null;
         break;
       case 3:
         null;
@@ -129,31 +131,39 @@ class _HomePageState extends State<HomePage> {
       body: ListView(
         physics: const BouncingScrollPhysics(),
         children: [
-          Padding(padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(children: [
-                const Icon(Icons.account_box),
-                const SizedBox(width: 5,),
-                Text(sUserEmail,style: const TextStyle(fontWeight: FontWeight.w600),),
-              ],),
-              FlatButton.icon(
-                  onPressed: () {
-                    _signOut();
-                  },
-                  icon: Icon(
-                    Icons.exit_to_app,
-                    color: Colors.blue.shade700,
-                  ),
-                  label: Text(
-                    "ออกจากระบบ",
-                    style: TextStyle(
-                        color: Colors.blue.shade700,
-                        fontWeight: FontWeight.w600),
-                  ))
-            ],
-          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    const Icon(Icons.account_box),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      sUserEmail,
+                      style: const TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                  ],
+                ),
+                TextButton.icon(
+                    onPressed: () {
+                      _signOut();
+                    },
+                    icon: Icon(
+                      Icons.exit_to_app,
+                      color: Colors.blue.shade700,
+                    ),
+                    label: Text(
+                      "ออกจากระบบ",
+                      style: TextStyle(
+                          color: Colors.blue.shade700,
+                          fontWeight: FontWeight.w600),
+                    ))
+              ],
+            ),
           ),
           GestureDetector(
             onTap: () {},

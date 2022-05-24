@@ -25,6 +25,9 @@ class ProductHeadProvider with ChangeNotifier {
         .orderBy(
           FieldMaster.sProdDateSave,
         )
+        .orderBy(
+          FieldMaster.sProdSaveTimeStamp,
+        )
         .get()
         .then((value) {
       for (var m in value.docChanges) {

@@ -2,29 +2,15 @@
 import 'package:siwat_mushroom/Constant/field_master.dart';
 
 class ModelCostMaterial {
-  int index;
+  int index = 0;
   String sUID = '';
   String sUserUID = '';
-  String sMaterialName;
-  String sAmount;
-  String sUnitAmount;
-  String sMaterialPrice;
-  String sSaveDateTime;
-  String sSaveTimeStamp;
-  bool isItemSelected;
-
-  ModelCostMaterial(
-      {required this.index,
-      required this.sUID,
-      required this.sUserUID,
-      required this.sMaterialName,
-      required this.sAmount,
-      required this.sUnitAmount,
-      required this.sMaterialPrice,
-      required this.sSaveDateTime,
-      required this.sSaveTimeStamp,
-      required this.isItemSelected,
-      });
+  String sMaterialName = '';
+  String sAmount = '';
+  String sUnitAmount = '';
+  String sMaterialPrice = '';
+  String sSaveDateTime = '';
+  String sSaveTimeStamp = '';
 
   formFireStore({
     required Map<String, dynamic> json,

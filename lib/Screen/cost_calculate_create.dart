@@ -125,7 +125,6 @@ class _CostCalculateCreateState extends State<CostCalculateCreate> {
     for (int i = 0; i < listCostMaterialTemp.length; i++) {
       listCostMaterial.add(listCostMaterialTemp[i]);
       listCostMaterial[i].index = i;
-      listCostMaterial[i].isItemSelected = false;
     }
 
     if (listCostMaterial.isNotEmpty) {
@@ -135,14 +134,6 @@ class _CostCalculateCreateState extends State<CostCalculateCreate> {
 
   onTapAddListItem() {
     if (typeController.text.isNotEmpty) {
-      listCostMaterial.add(ModelCostMaterial(
-          index: listCostMaterial.length,
-          sMaterialName: sCurrentMaterialValue,
-          sAmount: "0",
-          sUnitAmount: "",
-          sMaterialPrice: "0",
-          sSaveDateTime: '',
-          isItemSelected: false, sSaveTimeStamp: '', sUserUID: '', sUID: ''));
       listCostMaterialTemp = [];
       listCostMaterialTemp.addAll(listCostMaterial);
       if (listCostMaterial.isNotEmpty) {
@@ -526,9 +517,9 @@ class _CostCalculateCreateState extends State<CostCalculateCreate> {
                               for (int i = 0;
                                   i < listCostMaterial.length;
                                   i++) {
-                                if (listCostMaterial[i].isItemSelected) {
-                                  listCostMaterial.removeAt(i);
-                                }
+                                // if (listCostMaterial[i].isItemSelected) {
+                                //   listCostMaterial.removeAt(i);
+                                // }
                               }
                               await resetData();
                               Navigator.pop(context);
@@ -822,21 +813,21 @@ class _CostCalculateCreateState extends State<CostCalculateCreate> {
     return GestureDetector(
       onTap: () {
         bDeleteMode = false;
-        listCostMaterial[index].isItemSelected =
-            !listCostMaterial[index].isItemSelected;
-        for (int i = 0; i < listCostMaterial.length; i++) {
-          if (listCostMaterial[i].isItemSelected) {
-            bDeleteMode = true;
-          }
-        }
+        // listCostMaterial[index].isItemSelected =
+        //     !listCostMaterial[index].isItemSelected;
+        // for (int i = 0; i < listCostMaterial.length; i++) {
+        //   if (listCostMaterial[i].isItemSelected) {
+        //     bDeleteMode = true;
+        //   }
+        // }
         setState(() {});
       },
       child: Card(
         shape: RoundedRectangleBorder(
             side: BorderSide(
-                color: mdCostMaterial.isItemSelected
-                    ? Colors.blue.shade500
-                    : Colors.grey.shade200,
+                // color: mdCostMaterial.isItemSelected
+                //     ? Colors.blue.shade500
+                //     : Colors.grey.shade200,
                 width: 1.5),
             borderRadius: BorderRadius.circular(5)),
         elevation: 6,

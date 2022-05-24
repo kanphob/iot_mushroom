@@ -35,6 +35,11 @@ class MyApp extends StatelessWidget {
           thickness: MaterialStateProperty.all(8.00),
           trackVisibility: MaterialStateProperty.all(true),
         ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            primary: Colors.blue.shade900,
+          ),
+        ),
         inputDecorationTheme: InputDecorationTheme(
           isDense: true,
           border: const OutlineInputBorder(),
