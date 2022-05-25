@@ -83,7 +83,7 @@ class DailyProdListScreen extends StatelessWidget {
   }
 
   Widget _buildHead(DailyProdListProvider prov) {
-    return prov.widget.outlineHeadProd(
+    return prov.widget.outlineHeadList(
       child: Row(
         children: [
           Expanded(
@@ -182,7 +182,7 @@ class DailyProdListScreen extends StatelessWidget {
         ),
       ),
       children: [
-        prov.widget.outlineHeadProd(
+        prov.widget.outlineHeadList(
           child: Row(
             children: [
               Expanded(
@@ -285,17 +285,7 @@ class DailyProdListScreen extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 8),
       child: Row(
         children: [
-          ElevatedButton.icon(
-            onPressed: () => prov.onTapEdit(md: md),
-            label: prov.widget.txtWhite16(
-              sText: 'ดูข้อมูล',
-            ),
-            icon: const Icon(
-              Icons.description,
-              color: Colors.white,
-              size: 30,
-            ),
-          ),
+          prov.widget.btnViewData(onPress: () => prov.onTapEdit(md: md)),
         ],
       ),
     );

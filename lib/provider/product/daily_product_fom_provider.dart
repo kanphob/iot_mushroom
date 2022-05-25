@@ -149,4 +149,8 @@ class DailyProdFormProvider extends ProductHeadProvider {
     md.sSaveTimeStamp = dtNow.toIso8601String();
     return md.toMap();
   }
+
+  void pop() {
+    Navigator.pop(context, false);
+  }
 }

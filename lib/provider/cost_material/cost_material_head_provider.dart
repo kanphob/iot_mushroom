@@ -3,6 +3,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:siwat_mushroom/Constant/drop_down_data.dart';
 import 'package:siwat_mushroom/Constant/field_master.dart';
 import 'package:siwat_mushroom/Model/model_cost_material.dart';
 import 'package:siwat_mushroom/Utils/std_widget.dart';
@@ -14,22 +15,22 @@ class CostMaterialHeadProvider with ChangeNotifier {
 
   STDWidget widget = STDWidget();
 
-  Future<List<ModelCostMaterial>> getAllData({
+  Future<List<ModelCostMat>> getAllData({
     required String sUIDUser,
   }) async {
-    List<ModelCostMaterial> list = [];
+    List<ModelCostMat> list = [];
     await costRef
-        .where(FieldMaster.sMaterialUserUID, isEqualTo: sUIDUser)
+        .where(FieldMaster.sMatUserUID, isEqualTo: sUIDUser)
         .orderBy(
-          FieldMaster.sMaterialDateSave,
+          FieldMaster.sDateSave,
         )
         .orderBy(
-          FieldMaster.sMaterialSaveTime,
+          FieldMaster.sSaveTimeStamp,
         )
         .get()
         .then((value) {
       for (var m in value.docChanges) {
-        ModelCostMaterial md = ModelCostMaterial();
+        ModelCostMat md = ModelCostMat();
         md.formFireStore(json: m.doc.data()!);
         list.add(md);
       }
@@ -41,5 +42,41 @@ class CostMaterialHeadProvider with ChangeNotifier {
       const Duration(minutes: 1),
     );
     return list;
+  }
+
+  Future<int> saveData({
+    required String sUIDDoc,
+    required Map<String, dynamic> data,
+  }) async {
+    int iSuccess = 0;
+    await costRef.doc(sUIDDoc).set(data).then((value) {
+      iSuccess = 1;
+    });
+    return iSuccess;
+  }
+
+  Map<String, String> valFormType(ModelCostMat md) {
+    Map<String, String> data = {};
+    List<DropDownData> listType = DropDownData.getDataTypeCost();
+    List<DropDownData> listCost = [];
+    int iType = 0;
+    if (md.sTypeCost == 'LC') iType = 1;
+    data[FieldMaster.sMatTypeCost] = listType[iType].sLabel;
+    if (iType == 0) {
+      int iCost = 0;
+      if (md.sCost == 'IMC') iCost = 1;
+      listCost = DropDownData.getDataMatCost();
+      data[FieldMaster.sMatCost] = listCost[iCost].sLabel;
+    } else {
+      int iCost = 0;
+      if (md.sCost == 'ILC') {
+        iCost = 1;
+      } else if (md.sCost == 'OC') {
+        iCost = 2;
+      }
+      listCost = DropDownData.getDataLaborCost();
+      data[FieldMaster.sMatCost] = listCost[iCost].sLabel;
+    }
+    return data;
   }
 }

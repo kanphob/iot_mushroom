@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:siwat_mushroom/Constant/field_master.dart';
+import 'package:siwat_mushroom/Model/model_cost_material.dart';
 import 'package:siwat_mushroom/Utils/font_thai.dart';
 import 'package:siwat_mushroom/provider/cost_material/cost_material_list_provider.dart';
 
@@ -38,8 +40,13 @@ class CostMatListScreen extends StatelessWidget {
                   ),
                 ),
                 body: Column(
+                  mainAxisSize: MainAxisSize.max,
                   children: [
                     _buildSearch(prov),
+                    prov.widget.h10,
+                    prov.widget.divider,
+                    prov.widget.h10,
+                    Flexible(child: _buildItem(prov)),
                   ],
                 ),
                 floatingActionButton: FloatingActionButton(
@@ -65,10 +72,135 @@ class CostMatListScreen extends StatelessWidget {
               decoration: const InputDecoration(
                 hintText: 'ค้นหา วว/ดด/ปป(คศ)',
               ),
-              // onChanged: (val) => prov.onChangeSearch(),
+              onChanged: (val) => prov.onChangeSearch(),
               style: FontThai.text16BlackNormal,
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildItem(CostMatListProvider prov) {
+    if (prov.bLoadList) {
+      return prov.widget.outlineListItem(
+        width: MediaQuery.of(prov.context).size.width,
+        child: prov.widget.waitCenter(),
+      );
+    } else {
+      if (prov.lmShow.isNotEmpty) {
+        return prov.widget.outlineListItem(
+          child: Scrollbar(
+            controller: prov.scrList,
+            child: ListView.separated(
+              controller: prov.scrList,
+              physics: const BouncingScrollPhysics(),
+              separatorBuilder: (_, index) => const Divider(),
+              itemCount: prov.lmShow.length,
+              shrinkWrap: true,
+              itemBuilder: (_, index) {
+                return _item(
+                  prov: prov,
+                  md: prov.lmShow[index],
+                  index: index,
+                );
+              },
+            ),
+          ),
+        );
+      } else {
+        return prov.widget.outlineListItem(
+          width: MediaQuery.of(prov.context).size.width,
+          height: 100,
+          child: Center(
+            child: prov.widget.txtBlack16(
+              sText: 'ยังไม่มีข้อมูลบน Server',
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+      }
+    }
+  }
+
+  Widget _item({
+    required CostMatListProvider prov,
+    required int index,
+    required ModelCostMat md,
+  }) {
+    TextAlign align = TextAlign.start;
+    Map<String, String> map = prov.valFormType(md);
+    return ExpansionTile(
+      childrenPadding: EdgeInsets.zero,
+      title: prov.widget.richText(
+        text: prov.widget.spanBlack16(
+          sText: 'วันที่ : ',
+          list: [
+            prov.widget.spanBlack16(
+              sText: md.sSaveDateTime,
+            ),
+          ],
+        ),
+      ),
+      subtitle: prov.widget.richText(
+        text: prov.widget.spanBlack16(
+          sText: 'เวลาที่บันทึก : ',
+          list: [
+            prov.widget.spanBlack16(
+              sText: md.sSaveTimeStamp,
+            ),
+          ],
+        ),
+      ),
+      children: [
+        prov.widget.rowCol2(
+          width1: 150,
+          child: prov.widget.txtBlack16(
+            sText: 'ประเภท :',
+          ),
+          child2: prov.widget.txtBlack16(
+            sText: map[FieldMaster.sMatTypeCost],
+            textAlign: align,
+          ),
+        ),
+        prov.widget.rowCol2(
+          width1: 150,
+          child: prov.widget.txtBlack16(
+            sText: 'ต้นทุน :',
+          ),
+          child2: prov.widget.txtBlack16(
+            sText: map[FieldMaster.sMatCost],
+            textAlign: align,
+          ),
+        ),
+        prov.widget.rowCol2(
+          width1: 150,
+          child: prov.widget.txtBlack16(
+            sText: 'รวมจำนวนเงิน :',
+          ),
+          child2: prov.widget.txtBlue16(
+            sText: md.sTotalAmt,
+            textAlign: align,
+          ),
+        ),
+        prov.widget.h10,
+        _rowBtnItem(
+          prov: prov,
+          md: md,
+        ),
+      ],
+    );
+  }
+
+  Widget _rowBtnItem({
+    required CostMatListProvider prov,
+    required ModelCostMat md,
+  }) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 8),
+      child: Row(
+        children: [
+          prov.widget.btnViewData(onPress: () => prov.onTapView(md: md)),
         ],
       ),
     );

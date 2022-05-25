@@ -8,6 +8,10 @@ class STDWidget {
   final SizedBox w5 = const SizedBox(
     width: 5,
   );
+
+  final SizedBox w3 = const SizedBox(
+    width: 3,
+  );
   final EdgeInsets edgeAll8 = const EdgeInsets.all(8.0);
   final Duration duration400m = const Duration(milliseconds: 400);
 
@@ -179,6 +183,21 @@ class STDWidget {
       padding: edgeAll8,
       child: child,
       decoration: BoxDecoration(
+        color: Colors.indigo.shade900,
+        borderRadius: BorderRadius.circular(8),
+      ),
+    );
+  }
+
+  Widget outlineHeadList({
+    required Widget child,
+  }) {
+    return AnimatedContainer(
+      duration: duration400m,
+      margin: edgeAll8,
+      padding: edgeAll8,
+      child: child,
+      decoration: BoxDecoration(
         color: Colors.blue.shade900,
         borderRadius: BorderRadius.circular(8),
       ),
@@ -222,8 +241,7 @@ class STDWidget {
     double? width,
     double? height,
   }) {
-    return AnimatedContainer(
-      duration: duration400m,
+    return Container(
       margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
       padding: edgeAll8,
       width: width,
@@ -315,6 +333,23 @@ class STDWidget {
     );
   }
 
+  Widget txtBlue16({
+    String? sText,
+    TextAlign textAlign = TextAlign.end,
+  }) {
+    return Tooltip(
+      showDuration: duration400m,
+      message: sText,
+      child: Text(
+        sText!,
+        style: FontThai.text16BlueBold,
+        textAlign: textAlign,
+        softWrap: true,
+        overflow: TextOverflow.ellipsis,
+      ),
+    );
+  }
+
   Widget txtWhite16({
     String? sText,
     TextAlign textAlign = TextAlign.center,
@@ -351,6 +386,66 @@ class STDWidget {
       text: sText!,
       style: FontThai.text16BlackNormal,
       children: list,
+    );
+  }
+
+  Widget btnViewData({
+    VoidCallback? onPress,
+  }) {
+    return ElevatedButton.icon(
+      onPressed: onPress,
+      label: txtWhite16(
+        sText: 'ดูข้อมูล',
+      ),
+      icon: const Icon(
+        Icons.description,
+        color: Colors.white,
+        size: 30,
+      ),
+    );
+  }
+
+  Widget btnADItem({
+    VoidCallback? onPressed,
+    IconData icon = Icons.add,
+    Color? color,
+    String? txt,
+  }) {
+    return ElevatedButton.icon(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        primary: color ?? Colors.indigo.shade900,
+        padding: const EdgeInsets.all(8),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+      icon: Icon(
+        icon,
+        color: Colors.white,
+      ),
+      label: txtWhite16(
+        sText: txt,
+      ),
+    );
+  }
+
+  Widget btnSaveDoc({
+    VoidCallback? onPressed,
+  }) {
+    return Ink(
+      decoration: const ShapeDecoration(
+        color: Colors.white,
+        shape: CircleBorder(),
+      ),
+      child: IconButton(
+        onPressed: onPressed,
+        icon: const Icon(
+          Icons.save,
+          size: 30,
+          color: Colors.green,
+        ),
+      ),
     );
   }
 }

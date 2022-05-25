@@ -11,4 +11,8 @@ class Globals {
   static final dateFormatTime = DateFormat.Hms();
 
   static String sTokenIOT = '';
+
+  static String sModeADD = 'add';
+  static String sModeEDIT = 'edit';
+  static String sModeVIEW = 'view';
 }

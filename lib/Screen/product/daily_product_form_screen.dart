@@ -39,6 +39,9 @@ class DailyProdFormScreen extends StatelessWidget {
             } else {
               return Scaffold(
                 appBar: AppBar(
+                  leading: BackButton(
+                    onPressed: () => prov.pop(),
+                  ),
                   title: Text(
                     'ระบบบันทึกข้อมูลรายวัน',
                     style: FontThai.text18WhiteBold,

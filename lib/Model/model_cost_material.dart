@@ -1,5 +1,6 @@
 
 import 'package:siwat_mushroom/Constant/field_master.dart';
+import 'package:siwat_mushroom/Constant/globals.dart';
 
 class ModelCostMaterial {
   int index = 0;
@@ -11,31 +12,44 @@ class ModelCostMaterial {
   String sMaterialPrice = '';
   String sSaveDateTime = '';
   String sSaveTimeStamp = '';
+}
+
+class ModelCostMat {
+  String sUID = '';
+  String sUserUID = '';
+  String sSaveDateTime = '';
+  String sSaveTimeStamp = '';
+  String sTotalAmt = '0.00';
+  double dTotalAmt = 0.00;
+  String sItem = '';
+  String sTypeCost = '';
+  String sCost = '';
 
   formFireStore({
     required Map<String, dynamic> json,
   }) {
-    sUID = json[FieldMaster.sProdUID] ?? '';
-    sUserUID = json[FieldMaster.sProdUserUID] ?? '';
-    sMaterialName = json[FieldMaster.sMaterialName] ?? '';
-    sAmount = json[FieldMaster.sMaterialAmount] ?? '';
-    sUnitAmount = json[FieldMaster.sMaterialUnitAmount] ?? '';
-    sMaterialPrice = json[FieldMaster.sMaterialPrice] ?? '';
-    sSaveDateTime = json[FieldMaster.sMaterialDateSave] ?? '';
-    sSaveTimeStamp = json[FieldMaster.sMaterialSaveTime] ?? '';
+    sUID = json[FieldMaster.sMatUID] ?? '';
+    sUserUID = json[FieldMaster.sMatUserUID] ?? '';
+    sItem = json[FieldMaster.sMatItem] ?? '';
+    sTypeCost = json[FieldMaster.sMatTypeCost] ?? '';
+    sCost = json[FieldMaster.sMatCost] ?? '';
+    sTotalAmt = json[FieldMaster.sMatAMT] ?? '';
+    sSaveDateTime = json[FieldMaster.sDateSave] ?? '';
+    String sSaveTime = json[FieldMaster.sSaveTimeStamp] ?? '';
+    DateTime dtSave = DateTime.parse(sSaveTime);
+    sSaveTimeStamp = Globals.dateFormatTime.format(dtSave);
   }
 
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = {};
-    map[FieldMaster.sMaterialUID] = sUID;
-    map[FieldMaster.sMaterialUserUID] = sUserUID;
-    map[FieldMaster.sMaterialName] = sMaterialName;
-    map[FieldMaster.sMaterialAmount] = sAmount;
-    map[FieldMaster.sMaterialUnitAmount] = sUnitAmount;
-    map[FieldMaster.sMaterialPrice] = sMaterialPrice;
-    map[FieldMaster.sMaterialDateSave] = sSaveDateTime;
-    map[FieldMaster.sMaterialSaveTime] = sSaveTimeStamp;
+    map[FieldMaster.sMatUID] = sUID;
+    map[FieldMaster.sMatUserUID] = sUserUID;
+    map[FieldMaster.sMatItem] = sItem;
+    map[FieldMaster.sMatTypeCost] = sTypeCost;
+    map[FieldMaster.sMatCost] = sCost;
+    map[FieldMaster.sMatAMT] = sTotalAmt;
+    map[FieldMaster.sDateSave] = sSaveDateTime;
+    map[FieldMaster.sSaveTimeStamp] = sSaveTimeStamp;
     return map;
   }
-
 }

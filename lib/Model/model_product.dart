@@ -24,8 +24,8 @@ class ModelProduct {
     sCO2 = json[FieldMaster.sProdCO2] ?? '';
     iNumFlower = json[FieldMaster.sProdNumFlower] ?? 0;
     iQuantityProduced = json[FieldMaster.sProdQuantityProduced] ?? 0;
-    sDateSave = json[FieldMaster.sProdDateSave] ?? '';
-    String sSaveTime = json[FieldMaster.sProdSaveTimeStamp] ?? '';
+    sDateSave = json[FieldMaster.sDateSave] ?? '';
+    String sSaveTime = json[FieldMaster.sSaveTimeStamp] ?? '';
     DateTime dtSave = DateTime.parse(sSaveTime);
     sSaveTimeStamp = Globals.dateFormatTime.format(dtSave);
   }
@@ -40,8 +40,8 @@ class ModelProduct {
     map[FieldMaster.sProdCO2] = sCO2;
     map[FieldMaster.sProdNumFlower] = iNumFlower;
     map[FieldMaster.sProdQuantityProduced] = iQuantityProduced;
-    map[FieldMaster.sProdDateSave] = sDateSave;
-    map[FieldMaster.sProdSaveTimeStamp] = sSaveTimeStamp;
+    map[FieldMaster.sDateSave] = sDateSave;
+    map[FieldMaster.sSaveTimeStamp] = sSaveTimeStamp;
     return map;
   }
 }
