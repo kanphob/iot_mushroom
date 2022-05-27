@@ -20,7 +20,7 @@ class CostMaterialHeadProvider with ChangeNotifier {
   }) async {
     List<ModelCostMat> list = [];
     await costRef
-        .where(FieldMaster.sMatUserUID, isEqualTo: sUIDUser)
+        .where(FieldMaster.sUserUID, isEqualTo: sUIDUser)
         .orderBy(
           FieldMaster.sDateSave,
         )

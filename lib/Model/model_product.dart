@@ -17,7 +17,7 @@ class ModelProduct {
     required Map<String, dynamic> json,
   }) {
     sUID = json[FieldMaster.sProdUID] ?? '';
-    sUserUID = json[FieldMaster.sProdUserUID] ?? '';
+    sUserUID = json[FieldMaster.sUserUID] ?? '';
     sTemperature = json[FieldMaster.sProdTem] ?? '';
     sMoisture = json[FieldMaster.sProdMoisture] ?? '';
     sLight = json[FieldMaster.sProdLight] ?? '';
@@ -33,7 +33,7 @@ class ModelProduct {
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = {};
     map[FieldMaster.sProdUID] = sUID;
-    map[FieldMaster.sProdUserUID] = sUserUID;
+    map[FieldMaster.sUserUID] = sUserUID;
     map[FieldMaster.sProdTem] = sTemperature;
     map[FieldMaster.sProdMoisture] = sMoisture;
     map[FieldMaster.sProdLight] = sLight;

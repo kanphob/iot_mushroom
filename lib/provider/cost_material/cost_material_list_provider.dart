@@ -51,8 +51,9 @@ class CostMatListProvider extends CostMaterialHeadProvider {
       for (var m in listItem) {
         if (txtSearch.text.isNotEmpty) {
           if (m.sSaveDateTime
-              .toLowerCase()
-              .contains(txtSearch.text.toLowerCase())) {
+                  .toLowerCase()
+                  .contains(txtSearch.text.toLowerCase()) ||
+              m.sItem.toLowerCase().contains(txtSearch.text.toLowerCase())) {
             lmFilter.add(m);
           }
         } else {

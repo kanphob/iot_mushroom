@@ -1,9 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:siwat_mushroom/API/functions.dart';
 import 'package:siwat_mushroom/Screen/cost_calculate_create.dart';
 import 'package:siwat_mushroom/Screen/cost_material/cost_material_list_screen.dart';
+import 'package:siwat_mushroom/Screen/income/income_list_screen.dart';
 import 'package:siwat_mushroom/Screen/product/daily_product_list_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:siwat_mushroom/Utils/std_widget.dart';
+import 'package:siwat_mushroom/login_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -58,7 +62,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _signOut() async {
     await FirebaseAuth.instance.signOut();
-    Navigator.pop(context);
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> const LoginScreen()));
   }
 
   checkOnTapMenu(int index) {
@@ -80,10 +84,15 @@ class _HomePageState extends State<HomePage> {
                     )));
         break;
       case 2:
-        null;
+        Functions.checkToken(context: context);
         break;
       case 3:
-        null;
+        Navigator.push(
+            context,
+            CupertinoPageRoute(
+                builder: (context) => IncomeListScreen(
+                  sUserID: sUserUid,
+                )));
         break;
       case 4:
         null;

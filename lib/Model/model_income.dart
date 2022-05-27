@@ -1,39 +1,24 @@
-
 import 'package:siwat_mushroom/Constant/field_master.dart';
 import 'package:siwat_mushroom/Constant/globals.dart';
 
-class ModelCostMaterial {
-  int index = 0;
-  String sUID = '';
-  String sUserUID = '';
-  String sMaterialName = '';
-  String sAmount = '';
-  String sUnitAmount = '';
-  String sMaterialPrice = '';
-  String sSaveDateTime = '';
-  String sSaveTimeStamp = '';
-}
-
-class ModelCostMat {
+class ModelIncome {
   String sUID = '';
   String sUserUID = '';
   String sSaveDateTime = '';
   String sSaveTimeStamp = '';
+  String sItem = '';
   String sTotalAmt = '0.00';
   double dTotalAmt = 0.00;
-  String sItem = '';
-  String sTypeCost = '';
-  String sCost = '';
+  String sIncomeType = '';
 
   formFireStore({
     required Map<String, dynamic> json,
   }) {
-    sUID = json[FieldMaster.sMatUID] ?? '';
+    sUID = json[FieldMaster.sIncomeUID] ?? '';
     sUserUID = json[FieldMaster.sUserUID] ?? '';
-    sItem = json[FieldMaster.sMatItem] ?? '';
-    sTypeCost = json[FieldMaster.sMatTypeCost] ?? '';
-    sCost = json[FieldMaster.sMatCost] ?? '';
-    sTotalAmt = json[FieldMaster.sMatAMT] ?? '';
+    sIncomeType = json[FieldMaster.sIncomeType] ?? '';
+    sItem = json[FieldMaster.sIncomeItem] ?? '';
+    sTotalAmt = json[FieldMaster.sIncomeAmt] ?? '';
     sSaveDateTime = json[FieldMaster.sDateSave] ?? '';
     String sSaveTime = json[FieldMaster.sSaveTimeStamp] ?? '';
     DateTime dtSave = DateTime.parse(sSaveTime);
@@ -42,14 +27,14 @@ class ModelCostMat {
 
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = {};
-    map[FieldMaster.sMatUID] = sUID;
+    map[FieldMaster.sIncomeUID] = sUID;
     map[FieldMaster.sUserUID] = sUserUID;
-    map[FieldMaster.sMatItem] = sItem;
-    map[FieldMaster.sMatTypeCost] = sTypeCost;
-    map[FieldMaster.sMatCost] = sCost;
-    map[FieldMaster.sMatAMT] = sTotalAmt;
+    map[FieldMaster.sIncomeType] = sIncomeType;
+    map[FieldMaster.sIncomeItem] = sItem;
+    map[FieldMaster.sIncomeAmt] = sTotalAmt;
     map[FieldMaster.sDateSave] = sSaveDateTime;
     map[FieldMaster.sSaveTimeStamp] = sSaveTimeStamp;
     return map;
   }
+
 }
