@@ -103,7 +103,7 @@ class IncomeFormScreen extends StatelessWidget {
   _buildTypeIncome(IncomeFormProvider data) {
     return data.widget.rowCol2(
       child: data.widget.txtBlack16(
-        sText: 'รายได้',
+        sText: 'ประเภท',
       ),
       child2: DropDownModel.dropDown(
         items: data.listType,

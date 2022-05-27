@@ -69,8 +69,12 @@ class CostMatListScreen extends StatelessWidget {
           Expanded(
             child: TextField(
               controller: prov.txtSearch,
-              decoration: const InputDecoration(
-                hintText: 'ค้นหา วว/ดด/ปป(คศ)',
+              decoration: InputDecoration(
+                hintText: 'ค้นหาชื่อรายการ หรือ วว/ดด/ปป(คศ)',
+                suffixIcon: prov.txtSearch.text.isEmpty?null: IconButton(onPressed: (){
+                  prov.txtSearch.clear();
+                  prov.notifyListeners();
+                }, icon: const Icon(Icons.close,color: Colors.red,)),
               ),
               onChanged: (val) => prov.onChangeSearch(),
               style: FontThai.text16BlackNormal,

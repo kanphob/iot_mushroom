@@ -64,8 +64,12 @@ class ExpenseListScreen extends StatelessWidget {
           Expanded(
             child: TextField(
               controller: data.txtSearch,
-              decoration: const InputDecoration(
-                hintText: 'ค้นหา วว/ดด/ปป(คศ)',
+              decoration: InputDecoration(
+                hintText: 'ค้นหาชื่อรายการ หรือ วว/ดด/ปป(คศ)',
+                suffixIcon: data.txtSearch.text.isEmpty?null: IconButton(onPressed: (){
+                  data.txtSearch.clear();
+                  data.notifyListeners();
+                }, icon: const Icon(Icons.close,color: Colors.red,)),
               ),
               onChanged: (val) => data.notifyListeners(),
               style: FontThai.text16BlackNormal,
@@ -163,7 +167,7 @@ class ExpenseListScreen extends StatelessWidget {
         data.widget.rowCol2(
           width1: 150,
           child: data.widget.txtBlack16(
-            sText: 'รายได้ :',
+            sText: 'ประเภท :',
           ),
           child2: data.widget.txtBlack16(
             sText: map[FieldMaster.sExpenseType],
