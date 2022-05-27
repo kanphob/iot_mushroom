@@ -27,6 +27,11 @@ class FieldMaster {
   static const String sIncomeType = 's_income_type';
   static const String sIncomeAmt = 's_income_amt';
 
+  // Expense
+  static const String sExpenseUID = 's_expense_uid';
+  static const String sExpenseItem = 's_expense_item';
+  static const String sExpenseType = 's_expense_type';
+  static const String sExpenseAmt = 's_expense_amt';
 
   // Item
   static const String sItemName = 's_item_name';

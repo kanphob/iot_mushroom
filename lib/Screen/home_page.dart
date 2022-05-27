@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:siwat_mushroom/API/functions.dart';
 import 'package:siwat_mushroom/Screen/cost_calculate_create.dart';
 import 'package:siwat_mushroom/Screen/cost_material/cost_material_list_screen.dart';
+import 'package:siwat_mushroom/Screen/expense/expense_list_screen.dart';
 import 'package:siwat_mushroom/Screen/income/income_list_screen.dart';
 import 'package:siwat_mushroom/Screen/product/daily_product_list_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -95,7 +96,12 @@ class _HomePageState extends State<HomePage> {
                 )));
         break;
       case 4:
-        null;
+        Navigator.push(
+            context,
+            CupertinoPageRoute(
+                builder: (context) => ExpenseListScreen(
+                  sUserID: sUserUid,
+                )));
         break;
       case 5:
         null;
