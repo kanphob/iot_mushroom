@@ -2,6 +2,7 @@
 import 'dart:collection';
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:siwat_mushroom/API/functions.dart';
 import 'package:siwat_mushroom/Constant/drop_down_data.dart';
@@ -85,7 +86,9 @@ class ExpenseFormProvider extends ExpenseHeadProvider {
   Future<void> setItem(String sItem) async {
     dynamic dJson = jsonDecode(sItem);
     List<dynamic> lItem = dJson;
-    print(dJson);
+    if (kDebugMode) {
+      print(dJson);
+    }
     for (int i = 0; i < lItem.length; i++) {
       dynamic temp = lItem[i];
       Map<String, dynamic> map = HashMap.from(temp);
@@ -150,13 +153,17 @@ class ExpenseFormProvider extends ExpenseHeadProvider {
   void onChangeQTY(String sVal, ModelItem item) {
     item.dQty = Functions.numberFromString(sVal);
     sumItem();
-    print('QTY : ${item.dQty}');
+    if (kDebugMode) {
+      print('QTY : ${item.dQty}');
+    }
   }
 
   void onChangePrice(String sVal, ModelItem item) {
     item.dPrice = Functions.numberFromString(sVal);
     sumItem();
-    print('Price : ${item.dPrice}');
+    if (kDebugMode) {
+      print('Price : ${item.dPrice}');
+    }
   }
 
   void sumItem() {

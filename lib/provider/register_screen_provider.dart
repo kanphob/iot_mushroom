@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 class RegisterScreenProvider with ChangeNotifier {
   BuildContext context;
   RegisterScreenProvider({required this.context});

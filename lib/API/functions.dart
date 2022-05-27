@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:siwat_mushroom/API/api_call.dart';
 import 'package:siwat_mushroom/Constant/field_master.dart';
@@ -27,7 +28,9 @@ class Functions {
             txtID: txtID,
             txtPW: txtPW,
             onSubmitLogin: () async {
-              print('${txtID.text} : ${txtPW.text}');
+              if (kDebugMode) {
+                print('${txtID.text} : ${txtPW.text}');
+              }
               String sResult = await APICall.httpGetForSignIn(
                   sUsername: txtID.text, sPassword: txtPW.text);
               if (sResult == 'Success') {

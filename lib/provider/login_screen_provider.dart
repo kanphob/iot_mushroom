@@ -33,7 +33,9 @@ class LoginScreenProvider with ChangeNotifier {
      prefs = await SharedPreferences.getInstance();
      String sSharePrefEmail = prefs.getString(FieldMaster.sharedPreferenceEmail)!;
      if(firebaseUID.isNotEmpty && sSharePrefEmail.isNotEmpty) {
-       print(sSharePrefEmail);
+       if (kDebugMode) {
+         print(sSharePrefEmail);
+       }
        Navigator.push(context, CupertinoPageRoute(builder: (context)=> const HomePage()));
      }
   }
@@ -116,7 +118,6 @@ class LoginScreenProvider with ChangeNotifier {
     String sResult = await APICall.httpGetForSignIn(
         sUsername: userIotIDController.text,
         sPassword: userPasswordController.text);
-    String sFirebaseSignInStatus = 'Fail';
 
     if (sResult == 'Success') {
       isInAsyncCall = false;

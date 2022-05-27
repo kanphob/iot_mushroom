@@ -117,9 +117,13 @@ class DailyProdFormProvider extends ProductHeadProvider {
   void syncDataIOT() async {
     Globals.sTokenIOT = '';
     bool bHave = await Functions.checkToken(context: context);
-    print('Have Token : $bHave');
+    if (kDebugMode) {
+      print('Have Token : $bHave');
+    }
     if (bHave) {
-      print('Token : ${Globals.sTokenIOT}');
+      if (kDebugMode) {
+        print('Token : ${Globals.sTokenIOT}');
+      }
       await APICall.httpGetForData();
     }
   }

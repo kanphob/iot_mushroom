@@ -53,7 +53,9 @@ class APICall {
           'dev_key': sDeviceKey,
           'status': 'true',
         });
-    print('$url');
+    if (kDebugMode) {
+      print('$url');
+    }
     var response = await http.get(url);
     if (response.statusCode == 200) {
       var jsonResponse =
@@ -87,7 +89,9 @@ class APICall {
           'startTs': dtNow.millisecondsSinceEpoch.toString(),
           'endTs': dtNow.millisecondsSinceEpoch.toString(),
         });
-    print('$url');
+    if (kDebugMode) {
+      print('$url');
+    }
     var response = await http.get(url);
     if (response.statusCode == 200) {
       var jsonResponse =
