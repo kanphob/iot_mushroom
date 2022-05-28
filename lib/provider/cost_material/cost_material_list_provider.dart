@@ -99,6 +99,21 @@ class CostMatListProvider extends CostMaterialHeadProvider {
         ),
       ),
     );
+  }
+
+  onTapEdit({
+    required ModelCostMat md,
+  }) async {
+    var result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CostMatFormScreen(
+          sUserID: sUserID,
+          model: md,
+          sMode: Globals.sModeEDIT,
+        ),
+      ),
+    );
     if (result != null) {
       listItem.clear();
       await loadDataFormServer();

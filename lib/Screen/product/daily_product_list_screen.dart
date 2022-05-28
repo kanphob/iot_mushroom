@@ -82,35 +82,6 @@ class DailyProdListScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildHead(DailyProdListProvider prov) {
-    return prov.widget.outlineHeadList(
-      child: Row(
-        children: [
-          Expanded(
-            child: Text(
-              'วันที่',
-              style: FontThai.text16WhiteNormal,
-              textAlign: TextAlign.center,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          Expanded(
-            child: prov.widget.imageIcon('assets/images/temperature.png'),
-          ),
-          Expanded(
-            child: prov.widget.imageIcon('assets/images/rainfall.png'),
-          ),
-          Expanded(
-            child: prov.widget.imageIcon('assets/images/sunny.png'),
-          ),
-          Expanded(
-            child: prov.widget.imageIcon('assets/images/co2.png'),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildItem(DailyProdListProvider prov) {
     if (prov.bLoadList) {
       return prov.widget.outlineListItem(
@@ -285,7 +256,13 @@ class DailyProdListScreen extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 8),
       child: Row(
         children: [
-          prov.widget.btnViewData(onPress: () => prov.onTapEdit(md: md)),
+          prov.widget.btnViewData(
+            onPress: () => prov.onTapView(md: md),
+          ),
+          prov.widget.w5,
+          prov.widget.btnEditData(
+            onPress: () => prov.onTapEdit(md: md),
+          ),
         ],
       ),
     );

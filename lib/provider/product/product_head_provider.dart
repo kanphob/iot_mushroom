@@ -68,4 +68,15 @@ class ProductHeadProvider with ChangeNotifier {
     });
     return iSuccess;
   }
+
+  Future<int> updateData({
+    required String sUIDDoc,
+    required Map<String, dynamic> data,
+  }) async {
+    int iSuccess = 0;
+    await prodRef.doc(sUIDDoc).update(data).then((value) {
+      iSuccess = 1;
+    });
+    return iSuccess;
+  }
 }

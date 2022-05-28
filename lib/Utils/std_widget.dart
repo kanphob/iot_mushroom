@@ -405,6 +405,22 @@ class STDWidget {
     );
   }
 
+  Widget btnEditData({
+    VoidCallback? onPress,
+  }) {
+    return ElevatedButton.icon(
+      onPressed: onPress,
+      label: txtWhite16(
+        sText: 'แก้ไข',
+      ),
+      icon: const Icon(
+        Icons.edit,
+        color: Colors.white,
+        size: 30,
+      ),
+    );
+  }
+
   Widget btnADItem({
     VoidCallback? onPressed,
     IconData icon = Icons.add,

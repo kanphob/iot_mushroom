@@ -204,7 +204,13 @@ class CostMatListScreen extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 8),
       child: Row(
         children: [
-          prov.widget.btnViewData(onPress: () => prov.onTapView(md: md)),
+          prov.widget.btnViewData(
+            onPress: () => prov.onTapView(md: md),
+          ),
+          prov.widget.w5,
+          prov.widget.btnEditData(
+            onPress: () => prov.onTapEdit(md: md),
+          ),
         ],
       ),
     );

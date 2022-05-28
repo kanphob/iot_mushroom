@@ -55,6 +55,17 @@ class CostMaterialHeadProvider with ChangeNotifier {
     return iSuccess;
   }
 
+  Future<int> updateData({
+    required String sUIDDoc,
+    required Map<String, dynamic> data,
+  }) async {
+    int iSuccess = 0;
+    await costRef.doc(sUIDDoc).update(data).then((value) {
+      iSuccess = 1;
+    });
+    return iSuccess;
+  }
+
   Map<String, String> valFormType(ModelCostMat md) {
     Map<String, String> data = {};
     List<DropDownData> listType = DropDownData.getDataTypeCost();

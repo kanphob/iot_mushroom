@@ -63,12 +63,12 @@ class CostMatFormProvider extends CostMaterialHeadProvider {
   Future<void> setDefault() async {
     scrollBody = ScrollController(initialScrollOffset: 0);
     listType = DropDownData.getDataTypeCost();
+    dtNow = DateTime.now();
     if (sMode == Globals.sModeADD) {
-      dtNow = DateTime.now();
       txtDateSave.text = Globals.dateFormatSave.format(dtNow);
       await setDataDropDown();
       addNewItem();
-    } else if (sMode == Globals.sModeVIEW) {
+    } else if (sMode == Globals.sModeVIEW || sMode == Globals.sModeEDIT) {
       mdHead = model!;
       txtDateSave.text = model!.sSaveDateTime;
       await setItem(mdHead.sItem);
@@ -214,15 +214,24 @@ class CostMatFormProvider extends CostMaterialHeadProvider {
       if (sMode == Globals.sModeADD) {
         var uuid = const Uuid();
         sUIDDoc = uuid.v4();
+        mdHead.sUserUID = sUserID;
+        mdHead.sUID = sUIDDoc;
+        mdHead.sSaveDateTime = txtDateSave.text;
+        mdHead.sSaveTimeStamp = dtNow.toIso8601String();
+        mdHead.sItem = await Functions.genItemToJson(listItem);
+      } else {
+        mdHead.sSaveTimeStamp = dtNow.toIso8601String();
+        mdHead.sItem = await Functions.genItemToJson(listItem);
       }
-      mdHead.sUserUID = sUserID;
-      mdHead.sUID = sUIDDoc;
-      mdHead.sSaveDateTime = txtDateSave.text;
-      mdHead.sSaveTimeStamp = dtNow.toIso8601String();
-      mdHead.sItem = await Functions.genItemToJson(listItem);
       Map<String, dynamic> data = mdHead.toMap();
+      print(jsonEncode(data));
       if (data.isNotEmpty) {
-        int iSuccess = await saveData(sUIDDoc: sUIDDoc, data: data);
+        int iSuccess = 0;
+        if (sMode == Globals.sModeADD) {
+          iSuccess = await saveData(sUIDDoc: mdHead.sUID, data: data);
+        } else {
+          iSuccess = await updateData(sUIDDoc: mdHead.sUID, data: data);
+        }
         if (iSuccess == 1) Navigator.pop(context, true);
       }
     }

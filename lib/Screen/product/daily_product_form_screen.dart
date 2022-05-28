@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:siwat_mushroom/Constant/globals.dart';
 import 'package:siwat_mushroom/Model/model_product.dart';
 import 'package:siwat_mushroom/Utils/font_thai.dart';
 import 'package:siwat_mushroom/provider/product/daily_product_fom_provider.dart';
@@ -10,11 +11,13 @@ import 'package:siwat_mushroom/provider/product/daily_product_fom_provider.dart'
 class DailyProdFormScreen extends StatelessWidget {
   final String sUserID;
   final ModelProduct? model;
+  final String? sMode;
 
   const DailyProdFormScreen({
     Key? key,
     required this.sUserID,
     this.model,
+    this.sMode,
   }) : super(key: key);
 
   @override
@@ -26,6 +29,7 @@ class DailyProdFormScreen extends StatelessWidget {
             context: context,
             sUserID: sUserID,
             model: model,
+            sMode: sMode,
           ),
         ),
       ],
@@ -46,6 +50,13 @@ class DailyProdFormScreen extends StatelessWidget {
                     'ระบบบันทึกข้อมูลรายวัน',
                     style: FontThai.text18WhiteBold,
                   ),
+                  actions: [
+                    if (sMode != Globals.sModeVIEW)
+                      prov.widget.btnSaveDoc(
+                        onPressed: () => prov.onSave(),
+                      ),
+                    if (sMode != Globals.sModeVIEW) prov.widget.w5,
+                  ],
                 ),
                 body: Scrollbar(
                   controller: prov.scrollBody,
@@ -71,12 +82,6 @@ class DailyProdFormScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                floatingActionButton: !prov.bLoadData
-                    ? FloatingActionButton(
-                        onPressed: () => prov.onSave(),
-                        child: const Icon(Icons.save),
-                      )
-                    : null,
               );
             }
           },

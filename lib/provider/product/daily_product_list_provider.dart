@@ -78,6 +78,7 @@ class DailyProdListProvider extends ProductHeadProvider {
       MaterialPageRoute(
         builder: (context) => DailyProdFormScreen(
           sUserID: sUserID,
+          sMode: Globals.sModeADD,
         ),
       ),
     );
@@ -88,18 +89,39 @@ class DailyProdListProvider extends ProductHeadProvider {
     }
   }
 
-  onTapEdit({
+  onTapView({
     required ModelProduct md,
   }) async {
-    await Navigator.push(
+    var result = await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => DailyProdFormScreen(
           sUserID: sUserID,
           model: md,
+          sMode: Globals.sModeVIEW,
         ),
       ),
     );
+  }
+
+  onTapEdit({
+    required ModelProduct md,
+  }) async {
+    var result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => DailyProdFormScreen(
+          sUserID: sUserID,
+          model: md,
+          sMode: Globals.sModeEDIT,
+        ),
+      ),
+    );
+    if (result != null) {
+      listItem.clear();
+      await loadDataFormServer();
+      notifyListeners();
+    }
   }
 
   void removeSnackBar() {

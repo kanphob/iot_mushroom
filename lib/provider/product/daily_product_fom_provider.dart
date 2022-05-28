@@ -15,11 +15,13 @@ class DailyProdFormProvider extends ProductHeadProvider {
   final BuildContext context;
   final String sUserID;
   final ModelProduct? model;
+  final String? sMode;
 
   DailyProdFormProvider({
     required this.context,
     required this.sUserID,
     this.model,
+    this.sMode,
   }) {
     initProvider();
   }
@@ -60,10 +62,14 @@ class DailyProdFormProvider extends ProductHeadProvider {
   Future<void> setDefault() async {
     scrollBody = ScrollController(initialScrollOffset: 0);
     dtNow = DateTime.now();
-    txtDateSave.text = Globals.dateFormatSave.format(dtNow);
-    iRound = await getRound(sUIDUser: sUserID);
-    var uuid = const Uuid();
-    sUIDDoc = uuid.v4();
+    if (sMode == Globals.sModeADD) {
+      txtDateSave.text = Globals.dateFormatSave.format(dtNow);
+      iRound = await getRound(sUIDUser: sUserID);
+      var uuid = const Uuid();
+      sUIDDoc = uuid.v4();
+    } else {
+      sUIDDoc = model!.sUID;
+    }
     createFocusNode(fn: fnTemp, ctrl: txtTemp);
     createFocusNode(fn: fnMoi, ctrl: txtMoi);
     createFocusNode(fn: fnLight, ctrl: txtLight);
@@ -131,7 +137,12 @@ class DailyProdFormProvider extends ProductHeadProvider {
   void onSave() async {
     Map<String, dynamic> data = await genDataFormInput();
     if (data.isNotEmpty) {
-      int iSuccess = await saveData(sUIDDoc: sUIDDoc, data: data);
+      int iSuccess = 0;
+      if (sMode == Globals.sModeADD) {
+        iSuccess = await saveData(sUIDDoc: sUIDDoc, data: data);
+      } else {
+        iSuccess = await updateData(sUIDDoc: sUIDDoc, data: data);
+      }
       if (iSuccess == 1) Navigator.pop(context, true);
     }
     if (kDebugMode) {
