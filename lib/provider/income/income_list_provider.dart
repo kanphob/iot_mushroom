@@ -76,4 +76,23 @@ class IncomeListProvider extends IncomeHeadProvider{
     }
   }
 
+  onTapEdit({
+    required ModelIncome md,
+  }) async {
+    var result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => IncomeFormScreen(
+          sUserID: sUserID,
+          model: md,
+          sMode: Globals.sModeEDIT,
+        ),
+      ),
+    );
+    if (result != null) {
+      listItem.clear();
+      await loadDataFormServer();
+      notifyListeners();
+    }
+  }
 }

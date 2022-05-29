@@ -76,4 +76,23 @@ class ExpenseListProvider extends ExpenseHeadProvider{
     }
   }
 
+  onTapEdit({
+    required ModelExpense md,
+  }) async {
+    var result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ExpenseFormScreen(
+          sUserID: sUserID,
+          model: md,
+          sMode: Globals.sModeEDIT,
+        ),
+      ),
+    );
+    if (result != null) {
+      listItem.clear();
+      await loadDataFormServer();
+      notifyListeners();
+    }
+  }
 }

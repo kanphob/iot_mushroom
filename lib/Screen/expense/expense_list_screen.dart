@@ -202,6 +202,10 @@ class ExpenseListScreen extends StatelessWidget {
       child: Row(
         children: [
           prov.widget.btnViewData(onPress: () => prov.onTapView(md: md)),
+          prov.widget.w5,
+          prov.widget.btnEditData(
+            onPress: () => prov.onTapEdit(md: md),
+          ),
         ],
       ),
     );

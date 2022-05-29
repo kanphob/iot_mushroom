@@ -62,12 +62,12 @@ class IncomeFormProvider extends IncomeHeadProvider {
   Future<void> setDefault() async {
     scrollBody = ScrollController(initialScrollOffset: 0);
     listType = DropDownData.getDataIncome();
+    dtNow = DateTime.now();
     if (sMode == Globals.sModeADD) {
-      dtNow = DateTime.now();
       txtDateSave.text = Globals.dateFormatSave.format(dtNow);
       await setDataDropDown();
       addNewItem();
-    } else if (sMode == Globals.sModeVIEW) {
+    } else if (sMode == Globals.sModeVIEW || sMode == Globals.sModeEDIT) {
       mdHead = model!;
       txtDateSave.text = model!.sSaveDateTime;
       await setItem(mdHead.sItem);
@@ -191,6 +191,8 @@ class IncomeFormProvider extends IncomeHeadProvider {
       if (sMode == Globals.sModeADD) {
         var uuid = const Uuid();
         sUIDDoc = uuid.v4();
+      } else {
+        sUIDDoc = mdHead.sUID;
       }
       mdHead.sUserUID = sUserID;
       mdHead.sUID = sUIDDoc;

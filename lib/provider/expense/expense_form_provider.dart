@@ -62,15 +62,18 @@ class ExpenseFormProvider extends ExpenseHeadProvider {
   Future<void> setDefault() async {
     scrollBody = ScrollController(initialScrollOffset: 0);
     listType = DropDownData.getDataExpense();
+    dtNow = DateTime.now();
     if (sMode == Globals.sModeADD) {
-      dtNow = DateTime.now();
       txtDateSave.text = Globals.dateFormatSave.format(dtNow);
       await setDataDropDown();
       addNewItem();
-    } else if (sMode == Globals.sModeVIEW) {
+    } else if (sMode == Globals.sModeVIEW || sMode == Globals.sModeEDIT) {
       mdHead = model!;
       txtDateSave.text = model!.sSaveDateTime;
       await setItem(mdHead.sItem);
+      if (mdHead.sExpenseType == 'REX') {
+        iType = 1;
+      }
       listExpense = DropDownData.getDataExpense();
     }
   }
@@ -191,6 +194,8 @@ class ExpenseFormProvider extends ExpenseHeadProvider {
       if (sMode == Globals.sModeADD) {
         var uuid = const Uuid();
         sUIDDoc = uuid.v4();
+      } else {
+        sUIDDoc = mdHead.sUID;
       }
       mdHead.sUserUID = sUserID;
       mdHead.sUID = sUIDDoc;
