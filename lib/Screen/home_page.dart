@@ -1,13 +1,13 @@
+import 'dart:io';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:siwat_mushroom/API/functions.dart';
-import 'package:siwat_mushroom/Screen/cost_calculate_create.dart';
 import 'package:siwat_mushroom/Screen/cost_material/cost_material_list_screen.dart';
 import 'package:siwat_mushroom/Screen/expense/expense_list_screen.dart';
 import 'package:siwat_mushroom/Screen/income/income_list_screen.dart';
+import 'package:siwat_mushroom/Screen/iot_hw/iot_hw_list.dart';
 import 'package:siwat_mushroom/Screen/product/daily_product_list_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:siwat_mushroom/Utils/std_widget.dart';
 import 'package:siwat_mushroom/login_screen.dart';
 
 class HomePage extends StatefulWidget {
@@ -66,47 +66,47 @@ class _HomePageState extends State<HomePage> {
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> const LoginScreen()));
   }
 
-  checkOnTapMenu(int index) {
+  checkOnTapMenu(int index) async {
     switch (index) {
       case 0:
-        Navigator.push(
-          context,
-          CupertinoPageRoute(
-            builder: (context) => DailyProdListScreen(sUserID: sUserUid),
-          ),
-        );
+        await navigator(DailyProdListScreen(sUserID: sUserUid));
         break;
       case 1:
-        Navigator.push(
-            context,
-            CupertinoPageRoute(
-                builder: (context) => CostMatListScreen(
-                      sUserID: sUserUid,
-                    )));
+        await navigator(CostMatListScreen(
+          sUserID: sUserUid,
+        ));
         break;
       case 2:
-        Functions.checkToken(context: context);
+        await navigator(const IOTHwListPage());
         break;
       case 3:
-        Navigator.push(
-            context,
-            CupertinoPageRoute(
-                builder: (context) => IncomeListScreen(
-                  sUserID: sUserUid,
-                )));
+        await navigator(IncomeListScreen(
+          sUserID: sUserUid,
+        ));
         break;
       case 4:
-        Navigator.push(
-            context,
-            CupertinoPageRoute(
-                builder: (context) => ExpenseListScreen(
-                  sUserID: sUserUid,
-                )));
+        await navigator(ExpenseListScreen(
+          sUserID: sUserUid,
+        ));
         break;
       case 5:
         null;
         break;
     }
+  }
+
+  Future<dynamic> navigator(Widget page) async {
+    Route route;
+    if (Platform.isAndroid) {
+      route = MaterialPageRoute(
+        builder: (context) => page,
+      );
+    } else {
+      route = CupertinoPageRoute(
+        builder: (context) => page,
+      );
+    }
+    return await Navigator.push(context, route);
   }
 
   setListMenu() {
@@ -215,6 +215,6 @@ class ModelMenuItem {
   String sImageUrl;
   String sMenuName;
   int index;
-  ModelMenuItem(
-      {required this.sImageUrl, required this.sMenuName, required this.index});
+
+  ModelMenuItem({required this.sImageUrl, required this.sMenuName, required this.index});
 }

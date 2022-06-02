@@ -18,8 +18,8 @@ class Functions {
       bHaveToken = true;
     } else {
       TextEditingController txtID = TextEditingController(
-        text: 'Mushroom',
-      ),
+            text: 'Mushroom',
+          ),
           txtPW = TextEditingController(text: '1234');
       await showDialog(
         context: context,
@@ -28,27 +28,31 @@ class Functions {
             txtID: txtID,
             txtPW: txtPW,
             onSubmitLogin: () async {
-              if (kDebugMode) {
-                print('${txtID.text} : ${txtPW.text}');
-              }
+              // if (kDebugMode) {
+              //   print('${txtID.text} : ${txtPW.text}');
+              // }
               String sResult = await APICall.httpGetForSignIn(
                   sUsername: txtID.text, sPassword: txtPW.text);
               if (sResult == 'Success') {
-                removeSnackBar(context);
-                bHaveToken = true;
-                Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('ได้ รับ Token สำเร็จ'),
-                  ),
-                );
+                await Future.delayed(const Duration(microseconds: 200), () {
+                  removeSnackBar(context);
+                  bHaveToken = true;
+                  navigatorPop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('ได้ รับ Token สำเร็จ'),
+                    ),
+                  );
+                });
               } else {
-                removeSnackBar(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('ID ผู้ใช้งาน หรือ รหัสผ่านไม่ถูกต้อง'),
-                  ),
-                );
+                await Future.delayed(Duration.zero, () {
+                  removeSnackBar(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('ID ผู้ใช้งาน หรือ รหัสผ่านไม่ถูกต้อง'),
+                    ),
+                  );
+                });
               }
             },
           );
@@ -56,6 +60,10 @@ class Functions {
       );
     }
     return bHaveToken;
+  }
+
+  static navigatorPop(BuildContext context) {
+    Navigator.pop(context);
   }
 
   static void removeSnackBar(BuildContext context) {

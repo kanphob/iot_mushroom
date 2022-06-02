@@ -14,6 +14,7 @@ class STDWidget {
   );
   final EdgeInsets edgeAll8 = const EdgeInsets.all(8.0);
   final Duration duration400m = const Duration(milliseconds: 400);
+  final Duration duration200m = const Duration(milliseconds: 200);
 
   final Divider divider = Divider(
     color: Colors.blue.shade800,
@@ -50,7 +51,6 @@ class STDWidget {
                 padding: const EdgeInsets.only(left: 20.0, right: 20.0),
                 child: TextFormField(
                   controller: txtID,
-                  autofocus: true,
                   style: const TextStyle(
                     fontSize: 18.0,
                     color: Color(0xff3e4a59),
@@ -78,7 +78,6 @@ class STDWidget {
                     TextFormField(
                       controller: txtPW,
                       readOnly: false,
-                      autofocus: true,
                       style: const TextStyle(
                         fontSize: 18.0,
                         color: Color(0xff3e4a59),

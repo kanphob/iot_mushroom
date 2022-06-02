@@ -80,19 +80,22 @@ class APICall {
     String sDevId = "466a9d20-832a-11ec-bbb0-65317744a1a2";
     String sDevKey = "temp_1";
     var url = Uri(
-        scheme: 'http',
-        host: 'iot.farmdasia.com',
-        path: '/apis/get_tm.aspx',
-        queryParameters: {
-          'dev_id': sDevId,
-          'dev_key': sDevKey,
-          'startTs': dtNow.millisecondsSinceEpoch.toString(),
-          'endTs': dtNow.millisecondsSinceEpoch.toString(),
-        });
+      scheme: 'http',
+      host: 'iot.farmdasia.com',
+      path: '/apis/get_tm.aspx',
+      queryParameters: {
+        'dev_id': sDevId,
+        'dev_key': sDevKey,
+        'startTs': dtNow.millisecondsSinceEpoch.toString(),
+        'endTs': dtNow.millisecondsSinceEpoch.toString(),
+      },
+    );
     if (kDebugMode) {
       print('$url');
     }
-    var response = await http.get(url);
+    var response = await http.get(
+      url,
+    );
     if (response.statusCode == 200) {
       var jsonResponse =
           convert.jsonDecode(response.body) as Map<String, dynamic>;
