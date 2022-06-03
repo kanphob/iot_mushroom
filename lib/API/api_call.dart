@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
@@ -23,7 +25,7 @@ class APICall {
     var response = await http.get(url);
     if (response.statusCode == 200) {
       var jsonResponse =
-          convert.jsonDecode(response.body) as Map<String, dynamic>;
+      convert.jsonDecode(response.body) as Map<String, dynamic>;
       Globals.sTokenIOT = jsonResponse['token'];
       if (kDebugMode) {
         print('response : ${response.body}.');
@@ -37,30 +39,32 @@ class APICall {
     return sResult;
   }
 
-  static Future<String> httpGetForDeviceValue({
-    required String sDeviceID,
-    required String sDeviceKey,
-  }) async {
-    String sPRT = "drive";
+  static Future<String> httpGetForDeviceValue() async {
+    String sPRT = "get";
     String sResult = "";
     var url = Uri(
-        scheme: 'http',
-        host: 'iot.farmdasia.com',
-        path: '/apis/drive_io.aspx',
-        queryParameters: {
-          'prt': sPRT,
-          'dev_id': sDeviceID,
-          'dev_key': sDeviceKey,
-          'status': 'true',
-        });
+      scheme: 'http',
+      host: 'iot.farmdasia.com',
+      path: '/apis/drive_io.aspx',
+      queryParameters: {
+        'prt': sPRT,
+        'dev_id': '466a9d20-832a-11ec-bbb0-65317744a1a2	',
+        'dev_key': 'temp_1',
+      },
+    );
     if (kDebugMode) {
       print('$url');
     }
-    var response = await http.get(url);
+    var response = await http.get(
+      url,
+      headers: {
+        HttpHeaders.authorizationHeader: Globals.sTokenIOT,
+      },
+    );
     if (response.statusCode == 200) {
+      print(response.body);
       var jsonResponse =
           convert.jsonDecode(response.body) as Map<String, dynamic>;
-
       if (kDebugMode) {
         print('response : ${response.body}.');
       }
@@ -98,7 +102,7 @@ class APICall {
     );
     if (response.statusCode == 200) {
       var jsonResponse =
-          convert.jsonDecode(response.body) as Map<String, dynamic>;
+      convert.jsonDecode(response.body) as Map<String, dynamic>;
 
       if (kDebugMode) {
         print('response : ${response.body}.');

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:siwat_mushroom/API/api_call.dart';
 import 'package:siwat_mushroom/API/functions.dart';
 import 'package:siwat_mushroom/Constant/globals.dart';
 import 'package:siwat_mushroom/Utils/std_widget.dart';
@@ -21,6 +22,7 @@ class IOTHwHeader with ChangeNotifier {
     // Globals.sTokenIOT = '';
     bool bResult = await Functions.checkToken(context: context);
     if (bResult) {
+      await APICall.httpGetForDeviceValue();
       bFirst = false;
       notifyListeners();
     }
