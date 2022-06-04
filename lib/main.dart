@@ -15,6 +15,8 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
+
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -22,43 +24,43 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'IOT MUSHROOM',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        useMaterial3: true,
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.blue,
-        ),
-        scrollbarTheme: ScrollbarThemeData(
-          thickness: MaterialStateProperty.all(8.00),
-          trackVisibility: MaterialStateProperty.all(true),
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            primary: Colors.blue.shade900,
+        title: 'IOT MUSHROOM',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          useMaterial3: true,
+          appBarTheme: const AppBarTheme(
+            backgroundColor: Colors.blue,
+          ),
+          scrollbarTheme: ScrollbarThemeData(
+            thickness: MaterialStateProperty.all(8.00),
+            trackVisibility: MaterialStateProperty.all(true),
+          ),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              primary: Colors.blue.shade900,
+            ),
+          ),
+          inputDecorationTheme: InputDecorationTheme(
+            isDense: true,
+            border: const OutlineInputBorder(),
+            enabledBorder: const OutlineInputBorder(),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.blue.shade800),
+            ),
+            errorBorder: const OutlineInputBorder(),
           ),
         ),
-        inputDecorationTheme: InputDecorationTheme(
-          isDense: true,
-          border: const OutlineInputBorder(),
-          enabledBorder: const OutlineInputBorder(),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.blue.shade800),
-          ),
-          errorBorder: const OutlineInputBorder(),
+        home: StreamBuilder<User?>(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (_, snapshot) {
+            if (!snapshot.hasData) {
+              return const LoginScreen();
+            } else {
+              return const HomePage();
+            }
+          },
         ),
-      ),
-      home: StreamBuilder<User?>(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (_, snapshot) {
-          if (!snapshot.hasData) {
-            return const LoginScreen();
-          } else {
-            return const HomePage();
-          }
-        },
-      ),
     );
   }
 

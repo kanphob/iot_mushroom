@@ -7,6 +7,14 @@ import 'dart:convert' as convert;
 import 'package:siwat_mushroom/Constant/globals.dart';
 
 class APICall {
+
+  static Map<String, String> requestHeaders = {
+    'Content-type': 'application/json',
+    'Accept': 'application/json',
+    'Authorization': Globals.sTokenIOT
+  };
+
+
   static Future<String> httpGetForSignIn({
     required String sUsername,
     required String sPassword,
@@ -48,7 +56,7 @@ class APICall {
       path: '/apis/drive_io.aspx',
       queryParameters: {
         'prt': sPRT,
-        'dev_id': '466a9d20-832a-11ec-bbb0-65317744a1a2	',
+        'dev_id': '466a9d20-832a-11ec-bbb0-65317744a1a2',
         'dev_key': 'temp_1',
       },
     );
@@ -57,9 +65,7 @@ class APICall {
     }
     var response = await http.get(
       url,
-      headers: {
-        HttpHeaders.authorizationHeader: Globals.sTokenIOT,
-      },
+      headers: requestHeaders,
     );
     if (response.statusCode == 200) {
       print(response.body);
@@ -97,8 +103,10 @@ class APICall {
     if (kDebugMode) {
       print('$url');
     }
+
     var response = await http.get(
       url,
+      headers: requestHeaders
     );
     if (response.statusCode == 200) {
       var jsonResponse =
