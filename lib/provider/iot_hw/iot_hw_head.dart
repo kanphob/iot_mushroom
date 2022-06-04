@@ -22,7 +22,9 @@ class IOTHwHeader with ChangeNotifier {
     // Globals.sTokenIOT = '';
     bool bResult = await Functions.checkToken(context: context);
     if (bResult) {
-      await APICall.httpGetForDeviceValue();
+      String sDevKeyTest = 'temp_1';
+      String sOnOffDevKeyTest = 'IO1';
+      await APICall.httpGetForDeviceValue(sDevKey: sDevKeyTest);
       bFirst = false;
       notifyListeners();
     }

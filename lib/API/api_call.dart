@@ -47,7 +47,7 @@ class APICall {
     return sResult;
   }
 
-  static Future<String> httpGetForDeviceValue() async {
+  static Future<String> httpGetForDeviceValue({String? sDevKey}) async {
     String sPRT = "get";
     String sResult = "";
     var url = Uri(
@@ -57,7 +57,7 @@ class APICall {
       queryParameters: {
         'prt': sPRT,
         'dev_id': '466a9d20-832a-11ec-bbb0-65317744a1a2',
-        'dev_key': 'temp_1',
+        'dev_key': sDevKey,
       },
     );
     if (kDebugMode) {
@@ -71,6 +71,50 @@ class APICall {
       print(response.body);
       var jsonResponse =
           convert.jsonDecode(response.body) as Map<String, dynamic>;
+      if (kDebugMode) {
+        print('response : ${response.body}.');
+      }
+      sResult = jsonResponse['status'] ?? "";
+    } else {
+      if (kDebugMode) {
+        print('Request failed with status: ${response.statusCode}.');
+      }
+    }
+
+    return sResult;
+  }
+
+  static Future<String> httpCommandOnOff({String? sDevKey,bool bOpen = false}) async {
+    String sPRT = "drive";
+    String sResult = "";
+    String sStatus = "";
+    if(bOpen){
+      sStatus = 'true';
+    }else{
+      sStatus = 'false';
+    }
+    var url = Uri(
+      scheme: 'http',
+      host: 'iot.farmdasia.com',
+      path: '/apis/drive_io.aspx',
+      queryParameters: {
+        'prt': sPRT,
+        'dev_id': '466a9d20-832a-11ec-bbb0-65317744a1a2',
+        'dev_key': sDevKey,
+        'status': sStatus
+      },
+    );
+    if (kDebugMode) {
+      print('$url');
+    }
+    var response = await http.get(
+      url,
+      headers: requestHeaders,
+    );
+    if (response.statusCode == 200) {
+      print(response.body);
+      var jsonResponse =
+      convert.jsonDecode(response.body) as Map<String, dynamic>;
       if (kDebugMode) {
         print('response : ${response.body}.');
       }
