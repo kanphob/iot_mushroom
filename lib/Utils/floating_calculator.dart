@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:siwat_mushroom/Constant/globals.dart';
+import 'package:iot_mushroom/Constant/globals.dart';
 
 //ignore: must_be_immutable
 class FloatCalculator extends StatefulWidget {

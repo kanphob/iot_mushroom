@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:siwat_mushroom/provider/register_screen_provider.dart';
+import 'package:iot_mushroom/provider/register_screen_provider.dart';
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -269,13 +269,14 @@ class RegisterScreen extends StatelessWidget {
                                 onPressed: () async {
                                   if (data.loginFormKey.currentState!
                                       .validate()) {
+                                    final navigator = Navigator.of(context);
                                     String sResult =
                                         await data.createAccountFirebaseAuth();
                                     if (sResult == 'Success') {
                                       String sEmail = data.userEmailController.text;
                                       String sPassword = data.userPasswordController.text;
                                       List<String> listUser = [sEmail,sPassword];
-                                      Navigator.pop(context, listUser);
+                                      navigator.pop(listUser);
                                     }
                                   }
                                 },

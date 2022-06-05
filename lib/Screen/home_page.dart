@@ -1,220 +1,422 @@
-import 'dart:io';
-
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:siwat_mushroom/Screen/cost_material/cost_material_list_screen.dart';
-import 'package:siwat_mushroom/Screen/expense/expense_list_screen.dart';
-import 'package:siwat_mushroom/Screen/income/income_list_screen.dart';
-import 'package:siwat_mushroom/Screen/iot_hw/iot_hw_list.dart';
-import 'package:siwat_mushroom/Screen/product/daily_product_list_screen.dart';
-import 'package:siwat_mushroom/login_screen.dart';
+import 'package:iot_mushroom/provider/home_page_provider.dart';
+import 'package:iot_mushroom/provider/home_page_statistic_provider.dart';
+import 'package:pie_chart/pie_chart.dart';
+import 'package:iot_mushroom/Constant/globals.dart';
+import 'package:iot_mushroom/Utils/utils.dart';
+import 'package:provider/provider.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
+import 'dart:math' as math;
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   const HomePage({
     Key? key,
   }) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState();
+  Widget build(BuildContext context) {
+    return Consumer<HomePageProvider>(builder: (ctx, data, child) {
+      return SafeArea(
+          child: Scaffold(
+              body: SizedBox(
+        height: MediaQuery.of(context).size.height,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      const Icon(Icons.account_box),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        data.sUserEmail,
+                        style: const TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
+                  TextButton.icon(
+                      onPressed: () {
+                        data.signOut();
+                      },
+                      icon: Icon(
+                        Icons.exit_to_app,
+                        color: Colors.blue.shade700,
+                      ),
+                      label: Text(
+                        "ออกจากระบบ",
+                        style: TextStyle(
+                            color: Colors.blue.shade700,
+                            fontWeight: FontWeight.w600),
+                      ))
+                ],
+              ),
+            ),
+            Expanded(
+              flex: 4,
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                child: GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3),
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: data.listWidget.length,
+                  itemBuilder: (context, index) {
+                    return data.listWidget[index];
+                  },
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 5,
+              child: buildStatisticWidget(),
+            ),
+          ],
+        ),
+      )));
+    });
+  }
+
+  Widget buildStatisticWidget() {
+    return Consumer<HomePageStatisticProvider>(builder: (context, data, child) {
+      return data.bDownloading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : data.waitResult > 0
+              ? Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+                  child: SingleChildScrollView(
+                      child: !data.bBarChart
+                          ? buildPieChart(context, data)
+                          : buildBarChart(context, data)),
+                )
+              : Container();
+    });
+  }
+
+  Widget buildPieChart(BuildContext context, HomePageStatisticProvider data) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 5),
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    children: [
+                      const Text(
+                        "ภาพรวม",
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.green.shade100.withOpacity(0.4),
+                            border: Border.all(
+                                color: Colors.green.shade300.withOpacity(0.5)),
+                            borderRadius: BorderRadius.circular(5)),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            value: data.dropYear,
+                            onChanged: (String? newValue) async {
+                              await data.onChangeDropdown(newValue!);
+                            },
+                            items: data.listYear
+                                .map<DropdownMenuItem<String>>((String value) {
+                              int dValue = int.parse(value);
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: SizedBox(
+                                  width: 75, // for example
+                                  child: Text(
+                                    (dValue).toString(),
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(fontSize: 16),
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.green),
+                    borderRadius: BorderRadius.circular(5)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//                  mainAxisSize: MainAxisSize.max,
+                  children: <Widget>[
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: data.bBarChart
+                                ? Colors.white
+                                : Colors.green.shade100,
+                            borderRadius: BorderRadius.circular(5)),
+                        width: MediaQuery.of(context).size.width / 2,
+                        child: IconButton(
+                            icon: Icon(
+                              Icons.pie_chart,
+                              color: data.bBarChart
+                                  ? Colors.grey.shade400
+                                  : Colors.white,
+                              size: 35,
+                            ),
+                            onPressed: () async {
+                              await data.onChangeChartType(isBarChart: false);
+                            }),
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: data.bBarChart
+                                ? Colors.green.shade100
+                                : Colors.white,
+                            borderRadius: BorderRadius.circular(5)),
+                        child: IconButton(
+                            icon: Icon(
+                              Icons.insert_chart,
+                              color: data.bBarChart
+                                  ? Colors.white
+                                  : Colors.grey.shade400,
+                              size: 35,
+                            ),
+                            onPressed: () async {
+                              await data.onChangeChartType(isBarChart: true);
+                            }),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+        Container(
+          width: MediaQuery.of(context).size.width,
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: PieChart(
+            dataMap: data.dataMap,
+            legendOptions: LegendOptions(
+                legendTextStyle: TextStyle(
+                    fontSize: 18,
+                    color: Colors.blueGrey[900],
+                    fontWeight: FontWeight.w500),
+                showLegends: true,
+                showLegendsInRow: false,
+                legendPosition: LegendPosition.right),
+            chartValuesOptions: const ChartValuesOptions(
+              showChartValuesInPercentage: true,
+              showChartValueBackground: false,
+              showChartValues: true,
+              decimalPlaces: 0,
+              showChartValuesOutside: true,
+              chartValueBackgroundColor: Colors.blueGrey,
+            ),
+            animationDuration: const Duration(milliseconds: 1200),
+            chartLegendSpacing: 32.0,
+            chartRadius: MediaQuery.of(context).size.width / 2.0,
+            colorList: data.defaultColorList,
+            initialAngleInDegree: math.pi * 0.5,
+          ),
+        ),
+        const SizedBox(height: 5),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            const Text(
+              "ยอดคงเหลือ : ",
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+            ),
+            Text(
+              "${Utils.numberFormatter(data.dSumAll)} ฿",
+              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+            ),
+          ],
+        )
+      ],
+    );
+  }
+
+  Widget buildBarChart(BuildContext context, HomePageStatisticProvider data) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 5),
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    children: [
+                      const Text(
+                        "ภาพรวม",
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.green.shade100.withOpacity(0.4),
+                            border: Border.all(
+                                color: Colors.green.shade300.withOpacity(0.5)),
+                            borderRadius: BorderRadius.circular(5)),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            value: data.dropYear,
+                            onChanged: (String? newValue) async {
+                              await data.onChangeDropdown(newValue!);
+                            },
+                            items: data.listYear
+                                .map<DropdownMenuItem<String>>((String value) {
+                              int dValue = int.parse(value);
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: SizedBox(
+                                  width: 75, // for example
+                                  child: Text(
+                                    (dValue).toString(),
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(fontSize: 16),
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.green),
+                    borderRadius: BorderRadius.circular(5)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//                  mainAxisSize: MainAxisSize.max,
+                  children: <Widget>[
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: data.bBarChart
+                                ? Colors.white
+                                : Colors.green.shade100,
+                            borderRadius: BorderRadius.circular(5)),
+                        child: IconButton(
+                            icon: Icon(
+                              Icons.pie_chart,
+                              color: data.bBarChart
+                                  ? Colors.grey.shade400
+                                  : Colors.white,
+                              size: 35,
+                            ),
+                            onPressed: () async {
+                              await data.onChangeChartType(isBarChart: false);
+                            }),
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: data.bBarChart
+                                ? Colors.green.shade100
+                                : Colors.white,
+                            borderRadius: BorderRadius.circular(5)),
+                        child: IconButton(
+                            icon: Icon(
+                              Icons.insert_chart,
+                              color: data.bBarChart
+                                  ? Colors.white
+                                  : Colors.grey.shade400,
+                              size: 35,
+                            ),
+                            onPressed: () async {
+                              await data.onChangeChartType(isBarChart: true);
+                            }),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: SimpleBarChart(data.createSampleData()),
+        ),
+        const SizedBox(height: 5),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            const Text(
+              "ยอดคงเหลือ : ",
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+            ),
+            Text(
+              "${Utils.numberFormatter(data.dSumAll)} ฿",
+              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+            ),
+          ],
+        )
+      ],
+    );
+  }
 }
 
-class _HomePageState extends State<HomePage> {
-  List<Widget> listWidget = [];
-  String sUserEmail = '';
-  String sUserUid = '';
-  List<ModelMenuItem> listMenuItem = [
-    ModelMenuItem(
-        sImageUrl: 'assets/images/production.png',
-        sMenuName: "จัดการรอบการผลิต",
-        index: 0),
-    ModelMenuItem(
-        sImageUrl: 'assets/images/packaging.png',
-        sMenuName: "บริหารจัดการต้นทุน",
-        index: 1),
-    ModelMenuItem(
-        sImageUrl: 'assets/images/iot.png',
-        sMenuName: "ระบบควบคุมปัจจัย",
-        index: 2),
-    ModelMenuItem(
-        sImageUrl: 'assets/images/profits.png',
-        sMenuName: "คำนวณรายได้",
-        index: 3),
-    ModelMenuItem(
-        sImageUrl: 'assets/images/crisis.png',
-        sMenuName: "คำนวณค่าใช้จ่าย",
-        index: 4),
-    ModelMenuItem(
-        sImageUrl: 'assets/images/settings.png',
-        sMenuName: "ตั้งค่า",
-        index: 5),
-  ];
+class SimpleBarChart extends StatelessWidget {
+  final List<charts.Series<dynamic, String>> seriesList;
+  final bool animate;
 
-  @override
-  void initState() {
-    final FirebaseAuth auth = FirebaseAuth.instance;
-    final User? user = auth.currentUser;
-    final firebaseUID = user!.email;
-    sUserEmail = firebaseUID ?? "";
-    sUserUid = user.uid;
-    setListMenu();
-    super.initState();
-  }
-
-  Future<void> _signOut() async {
-    await FirebaseAuth.instance.signOut();
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> const LoginScreen()));
-  }
-
-  checkOnTapMenu(int index) async {
-    switch (index) {
-      case 0:
-        await navigator(DailyProdListScreen(sUserID: sUserUid));
-        break;
-      case 1:
-        await navigator(CostMatListScreen(
-          sUserID: sUserUid,
-        ));
-        break;
-      case 2:
-        await navigator(const IOTHwListPage());
-        break;
-      case 3:
-        await navigator(IncomeListScreen(
-          sUserID: sUserUid,
-        ));
-        break;
-      case 4:
-        await navigator(ExpenseListScreen(
-          sUserID: sUserUid,
-        ));
-        break;
-      case 5:
-        null;
-        break;
-    }
-  }
-
-  Future<dynamic> navigator(Widget page) async {
-    Route route;
-    if (Platform.isAndroid) {
-      route = MaterialPageRoute(
-        builder: (context) => page,
-      );
-    } else {
-      route = CupertinoPageRoute(
-        builder: (context) => page,
-      );
-    }
-    return await Navigator.push(context, route);
-  }
-
-  setListMenu() {
-    listWidget.clear();
-
-    for (int i = 0; i < 6; i++) {
-      listWidget.add(GestureDetector(
-        onTap: () async {
-          checkOnTapMenu(i);
-        },
-        child: SizedBox(
-            width: 180,
-            height: 80,
-            child: ListTile(
-                contentPadding: EdgeInsets.zero,
-                title: Image.asset(
-                  listMenuItem[i].sImageUrl,
-                  filterQuality: FilterQuality.medium,
-                  height: 100,
-                  width: 200,
-                ),
-                subtitle: Container(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Text(
-                    listMenuItem[i].sMenuName,
-                    style: const TextStyle(fontSize: 18, color: Colors.black),
-                    textAlign: TextAlign.center,
-                  ),
-                ))),
-      ));
-    }
-  }
+  const SimpleBarChart(this.seriesList, {Key? key, this.animate = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListView(
-        physics: const BouncingScrollPhysics(),
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    const Icon(Icons.account_box),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    Text(
-                      sUserEmail,
-                      style: const TextStyle(fontWeight: FontWeight.w600),
-                    ),
-                  ],
-                ),
-                TextButton.icon(
-                    onPressed: () {
-                      _signOut();
-                    },
-                    icon: Icon(
-                      Icons.exit_to_app,
-                      color: Colors.blue.shade700,
-                    ),
-                    label: Text(
-                      "ออกจากระบบ",
-                      style: TextStyle(
-                          color: Colors.blue.shade700,
-                          fontWeight: FontWeight.w600),
-                    ))
-              ],
-            ),
-          ),
-          GestureDetector(
-            onTap: () {},
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Text(
-                  "เมนูหลัก",
-                  style: TextStyle(fontSize: 32, color: Colors.green),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2),
-            shrinkWrap: true,
-            physics: const BouncingScrollPhysics(),
-            itemCount: listWidget.length,
-            itemBuilder: (context, index) {
-              return listWidget[index];
-            },
-          )
-        ],
+    return Container(
+      padding: const EdgeInsets.only(left: 10, right: 10),
+      width: MediaQuery.of(context).size.width,
+      height: 200,
+      child: charts.BarChart(
+        seriesList,
+        animate: animate,
       ),
     );
   }
 }
 
-class ModelMenuItem {
-  String sImageUrl;
-  String sMenuName;
-  int index;
+/// Sample ordinal data type.
+class OrdinalSales {
+  final String sIncomeExpense;
+  final int iAmount;
 
-  ModelMenuItem({required this.sImageUrl, required this.sMenuName, required this.index});
+  OrdinalSales(this.sIncomeExpense, this.iAmount);
 }

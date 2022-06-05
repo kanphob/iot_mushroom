@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:iot_mushroom/provider/home_page_provider.dart';
+import 'package:iot_mushroom/provider/home_page_statistic_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:siwat_mushroom/Screen/home_page.dart';
-import 'package:siwat_mushroom/Utils/model_progress_hud.dart';
-import 'package:siwat_mushroom/provider/login_screen_provider.dart';
-import 'package:siwat_mushroom/register_screen.dart';
+import 'package:iot_mushroom/Screen/home_page.dart';
+import 'package:iot_mushroom/Utils/model_progress_hud.dart';
+import 'package:iot_mushroom/provider/login_screen_provider.dart';
+import 'package:iot_mushroom/register_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -246,19 +248,39 @@ class LoginScreen extends StatelessWidget {
                           GestureDetector(
                             onTap: () async {
                               List<String> listUser = [];
+                              BuildContext ctx = context;
+                              final navigator = Navigator.of(context);
+                              final scaffold = ScaffoldMessenger.of(context);
                               listUser = await Navigator.push(
                                   context,
                                   CupertinoPageRoute(
                                       builder: (context) =>
                                           const RegisterScreen()));
-                                if(listUser.isNotEmpty){
-                                  data.userEmailController.text = listUser[0];
-                                  data.userPasswordController.text = listUser[1];
-                                  String sResult = await data.onSubmitLoginFirebase();
-                                  if(sResult == 'Success'){
-                                    Navigator.push(context, CupertinoPageRoute(builder: (context)=> const HomePage()));
-                                  }
+                              if (listUser.isNotEmpty) {
+                                data.userEmailController.text = listUser[0];
+                                data.userPasswordController.text = listUser[1];
+                                String sResult =
+                                    await data.onSubmitLoginFirebase(scaffold);
+                                if (sResult == 'Success') {
+                                  navigator.push(CupertinoPageRoute(
+                                      builder: (context) => MultiProvider(
+                                              providers: [
+                                                ChangeNotifierProvider(
+                                                  create: (_) =>
+                                                      HomePageProvider(
+                                                          context: context),
+                                                ),
+                                                ChangeNotifierProvider(
+                                                  create: (_) =>
+                                                      HomePageStatisticProvider(
+                                                          context: context),
+                                                ),
+                                              ],
+                                              builder: (context, child) {
+                                                return const HomePage();
+                                              })));
                                 }
+                              }
                             },
                             child: Container(
                               alignment: Alignment.center,
@@ -325,10 +347,28 @@ class LoginScreen extends StatelessWidget {
                                 onPressed: () async {
                                   if (data.loginFormKey.currentState!
                                       .validate()) {
-                                    String sResult =
-                                        await data.onSubmitLoginFirebase();
-                                    if(sResult == 'Success'){
-                                      Navigator.push(context, CupertinoPageRoute(builder: (context)=> const HomePage()));
+                                    final navigator = Navigator.of(context);
+                                    final scaffold =
+                                        ScaffoldMessenger.of(context);
+                                    String sResult = await data
+                                        .onSubmitLoginFirebase(scaffold);
+                                    if (sResult == 'Success') {
+                                      navigator.push(CupertinoPageRoute(
+                                          builder: (context) => MultiProvider(
+                                                providers: [
+                                                  ChangeNotifierProvider(
+                                                      create: (_) =>
+                                                          HomePageProvider(
+                                                              context:
+                                                                  context)),
+                                                  ChangeNotifierProvider(
+                                                      create: (_) =>
+                                                          HomePageStatisticProvider(
+                                                              context:
+                                                                  context)),
+                                                ],
+                                                child: const HomePage(),
+                                              )));
                                     }
                                   }
                                 },

@@ -2,12 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:siwat_mushroom/API/api_call.dart';
-import 'package:siwat_mushroom/Constant/field_master.dart';
-import 'package:siwat_mushroom/Screen/home_page.dart';
-import 'package:siwat_mushroom/passcode_screen.dart';
+import 'package:iot_mushroom/API/api_call.dart';
+import 'package:iot_mushroom/Constant/field_master.dart';
+import 'package:iot_mushroom/Screen/home_page.dart';
+import 'package:iot_mushroom/passcode_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:iot_mushroom/provider/home_page_provider.dart';
+import 'package:iot_mushroom/provider/home_page_statistic_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 class LoginScreenProvider with ChangeNotifier {
   final BuildContext context;
 
@@ -21,37 +25,37 @@ class LoginScreenProvider with ChangeNotifier {
   FocusNode fnUserID = FocusNode(), fnUserPassword = FocusNode();
   FirebaseAuth auth = FirebaseAuth.instance;
   TextEditingController userEmailController = TextEditingController(text: ''),
-                        userPasswordController = TextEditingController(text: ''),
-                        userIotIDController = TextEditingController(text: 'Mushroom'),
-                        userIotPasswordController = TextEditingController(text: '1234');
+      userPasswordController = TextEditingController(text: ''),
+      userIotIDController = TextEditingController(text: 'Mushroom'),
+      userIotPasswordController = TextEditingController(text: '1234');
 
-
-  checkLoggedIn() async{
-      final FirebaseAuth auth = FirebaseAuth.instance;
-      final User? user = auth.currentUser;
-      final firebaseUID = user!.uid;
-     prefs = await SharedPreferences.getInstance();
-     String sSharePrefEmail = prefs.getString(FieldMaster.sharedPreferenceEmail)!;
-     if(firebaseUID.isNotEmpty && sSharePrefEmail.isNotEmpty) {
-       if (kDebugMode) {
-         print(sSharePrefEmail);
-       }
-       Navigator.push(context, CupertinoPageRoute(builder: (context)=> const HomePage()));
-     }
+  checkLoggedIn() async {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final User? user = auth.currentUser;
+    final firebaseUID = user!.uid;
+    final navigator = Navigator.of(context);
+    prefs = await SharedPreferences.getInstance();
+    String sSharePrefEmail =
+        prefs.getString(FieldMaster.sharedPreferenceEmail)!;
+    if (firebaseUID.isNotEmpty && sSharePrefEmail.isNotEmpty) {
+      if (kDebugMode) {
+        print(sSharePrefEmail);
+      }
+      navigator
+          .push(CupertinoPageRoute(builder: (context) => const HomePage()));
+    }
   }
 
-  onSubmitLoginFirebase() async {
+  onSubmitLoginFirebase(ScaffoldMessengerState scaffold) async {
     if (userEmailController.text.isNotEmpty &&
         userPasswordController.text.isNotEmpty) {
-      String sEmail = userEmailController.text, sPassword = userPasswordController.text;
+      String sEmail = userEmailController.text,
+          sPassword = userPasswordController.text;
       isInAsyncCall = true;
       notifyListeners();
       try {
         UserCredential userCredential = await FirebaseAuth.instance
-            .signInWithEmailAndPassword(
-            email: sEmail,
-            password: sPassword
-        );
+            .signInWithEmailAndPassword(email: sEmail, password: sPassword);
 
         String sToken = '';
         sToken = await userCredential.user!.getIdToken();
@@ -68,16 +72,25 @@ class LoginScreenProvider with ChangeNotifier {
           notifyListeners();
           return 'Fail';
         }
-
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
           if (kDebugMode) {
             print('No user found for that email.');
           }
+          scaffold.showSnackBar(
+            const SnackBar(
+              content: Text('ไม่พบ email ผู้ใช้งานนี้ในระบบ'),
+            ),
+          );
         } else if (e.code == 'wrong-password') {
           if (kDebugMode) {
             print('Wrong password provided for that user.');
           }
+          scaffold.showSnackBar(
+            const SnackBar(
+              content: Text('รหัสผ่านไม่ถูกต้อง'),
+            ),
+          );
         }
       }
       isInAsyncCall = false;
@@ -97,8 +110,10 @@ class LoginScreenProvider with ChangeNotifier {
         notifyListeners();
         if (userEmailController.text.isNotEmpty) {
           Future.delayed(const Duration(seconds: 2, milliseconds: 0), () async {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const PasscodeScreen()));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const PasscodeScreen()));
           });
         }
       }
@@ -114,7 +129,8 @@ class LoginScreenProvider with ChangeNotifier {
     FocusScope.of(context).unfocus();
     isInAsyncCall = true;
     notifyListeners();
-
+    final navigator = Navigator.of(context);
+    final scaffold = ScaffoldMessenger.of(context);
     String sResult = await APICall.httpGetForSignIn(
         sUsername: userIotIDController.text,
         sPassword: userPasswordController.text);
@@ -122,19 +138,26 @@ class LoginScreenProvider with ChangeNotifier {
     if (sResult == 'Success') {
       isInAsyncCall = false;
       notifyListeners();
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const HomePage()));
+      navigator.push(MaterialPageRoute(
+          builder: (context) => MultiProvider(
+                  providers: [
+                    ChangeNotifierProvider(
+                      create: (_) => HomePageProvider(context: context),
+                    ),
+                    ChangeNotifierProvider(
+                      create: (_) =>
+                          HomePageStatisticProvider(context: context),
+                    ),
+                  ],
+                  builder: (context, child) {
+                    return const HomePage();
+                  })));
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
+      scaffold.showSnackBar(
         const SnackBar(
           content: Text('ID ผู้ใช้งาน หรือ รหัสผ่านไม่ถูกต้อง'),
         ),
       );
     }
-
   }
-
-
-
-
 }

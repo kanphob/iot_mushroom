@@ -1,5 +1,5 @@
 
-import 'package:siwat_mushroom/Model/model_cost_material.dart';
+import 'package:iot_mushroom/Model/model_cost_material.dart';
 import 'package:intl/intl.dart';
 
 class Globals {
@@ -15,4 +15,6 @@ class Globals {
   static String sModeADD = 'add';
   static String sModeEDIT = 'edit';
   static String sModeVIEW = 'view';
+
+  static bool bBarChart = false;
 }

@@ -40,8 +40,8 @@ class DropDownData {
 
   static List<DropDownData> getDataExpense() {
     List<DropDownData> list = [];
-    list.add(DropDownData(index: 0, sLabel: 'รายจ่ายตั้งต้น', sVal: 'IEX'));
-    list.add(DropDownData(index: 1, sLabel: 'รายจ่ายประจำ', sVal: 'REX'));
+    list.add(DropDownData(index: 0, sLabel: 'ค่าใช้จ่ายตั้งต้น', sVal: 'IEX'));
+    list.add(DropDownData(index: 1, sLabel: 'ค่าใช้จ่ายประจำ', sVal: 'REX'));
     return list;
   }
 
