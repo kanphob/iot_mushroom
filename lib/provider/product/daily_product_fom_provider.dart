@@ -31,6 +31,7 @@ class DailyProdFormProvider extends ProductHeadProvider {
   int iRound = 0;
   String sUIDDoc = '';
   bool bLoadData = false;
+  bool bSync = false;
 
   // Form
   TextEditingController txtDateSave = TextEditingController(),
@@ -141,17 +142,11 @@ class DailyProdFormProvider extends ProductHeadProvider {
   }
 
   void syncDataIOT() async {
-    Globals.sTokenIOT = '';
-    bool bHave = await Functions.checkToken(context: context);
-    if (kDebugMode) {
-      print('Have Token : $bHave');
-    }
-    if (bHave) {
-      if (kDebugMode) {
-        print('Token : ${Globals.sTokenIOT}');
-      }
-      await APICall.dataHistory();
-    }
+    bSync = true;
+    notifyListeners();
+    await setDefaultIOT();
+    bSync = false;
+    notifyListeners();
   }
 
   void onSave() async {
@@ -163,7 +158,11 @@ class DailyProdFormProvider extends ProductHeadProvider {
       } else {
         iSuccess = await updateData(sUIDDoc: sUIDDoc, data: data);
       }
-      if (iSuccess == 1) Navigator.pop(context, true);
+      if (iSuccess == 1) {
+        await Future.delayed(const Duration(microseconds: 200), () {
+          Navigator.pop(context, true);
+        });
+      }
     }
     if (kDebugMode) {
       print(jsonEncode(data));

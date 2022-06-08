@@ -63,21 +63,34 @@ class DailyProdFormScreen extends StatelessWidget {
                   child: SingleChildScrollView(
                     controller: prov.scrollBody,
                     physics: const BouncingScrollPhysics(),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.max,
+                    child: Stack(
                       children: [
-                        _buildDateSave(prov),
-                        if (!prov.bLoadData) _buildRound(prov),
-                        // _buildDataIOT(prov),
-                        prov.widget.h10,
-                        prov.widget.divider,
-                        _buildTemp(prov),
-                        _buildMoisture(prov),
-                        _buildLight(prov),
-                        _buildCO2(prov),
-                        _buildFlower(prov),
-                        _buildQP(prov),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            _buildDateSave(prov),
+                            if (!prov.bLoadData) _buildRound(prov),
+                            _buildDataIOT(prov),
+                            prov.widget.h10,
+                            prov.widget.divider,
+                            _buildTemp(prov),
+                            _buildMoisture(prov),
+                            _buildLight(prov),
+                            _buildCO2(prov),
+                            _buildFlower(prov),
+                            _buildQP(prov),
+                          ],
+                        ),
+                        if (prov.bSync)
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height,
+                            color: Colors.black.withOpacity(0.5),
+                            child: const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          ),
                       ],
                     ),
                   ),
