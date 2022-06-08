@@ -145,6 +145,7 @@ class STDWidget {
                           shape: const RoundedRectangleBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(15.0))),
+                          onPressed: onSubmitLogin,
                           child: const Padding(
                             padding: EdgeInsets.symmetric(horizontal: 35.0),
                             child: Text(
@@ -156,7 +157,6 @@ class STDWidget {
                               ),
                             ),
                           ),
-                          onPressed: onSubmitLogin,
                         ),
                       ),
                     ),
@@ -180,11 +180,11 @@ class STDWidget {
       duration: duration400m,
       margin: edgeAll8,
       padding: edgeAll8,
-      child: child,
       decoration: BoxDecoration(
         color: Colors.indigo.shade900,
         borderRadius: BorderRadius.circular(8),
       ),
+      child: child,
     );
   }
 
@@ -195,11 +195,11 @@ class STDWidget {
       duration: duration400m,
       margin: edgeAll8,
       padding: edgeAll8,
-      child: child,
       decoration: BoxDecoration(
         color: Colors.blue.shade900,
         borderRadius: BorderRadius.circular(8),
       ),
+      child: child,
     );
   }
 
@@ -210,7 +210,6 @@ class STDWidget {
       duration: duration400m,
       margin: const EdgeInsets.symmetric(horizontal: 8),
       padding: edgeAll8,
-      child: child,
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(
@@ -218,6 +217,7 @@ class STDWidget {
         ),
         borderRadius: BorderRadius.circular(8),
       ),
+      child: child,
     );
   }
 
@@ -245,7 +245,6 @@ class STDWidget {
       padding: edgeAll8,
       width: width,
       height: height,
-      child: child,
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(
@@ -253,6 +252,7 @@ class STDWidget {
         ),
         borderRadius: BorderRadius.circular(8),
       ),
+      child: child,
     );
   }
 

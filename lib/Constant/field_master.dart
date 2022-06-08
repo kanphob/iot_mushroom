@@ -41,4 +41,8 @@ class FieldMaster {
 
   static const String sharedPreferenceUID = 'sp_uid';
   static const String sharedPreferenceEmail = 'sp_email';
+
+  // API
+  static const String sApiStatus = 'status';
+  static const String sApiValue = 'value';
 }

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:iot_mushroom/Constant/field_master.dart';
 import 'dart:convert' as convert;
 
 import 'package:iot_mushroom/Constant/globals.dart';
@@ -47,7 +48,7 @@ class APICall {
     return sResult;
   }
 
-  static Future<String> httpGetForDeviceValue({String? sDevKey}) async {
+  static Future<String> getDeviceValue({String? sDevKey}) async {
     String sPRT = "get";
     String sResult = "";
     var url = Uri(
@@ -71,10 +72,7 @@ class APICall {
       print(response.body);
       var jsonResponse =
           convert.jsonDecode(response.body) as Map<String, dynamic>;
-      if (kDebugMode) {
-        print('response : ${response.body}.');
-      }
-      sResult = jsonResponse['status'] ?? "";
+      sResult = jsonResponse['value'] ?? "";
     } else {
       if (kDebugMode) {
         print('Request failed with status: ${response.statusCode}.');
@@ -114,10 +112,8 @@ class APICall {
     if (response.statusCode == 200) {
       print(response.body);
       var jsonResponse =
-      convert.jsonDecode(response.body) as Map<String, dynamic>;
-      if (kDebugMode) {
-        print('response : ${response.body}.');
-      }
+          convert.jsonDecode(response.body) as Map<String, dynamic>;
+      print('response : ${response.body}.');
       sResult = jsonResponse['status'] ?? "";
     } else {
       if (kDebugMode) {
@@ -128,7 +124,44 @@ class APICall {
     return sResult;
   }
 
-  static Future<String> httpGetForData() async {
+  static Future<Map<String, dynamic>> deviceIO({
+    required String sDevKey,
+    required String sStatus,
+  }) async {
+    String sPRT = "drive";
+    Map<String, dynamic> map = {};
+    var url = Uri(
+      scheme: 'http',
+      host: 'iot.farmdasia.com',
+      path: '/apis/drive_io.aspx',
+      queryParameters: {
+        'prt': sPRT,
+        'dev_id': '466a9d20-832a-11ec-bbb0-65317744a1a2',
+        'dev_key': sDevKey,
+        'status': sStatus,
+      },
+    );
+    if (kDebugMode) {
+      print('$url');
+    }
+    var response = await http.post(
+      url,
+      headers: requestHeaders,
+    );
+    if (response.statusCode == 200) {
+      var json = convert.jsonDecode(response.body) as Map<String, dynamic>;
+      print('response : ${response.body}.');
+      map[FieldMaster.sApiStatus] = json[FieldMaster.sApiStatus] ?? "";
+      map[FieldMaster.sApiValue] = json[FieldMaster.sApiValue] ?? "";
+    } else {
+      if (kDebugMode) {
+        print('Request failed with status: ${response.statusCode}.');
+      }
+    }
+    return map;
+  }
+
+  static Future<String> dataHistory() async {
     String sResult = "";
     DateTime dtNow = DateTime.now();
     String sDevId = "466a9d20-832a-11ec-bbb0-65317744a1a2";

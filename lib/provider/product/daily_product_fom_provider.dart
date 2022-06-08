@@ -52,10 +52,14 @@ class DailyProdFormProvider extends ProductHeadProvider {
 
   initProvider() async {
     if (bFirst) {
-      await setDefault();
-      await setData();
-      bFirst = false;
-      notifyListeners();
+      await Future.delayed(const Duration(microseconds: 200));
+      bool bResult = await Functions.checkToken(context: context);
+      if (bResult) {
+        await setDefault();
+        await setData();
+        bFirst = false;
+        notifyListeners();
+      }
     }
   }
 
@@ -67,6 +71,7 @@ class DailyProdFormProvider extends ProductHeadProvider {
       iRound = await getRound(sUIDUser: sUserID);
       var uuid = const Uuid();
       sUIDDoc = uuid.v4();
+      await setDefaultIOT();
     } else {
       sUIDDoc = model!.sUID;
     }
@@ -88,6 +93,21 @@ class DailyProdFormProvider extends ProductHeadProvider {
       txtFlower.text = model!.iNumFlower.toString();
       txtQP.text = model!.iQuantityProduced.toString();
       bLoadData = true;
+    }
+  }
+
+  Future<void> setDefaultIOT() async {
+    Map<String, dynamic> map = {};
+    map['temp'] = await APICall.getDeviceValue(sDevKey: 'temp_1');
+    map['hum'] = await APICall.getDeviceValue(sDevKey: 'hum_1');
+    map['co2'] = await APICall.getDeviceValue(sDevKey: 'co2_1');
+    map['light'] = await APICall.getDeviceValue(sDevKey: 'light_1');
+    print(map);
+    if (map.isNotEmpty) {
+      txtTemp.text = map['temp'] ?? '';
+      txtMoi.text = map['hum'] ?? '';
+      txtCO2.text = map['co2'] ?? '';
+      txtLight.text = map['light'] ?? '';
     }
   }
 
@@ -130,7 +150,7 @@ class DailyProdFormProvider extends ProductHeadProvider {
       if (kDebugMode) {
         print('Token : ${Globals.sTokenIOT}');
       }
-      await APICall.httpGetForData();
+      await APICall.dataHistory();
     }
   }
 
