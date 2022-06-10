@@ -12,6 +12,16 @@ class FontThai {
     ),
   );
 
+  static TextStyle text16BlackBold = GoogleFonts.sarabun(
+    textStyle: const TextStyle(
+      color: Colors.black,
+      letterSpacing: 0.5,
+      fontWeight: FontWeight.bold,
+      fontSize: 16,
+      fontStyle: FontStyle.normal,
+    ),
+  );
+
   static TextStyle text18BlackBold = GoogleFonts.sarabun(
     textStyle: const TextStyle(
       color: Colors.black,
