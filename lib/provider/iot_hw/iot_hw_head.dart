@@ -24,6 +24,7 @@ class IOTHwHeader with ChangeNotifier {
   // dev key
   bool bIO = false;
   bool bOnOffIO = true;
+  String sTextIOT = '';
 
   List<ModelIotItem> listItem = [];
   late ScrollController scrList;
@@ -34,6 +35,7 @@ class IOTHwHeader with ChangeNotifier {
     bool bResult = await Functions.checkToken(context: context);
     scrList = ScrollController(initialScrollOffset: 0);
     if (bResult) {
+      checkTextIOT();
       // await APICall.getDeviceValue();
       bFirst = false;
       notifyListeners();
@@ -48,6 +50,7 @@ class IOTHwHeader with ChangeNotifier {
 
   void onChangedOnOff(val) {
     bOnOffIO = val;
+    checkTextIOT();
     print('On_OFF $bOnOffIO');
     notifyListeners();
   }
@@ -89,6 +92,14 @@ class IOTHwHeader with ChangeNotifier {
       notifyListeners();
     } else {
       notifyListeners();
+    }
+  }
+
+  checkTextIOT() {
+    if (bOnOffIO) {
+      sTextIOT = 'ยืนยันเปิดระบบ';
+    } else {
+      sTextIOT = 'ยืนยันปิดระบบ';
     }
   }
 

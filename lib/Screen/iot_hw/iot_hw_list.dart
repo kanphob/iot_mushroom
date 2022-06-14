@@ -100,7 +100,7 @@ class IOTHwListPage extends StatelessWidget {
         ElevatedButton(
           onPressed: () => prov.onPushDataIO(),
           child: Text(
-            'ส่งข้อมูล Device IO',
+            prov.sTextIOT,
             style: FontThai.text16WhiteBold,
           ),
         ),
