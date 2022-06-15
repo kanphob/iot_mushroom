@@ -394,7 +394,7 @@ class STDWidget {
     return ElevatedButton.icon(
       onPressed: onPress,
       label: txtWhite16(
-        sText: 'ดูข้อมูล',
+        sText: ' ดูข้อมูล',
       ),
       icon: const Icon(
         Icons.description,
