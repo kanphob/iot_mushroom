@@ -71,9 +71,7 @@ class DailyProdFormScreen extends StatelessWidget {
                           children: [
                             _buildDateSave(prov),
                             if (!prov.bLoadData) _buildRound(prov),
-                            sMode == Globals.sModeVIEW
-                                ? Container()
-                                : _buildDataIOT(prov),
+                            sMode == Globals.sModeVIEW?Container(): _buildDataIOT(prov),
                             prov.widget.h10,
                             prov.widget.divider,
                             _buildTemp(prov),
@@ -114,7 +112,8 @@ class DailyProdFormScreen extends StatelessWidget {
         controller: prov.txtDateSave,
         style: FontThai.text16BlackNormal,
         readOnly: true,
-        onTap: () => prov.onTapPickDate(),
+        onTap: () =>   sMode == Globals.sModeVIEW
+            ? null:prov.onTapPickDate(),
       ),
     );
   }
